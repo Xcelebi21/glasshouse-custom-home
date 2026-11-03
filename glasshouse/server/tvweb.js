@@ -1844,6 +1844,8 @@ function startGlasshouseHome() {
     stateDir: __dirname,
     webosVersion: telemetry.detectWebosVersion(),
     model: (CONFIG.device && CONFIG.device.model) || '',
+    // Read again per call: telemetry detects the model a few seconds in.
+    modelFn: function () { return (CONFIG.device && CONFIG.device.model) || ''; },
     port: CONFIG.port,
     samrescan: samrescan,
     // Only to remove the separate app earlier builds installed.

@@ -7,6 +7,7 @@
  */
 var assert = require('assert');
 var fs = require('fs');
+var os = require('os');
 var path = require('path');
 var profile = require('../server/lib/tv-profile');
 var home = require('../server/lib/home');
@@ -68,6 +69,24 @@ assert.deepStrictEqual(home.normalise({ devPorts: 'hdmi1' }).devPorts, []);
 assert.deepStrictEqual(home.normalise({}).devPorts, [], 'a layout from before the setting keeps every input');
 assert.deepStrictEqual(home.layout().devPorts, [], 'the shipped default is every input, not this set\'s two ports');
 console.log('  ok devPorts keeps valid ports only, and defaults to every input');
+
+// The model is read by telemetry a few seconds after the server starts, so the
+// profile must ask for it each time: a copy taken at init is still empty and
+// the C2 family would go unidentified on a real set.
+var dir = fs.mkdtempSync(path.join(os.tmpdir(), 'glasshouse-c2-'));
+var liveModel = '';
+home.init({
+  stateDir: dir,
+  webosVersion: '9.2.2',
+  model: '',
+  modelFn: function () { return liveModel; },
+  luna: function (uri, payload, cb) { cb({ returnValue: false }); }
+});
+assert.strictEqual(home.profile().family, '', 'nothing is known before telemetry reads the model');
+liveModel = 'OLED55C2PUA';
+assert.strictEqual(home.profile().family, 'c2', 'the profile follows the model once telemetry has it');
+assert.strictEqual(home.profile().marketing, 'webOS 24');
+console.log('  ok the profile reads the model telemetry detects, not the empty copy at start');
 
 // The view reads the setting, and the owner's Bell tile is not in the public
 // build: its HDMI 4 shortcut was this set's, not every C2's.

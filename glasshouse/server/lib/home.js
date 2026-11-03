@@ -150,6 +150,9 @@ var stateDir = '/var/lib/tvweb';
 var webosVersion = null;
 // The model as telemetry read it (config.device.model), '' when it did not.
 var modelName = '';
+// A live reader for it: telemetry fills config.device.model in after start, so
+// a copy taken then would still be empty when the first Home page is built.
+var modelFn = null;
 var installFn = null;
 var procDir = '/proc';
 var execFn = execFile;
@@ -1094,7 +1097,7 @@ function copy(o) { return JSON.parse(JSON.stringify(o)); }
 // The model and version this TV reports, and what they allow (lib/tv-profile).
 function profile() {
   return tvProfile.detect({
-    model: modelName,
+    model: modelFn ? modelFn() : modelName,
     webosVersion: webosVersion,
     allowExperimental: allowExperimentalFn() === true
   });
@@ -1814,6 +1817,7 @@ function init(opts) {
   });
   webosVersion = opts.webosVersion || null;
   modelName = typeof opts.model === 'string' ? opts.model : '';
+  modelFn = typeof opts.modelFn === 'function' ? opts.modelFn : null;
   installFn = opts.installApp || null;
   procDir = opts.procDir || '/proc';
   slowOpenMs = typeof opts.slowOpenMs === 'number' ? opts.slowOpenMs : FIRST_BEAT_GRACE_MS;
@@ -1983,6 +1987,7 @@ module.exports = {
   // What was opened, written now rather than after its short delay, as the server stops.
   flush: recent.flush,
   status: status,
+  profile: profile,
   catalogue: catalogue,
   channelList: channelList,
   guide: guide,
