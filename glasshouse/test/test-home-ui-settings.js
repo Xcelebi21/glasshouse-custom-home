@@ -117,4 +117,12 @@ assert.ok(/#stage:not\(\.arranging\) #rows \.recommendation-row\.empty\{display:
 assert.ok(/id="homeSettingsLaunch"[^>]*aria-label="Ouvrir Glasshouse"/.test(html));
 assert.ok(/src="\/assets\/favicon.svg"/.test(html),'native dashboard shortcut uses the bundled official icon');
 assert.ok(!/home-logos|data:image\/svg\+xml;base64/.test(html),'public Home does not embed private app logos');
+
+// A TV that was asked and has no recommendations call says so. An empty list
+// from a TV that has the call is a provider with nothing to show, not that.
+h=harness();var noRec=fixture();noRec.sources.recommendations='unavailable';h.view.setup(noRec,noRec.layout);h.view.open();
+assert.strictEqual(h.element('homeSettingsUnavailable').hidden,false,'the missing call is named in settings');
+h=harness();var emptyRec=fixture();emptyRec.recommended=[];emptyRec.sources.recommendations='available';
+h.view.setup(emptyRec,emptyRec.layout);h.view.open();
+assert.strictEqual(h.element('homeSettingsUnavailable').hidden,true,'an empty list is not a missing feature');
 console.log('Home settings, native shortcut, strict recommendations and stale-response tests passed.');

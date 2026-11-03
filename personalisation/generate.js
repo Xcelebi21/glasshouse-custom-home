@@ -62,7 +62,7 @@ Object.keys(files).forEach(function (relative) {
   manifest.patches.push({ file: relative, patch: patch, baseSha256: files[relative], customSha256: hash(read(after)) });
 });
 
-['lib/home-weather.js', 'assets/home-wallpaper-dark.jpg',
+['lib/home-weather.js', 'lib/tv-profile.js', 'assets/home-wallpaper-dark.jpg',
   'assets/third-party/immich/immich-logo.svg', 'assets/third-party/immich/LICENSE-AGPL-3.0.txt',
   'assets/third-party/immich/NOTICE.txt'].forEach(function (relative) {
   var data = read(path.join(server, relative));

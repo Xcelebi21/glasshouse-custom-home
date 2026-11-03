@@ -38,7 +38,7 @@ function initialLayout() {
   return { enabled: true, rows: ['app', 'rec', 'dev'], order: JSON.parse(JSON.stringify(IDS)),
     sort: { app: 'custom', dev: 'custom', ch: 'custom', rec: 'custom' }, hidden: { app: DRAWER_APPS.slice(), dev: [], ch: [], rec: [] },
     folder: [], recommended: false, search: false, searchHintSeen: true,
-    channels: [], hintSeen: true, picture: false, colours: null, photosAppId: '' };
+    channels: [], hintSeen: true, picture: false, colours: null, photosAppId: '', devPorts: [] };
 }
 function uniqueKnown(value, known) {
   return Array.isArray(value) && value.length <= known.length &&
@@ -75,6 +75,12 @@ function updateLayout(layout, input) {
     next.folder = input.folder;
   }
   if (input.hintSeen !== undefined) next.hintSeen = input.hintSeen === true;
+  if (input.devPorts !== undefined) {
+    if (!Array.isArray(input.devPorts) || input.devPorts.length > 4 ||
+        !input.devPorts.every(port => Number.isInteger(port) && port >= 1 && port <= 4) ||
+        new Set(input.devPorts).size !== input.devPorts.length) throw new Error('Invalid ports');
+    next.devPorts = input.devPorts.slice().sort((a, b) => a - b);
+  }
   return next;
 }
 function createDemoServer() {
@@ -116,7 +122,7 @@ function createDemoServer() {
       }
       if (route === '/api/home/catalogue') return json(200, { ok: true, apps: APPS, devices: DEVICES,
         channels: [], recommended: layout.recommended ? RECOMMENDATIONS : [],
-        order: Object.assign({}, layout.order, { rec: layout.recommended ? layout.order.rec : [] }), layout, layoutVersion: String(revision), sources: { channels: 0, recommended: layout.recommended ? RECOMMENDATIONS.length : false }, wallpapers: WALL_STATE,
+        order: Object.assign({}, layout.order, { rec: layout.recommended ? layout.order.rec : [] }), layout, layoutVersion: String(revision), sources: { channels: 0, recommended: layout.recommended ? RECOMMENDATIONS.length : false, recommendations: 'available' }, wallpapers: WALL_STATE,
         photos: { appId: '', installed: false, icon: null } });
       if (route === '/api/home/weather') return json(200, { ok: true, temperature: 18, code: 2, isDay: true,
         observedAt: Date.now(), stale: false, label: 'Ville de démonstration', demo: true });

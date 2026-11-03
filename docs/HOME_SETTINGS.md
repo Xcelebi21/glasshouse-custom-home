@@ -35,7 +35,10 @@ webOS 10. La disponibilité varie selon la TV, la région, le profil et l’app.
 Plex, Bell, ICI TOU.TV ou Crave installés ne prouvent pas qu’ils publient des cartes.
 Le module garde au maximum douze cartes par app et relit le catalogue notamment
 au retour à Home et périodiquement; ce n’est pas un suivi de lecture en temps réel.
-Sur certaines versions webOS, aucune carte n’est fournie.
+Sur certaines versions webOS, aucune carte n’est fournie. La disponibilité est
+vérifiée à l’exécution : si la TV n’expose pas l’appel, le panneau Paramètres
+l’indique (« Cette version de webOS ne fournit pas de recommandations. »). Une
+liste vide renvoyée par une TV qui possède l’appel n’affiche pas cette note.
 
 Sources : [release 0.129](https://github.com/rorygallagher2024/glasshouse/releases/tag/v0.129.0),
 [module 0.130](https://github.com/rorygallagher2024/glasshouse/blob/v0.130.0/server/lib/home-recommended.js),

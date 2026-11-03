@@ -282,17 +282,16 @@ Bell dans Applications doit utiliser l’ID de l’app webOS réellement install
 c’est cette destination qui est souhaitée. La boîte Bell Fibe et son entrée HDMI
 restent un périphérique distinct; changer l’un ne doit pas supprimer l’autre.
 
-**HDMI.** Le profil source contient des choix fixes, pas une détection universelle :
-présentation de consoles sur HDMI 1/3 et une tuile TV sur HDMI 4. Ne recopiez pas
-ces choix sur une TV où seul un Firestick est connecté. Le réglage d’ordre et de
-masquage ne change pas une association codée en dur. Avant installation, adaptez
-les sélections dans `items()` et `TILE.dev` de
-[`home.html`](../glasshouse/server/assets/home.html), et l’entrée HDMI virtuelle
-dans [`home.js`](../glasshouse/server/lib/home.js), selon les ports et appareils
-que vous avez identifiés. Puis régénérez/testez le bundle comme indiqué plus bas.
-Si vous ne souhaitez pas modifier le code, la démo est utilisable mais ce profil
-n’est pas encore un configurateur matériel universel. Ne fabriquez pas de consoles
-pour remplir une rangée.
+**HDMI.** La rangée Consoles ne garde que les ports nommés dans
+`layout.devPorts` de `home.json`; une liste vide, valeur livrée par défaut, garde
+toutes les entrées, et `[1, 3]` reproduit l’ancienne sélection. Aucune entrée HDMI
+n’est injectée comme tuile d’application. Les libellés Switch 2 et Xbox restent des
+choix visuels du profil pour les ports 1 et 3, et seulement quand une liste de
+ports est définie; sinon chaque entrée garde le nom de son appareil HDMI-CEC. Ne
+les recopiez pas sur une TV où seul un Firestick est connecté. Pour un autre
+matériel, adaptez `TILE.dev` de
+[`home.html`](../glasshouse/server/assets/home.html), puis régénérez et testez le
+bundle comme indiqué plus bas. Ne fabriquez pas de consoles pour remplir une rangée.
 
 **Photos.** Le logo est fourni; aucun client ni compte Immich ne l’est. Si vous
 souhaitez ce lanceur, installez un client choisi séparément selon ses instructions,

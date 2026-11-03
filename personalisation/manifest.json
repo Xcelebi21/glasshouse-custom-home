@@ -7,13 +7,13 @@
       "file": "assets/home.html",
       "patch": "patches/assets-home.html.patch",
       "baseSha256": "d06a2782462f6565cda0311c9e8bd667aa0fd7444b4f9f20eba793365b7a8573",
-      "customSha256": "81e9cb5ce87c1619951dd976015ace7e59604edee9df09882d02da4ae672b874"
+      "customSha256": "1e6fc85540dadc1c659a47c133e77eb2dde0707a01fa9cae5e72d7423b6d497f"
     },
     {
       "file": "lib/home.js",
       "patch": "patches/lib-home.js.patch",
       "baseSha256": "1c629931aed49bba02aa13efd60a0d7b832f5e1bf4674138790df7da58503890",
-      "customSha256": "807cf7a785772e047c0b2b673b89c3f0b62b7d9fcfb62e9a89b1f4000aa27035"
+      "customSha256": "73d7c816d4f87c97b08315604f55d37ff0f4a8064c0f0c9ce5e0e76ebcda8939"
     },
     {
       "file": "lib/routes.js",
@@ -33,6 +33,11 @@
       "file": "lib/home-weather.js",
       "source": "files/lib/home-weather.js",
       "sha256": "84b7c5fda8e558bd1373a2ae71740d34a2611f08b0287be81691fa4908a713e5"
+    },
+    {
+      "file": "lib/tv-profile.js",
+      "source": "files/lib/tv-profile.js",
+      "sha256": "19d6bb7dd22fc5f7a1f0c7fc4df67e55add76b1d5ed4a67c7ede19e197a0ab03"
     },
     {
       "file": "assets/home-wallpaper-dark.jpg",

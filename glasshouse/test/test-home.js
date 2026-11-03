@@ -193,7 +193,6 @@ function luna(uri, p, cb) {
       { id: 'com.webos.app.music', title: 'Music', icon: '/x/music.png', visible: false },
       { id: 'com.webos.app.hdmi1', title: 'HDMI 1', lptype: 'bookmark' }
     ];
-    if (tv.bellApp) r.launchPoints.push({ id: 'com.bell.fibetv.production', title: 'Bell Fibe TV', icon: '/x/bell.png' });
   } else if (uri === 'com.webos.service.eim/getAllInputStatus') {
     // As a G3 reports them: a receiver with a console behind it on HDMI 2, HDMI 1 empty.
     r.devices = tv.devices || [
@@ -319,47 +318,19 @@ step('device tiles use LG\'s CEC selection contract, or open the port without a 
   })();
 });
 
-step('Bell HDMI is an app tile only while the layout requests it, without bypassing launch validation', function (done) {
-  start(null);
-  tv.bellApp = true;
-  home.catalogue(function (before) {
-    assert.strictEqual(before.order.app.indexOf('com.webos.app.hdmi4'), -1);
-    home.setLayout({ order: { app: ['com.webos.app.hdmi4'] } }, function () {
-      home.catalogue(function (after) {
-        assert.strictEqual(after.order.app[0], 'com.webos.app.hdmi4', 'layout changes apply even while launch points are cached');
-        home.iconPath('com.webos.app.hdmi4', function (icon) {
-          assert.strictEqual(icon, '/x/bell.png', 'the input reuses the installed Bell app icon');
-          home.open({ kind: 'app', id: 'com.webos.app.hdmi4' }, function (opened) {
-            assert.ok(opened.ok);
-            assert.deepEqual(tv.launched, ['com.webos.app.hdmi4']);
-            home.open({ kind: 'app', id: 'com.webos.app.hdmi3' }, function (unknown) {
-              assert.strictEqual(unknown.ok, false, 'other HDMI apps are not allowed through the app launcher');
-              home.setLayout({ order: { app: [] } }, function () {
-                home.open({ kind: 'app', id: 'com.webos.app.hdmi4' }, function (removed) {
-                  assert.strictEqual(removed.ok, false, 'a removed Bell tile is not kept in the cache');
-                  home.open({ kind: 'app', id: 'lg-home' }, function (escaped) {
-                    assert.ok(escaped.ok);
-                    assert.deepEqual(tv.launched, ['com.webos.app.hdmi4', LG_HOME], 'LG Home remains reachable');
-                    done();
-                  });
-                });
-              });
-            });
-          });
-        });
-      });
-    });
-  });
-});
-
-step('Bell HDMI still opens without the optional Bell streaming app installed', function (done) {
+step('an HDMI input asked for as an app tile stays on the Inputs row', function (done) {
+  // A layout naming an input in the Apps row must not turn it into an app
+  // tile: only the Inputs row opens an input, with its CEC parameters.
   start({ order: { app: ['com.webos.app.hdmi4'] } });
-  home.iconPath('com.webos.app.hdmi4', function (icon) {
-    assert.strictEqual(icon, null);
-    home.open({ kind: 'app', id: 'com.webos.app.hdmi4' }, function (r) {
-      assert.ok(r.ok);
-      assert.deepEqual(tv.launched, ['com.webos.app.hdmi4']);
-      done();
+  home.catalogue(function (cat) {
+    assert.strictEqual(cat.order.app.indexOf('com.webos.app.hdmi4'), -1, 'no input is made an app tile');
+    assert.ok(cat.order.app.indexOf('netflix') !== -1, 'the apps the TV lists keep their place');
+    home.iconPath('com.webos.app.hdmi4', function (icon) {
+      assert.strictEqual(icon, null, 'an input has no app icon');
+      home.open({ kind: 'app', id: 'com.webos.app.hdmi4' }, function (r) {
+        assert.strictEqual(r.ok, false, 'an input is opened as a device, never as an app');
+        done();
+      });
     });
   });
 });

@@ -2,12 +2,13 @@
   "enabled": true,
   "rows": ["app", "dev"],
   "order": {
-    "app": ["youtube.leanback.v4", "netflix", "cdp-30", "ca.bellmedia.crave", "amazon", "tv.tou.ici.webos", "com.webos.app.hdmi4", "lg-home"],
+    "app": ["youtube.leanback.v4", "netflix", "cdp-30", "ca.bellmedia.crave", "amazon", "tv.tou.ici.webos", "lg-home"],
     "dev": ["hdmi1", "hdmi3"],
     "ch": []
   },
   "sort": {"app": "custom", "dev": "custom", "ch": "custom"},
   "hidden": {"app": [], "dev": [], "ch": []},
+  "devPorts": [1, 3],
   "channels": [],
   "hintSeen": true,
   "picture": false,

@@ -18,7 +18,7 @@ Glasshouse Custom Home est une personnalisation communautaire de l’accueil [Gl
 
 ### Ce que l’accueil apporte
 
-- Carrousel d’applications favorites, rangée Consoles, tiroir **Toutes les apps** et réorganisation par appui long sur OK.
+- Carrousel d’applications favorites, rangée Consoles (ports choisis dans `layout.devPorts`, toutes les entrées par défaut), tiroir **Toutes les apps** et réorganisation par appui long sur OK.
 - Accordéon **Recommandations** lié à l’application sélectionnée; aucune carte inventée si le fournisseur n’en propose pas.
 - Petit panneau de paramètres : activation des recommandations, fermeture et raccourci **G** vers Glasshouse.
 - Fonds quotidiens, mode sombre de 17 h à 6 h, météo optionnelle et lanceur Photos facultatif pour un client Immich déjà installé.
@@ -27,7 +27,7 @@ La démo et les exemples sont assainis : météo fictive, recommandations désac
 
 ### Compatibilité et installation
 
-La base publiée est **Glasshouse 0.130.0**, commit amont `1543769cfeb28c3ce0936dc6d20b24cd58c70255`. La variante a été vérifiée sur une C6; cela ne certifie pas les autres modèles, versions de webOS ou versions futures de Glasshouse. Aucune compatibilité Titan ou Lightkeeper n’est annoncée.
+La base publiée est **Glasshouse 0.130.0**, commit amont `1543769cfeb28c3ce0936dc6d20b24cd58c70255`. La variante a été vérifiée sur une C6; cela ne certifie pas les autres modèles, versions de webOS ou versions futures de Glasshouse. La [note C2](docs/C2.md) détaille la matrice webOS 22/24/25 et les ports HDMI configurables; **aucune C2 n’a été essayée avec ce fork**. Aucune compatibilité Titan ou Lightkeeper n’est annoncée.
 
 1. Essayez la [démo locale](#démo-locale--local-demo), sans télévision ni agent IA.
 2. Suivez le [guide manuel](docs/MANUAL_GUIDE.md) pour vérifier votre modèle, le root existant, Node sur la TV et votre accès de maintenance. Le Developer Mode seul ne suffit pas au remplacement de HOME.
@@ -45,7 +45,7 @@ Glasshouse Custom Home is a community customization of [Glasshouse](https://gith
 
 ### Home screen features
 
-- Favorite-app carousel, console row, **All apps** drawer and long-press OK tile reordering.
+- Favorite-app carousel, console row (ports chosen in `layout.devPorts`, every input by default), **All apps** drawer and long-press OK tile reordering.
 - A **Recommendations** accordion scoped to the selected app; no fabricated cards when a provider supplies none.
 - Compact settings with a recommendations toggle, Close button and **G** shortcut to Glasshouse.
 - Daily wallpapers, dark mode from 17:00 to 06:00, optional weather and an optional Photos launcher for an already installed Immich client.
@@ -54,7 +54,7 @@ The public demo and examples are sanitized: synthetic weather, recommendations d
 
 ### Compatibility and installation
 
-The published baseline is **Glasshouse 0.130.0**, upstream commit `1543769cfeb28c3ce0936dc6d20b24cd58c70255`. This variant was verified on a C6; other models, webOS versions and future Glasshouse releases are not certified. No Titan or Lightkeeper compatibility is claimed.
+The published baseline is **Glasshouse 0.130.0**, upstream commit `1543769cfeb28c3ce0936dc6d20b24cd58c70255`. This variant was verified on a C6; other models, webOS versions and future Glasshouse releases are not certified. The [C2 note](docs/C2.md) covers the webOS 22/24/25 matrix and the configurable HDMI ports; **no C2 has been tried with this fork**. No Titan or Lightkeeper compatibility is claimed.
 
 1. Start with the [local demo](#démo-locale--local-demo). No TV or AI agent is required.
 2. Follow the [manual guide](docs/MANUAL_GUIDE.md), currently in French, to check your model, existing root access, on-TV Node runtime and your own maintenance connection. Developer Mode alone does not provide the privileges required to replace HOME.

@@ -77,7 +77,7 @@ function harness(options) {
     sources: { channels: 0 }, order: { app: apps.map(function (a) { return a.id; }), dev: ['hdmi1', 'hdmi3'], ch: [] },
     photos: { appId: '', installed: false }
   }, { rows: ['app', 'dev', 'ch'], sort: { app: 'custom', dev: 'custom', ch: 'custom' },
-    hidden: { app: ['app1', 'app3', 'app5', 'app7'], dev: [], ch: [] }, channels: [] });
+    hidden: { app: ['app1', 'app3', 'app5', 'app7'], dev: [], ch: [] }, channels: [], devPorts: [1, 3] });
   function event(key) { return { keyCode: KEYS[key], preventDefault: function () {} }; }
   function advance(ms) {
     now += ms; Object.keys(timers).forEach(function (id) { if (timers[id] && timers[id].due <= now) { var fn = timers[id].fn; delete timers[id]; fn(); } });

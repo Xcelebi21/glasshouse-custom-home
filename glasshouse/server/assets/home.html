@@ -499,6 +499,8 @@ html.faded #stage{opacity:0}
 #recommendedToggle[aria-checked="true"] .switch-track:after{margin-left:21px}
 #recommendedToggle[aria-disabled="true"]{opacity:.6;cursor:wait}
 #homeSettingsHelp,#homeSettingsStatus{font-size:20px;line-height:1.4;color:#c3ccda;margin:16px 0 0}
+#homeSettingsUnavailable{font-size:20px;line-height:1.4;color:#e9ad55;margin:12px 0 0}
+#homeSettingsUnavailable[hidden]{display:none}
 #homeSettingsStatus:empty{display:none}
 #homeSettingsActions{display:-webkit-flex;display:flex;-webkit-align-items:center;align-items:center;margin-top:24px}
 #homeSettingsLaunch{width:50px;height:50px;margin-left:14px;padding:7px;border:1px solid rgba(255,255,255,.3);border-radius:16px;background:transparent;cursor:pointer;outline:none}
@@ -563,6 +565,7 @@ html.faded #stage{opacity:0}
       <h2 id="homeSettingsTitle" data-t="home.quickSettings.title">Paramètres</h2>
       <button type="button" id="recommendedToggle" role="switch" aria-checked="false" aria-describedby="homeSettingsHelp" tabindex="-1"><span data-t="home.quickSettings.recommended">Recommandations</span><span class="switch-track" aria-hidden="true"></span></button>
       <p id="homeSettingsHelp" data-t="home.quickSettings.help">Contenus proposés par vos apps. Les images viennent de leurs serveurs.</p>
+      <p id="homeSettingsUnavailable" role="note" hidden>Cette version de webOS ne fournit pas de recommandations.</p>
       <p id="homeSettingsStatus" role="status" aria-live="polite"></p>
       <div id="homeSettingsActions"><button type="button" id="homeSettingsClose" tabindex="-1" data-t="home.quickSettings.close">Fermer</button>
         <button type="button" id="homeSettingsLaunch" tabindex="-1" aria-label="Ouvrir Glasshouse" data-t-aria-label="home.quickSettings.openGlasshouse" title="Ouvrir Glasshouse" data-t-title="home.quickSettings.openGlasshouse"><img src="/assets/favicon.svg" alt=""></button></div>
@@ -761,7 +764,9 @@ html.faded #stage{opacity:0}
     if (kind === 'rec') return state.arranging ? out : recCards();
     (data.order[kind] || []).forEach(function (id) {
       var it = byId(kind, id);
-      if (kind === 'dev' && it && it.port !== 1 && it.port !== 3) return;
+      // Kept ports only where the owner chose some; [] keeps every input.
+      if (kind === 'dev' && it && layout && layout.devPorts && layout.devPorts.length &&
+          layout.devPorts.indexOf(it.port) === -1) return;
       if (kind === 'app' && data.photos && data.photos.appId === id && !(state.arranging && !state.quickArrange)) return;
       if (it && ((state.arranging && !state.quickArrange) || (!hidden(kind, id) && !inFolder(kind, id))) && !leftOut(kind, it)) out.push(it);
     });
@@ -985,10 +990,14 @@ html.faded #stage{opacity:0}
       var cls = 'tile dev' + (last ? ' last' : '') + (d.unused ? ' unused' : '') + (hidden('dev', d.id) ? ' hidden' : '');
       var path = d.via ? t('home.dev.through', 'HDMI {port}, through {via}', { port: d.port, via: d.via })
                        : t('home.dev.port', 'HDMI {port}', { port: d.port });
-      var name = d.port === 1 ? 'Nintendo Switch 2' : d.port === 3 ? 'Xbox Series X' : d.name;
-      var brand = d.port === 1 ? 'switch' : 'xbox';
+      // The console art belongs to a chosen console row (a non-empty port
+      // list), not to every input: a C2 with no port list shows the names its
+      // own HDMI-CEC devices report.
+      var consolePort = !!(layout.devPorts && layout.devPorts.length && layout.devPorts.indexOf(d.port) !== -1);
+      var name = consolePort ? (d.port === 1 ? 'Nintendo Switch 2' : d.port === 3 ? 'Xbox Series X' : d.name) : d.name;
+      var brand = consolePort ? (d.port === 1 ? 'switch' : 'xbox') : '';
       return '<div class="' + cls + '" data-c="' + i + '" role="button" aria-label="' + esc(name + ', ' + path + (hidden('dev', d.id) ? ' ' + t('home.hidden', 'Hidden') : '')) + '"><div class="face ' + brand + '">' +
-        '<span class="brand-name">' + esc(d.port === 1 ? 'Switch 2' : d.port === 3 ? 'Xbox' : d.name) + '</span></div><div class="nm">' + esc(name) + '</div>' +
+        '<span class="brand-name">' + esc(consolePort ? (d.port === 1 ? 'Switch 2' : 'Xbox') : d.name) + '</span></div><div class="nm">' + esc(name) + '</div>' +
         '<div class="path">' + esc(path) + '</div>' + hiddenLabel + '</div>';
     },
     ch: function (c, i) {
@@ -1654,6 +1663,9 @@ html.faded #stage{opacity:0}
     $('homeSettingsClose').className = homeSettings.open && homeSettings.index === 1 ? 'focus' : '';
     $('homeSettingsLaunch').className = homeSettings.open && homeSettings.index === 2 ? 'focus' : '';
     $('homeSettingsLaunch').setAttribute('aria-disabled', homeSettings.launching || homeSettings.busy ? 'true' : 'false');
+    // Only where the TV was asked and has no such call: an empty list from a
+    // TV that does is a provider with nothing to show, not a missing feature.
+    $('homeSettingsUnavailable').hidden = !(data && data.sources && data.sources.recommendations === 'unavailable');
   }
   function focusHomeSettings(index) {
     homeSettings.index = index;

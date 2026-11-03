@@ -124,16 +124,18 @@ var devices = [
   { id: 'hdmi3', port: 3, name: 'HDMI 3' },
   { id: 'hdmi4:fibe', port: 4, name: 'Fibe' }
 ];
-view.setup({ devices: devices, apps: [{ id: 'youtube', title: 'YouTube' }, { id: 'hidden-app', title: 'Other' }],
-  order: { dev: devices.map(function (d) { return d.id; }), app: ['youtube', 'hidden-app', 'lg-home'] } },
-  { hidden: { dev: [], app: ['hidden-app'] } });
+var catalogue = { devices: devices, apps: [{ id: 'youtube', title: 'YouTube' }, { id: 'hidden-app', title: 'Other' }],
+  order: { dev: devices.map(function (d) { return d.id; }), app: ['youtube', 'hidden-app', 'lg-home'] } };
+// The owner's console row keeps ports 1 and 3. The public build ships no
+// port list, so every input stays (checked below).
+view.setup(catalogue, { hidden: { dev: [], app: ['hidden-app'] }, devPorts: [1, 3] });
 assert.strictEqual(view.items('dev').map(function (d) { return d.id; }).join(','), 'hdmi1:switch-cec,hdmi3');
 assert.strictEqual(view.items('app').map(function (a) { return a.id; }).join(','), 'youtube,lg-home');
 assert.ok(/Nintendo Switch 2/.test(view.tiles.dev(devices[0], 0)));
 assert.ok(/Xbox Series X/.test(view.tiles.dev(devices[2], 1)));
 assert.strictEqual(devices[0].name, 'CEC Switch', 'display names do not change the native device or CEC identity');
 view.arrange(true);
-assert.strictEqual(view.items('dev').length, 2, 'Sonos and Bell never enter the Consoles section');
+assert.strictEqual(view.items('dev').length, 2, 'the port list keeps Sonos and Fibe out of the Consoles section');
 assert.strictEqual(view.items('app').length, 3, 'native arranging still reveals hidden apps');
 view.arrange(true, true);
 assert.strictEqual(view.items('app').length, 2, 'quick reordering keeps unrelated apps hidden');
@@ -142,6 +144,13 @@ view.arrange(false);
 assert.ok(/brand-name/.test(view.tiles.dev(devices[0], 0)), 'Switch has a redistributable text fallback');
 assert.ok(/brand-name/.test(view.tiles.dev(devices[2], 1)), 'Xbox has a redistributable text fallback');
 assert.ok(/HDMI 3/.test(view.tiles.dev({ port: 3, id: 'hdmi3', unused: true }, 1)), 'console port remains visible while off');
+// No port list is the shipped default: a C2 with four inputs shows all of
+// them, rather than the two this fork's owner uses.
+view.setup(catalogue, { hidden: { dev: [], app: ['hidden-app'] } });
+assert.strictEqual(view.items('dev').map(function (d) { return d.id; }).join(','),
+  'hdmi1:switch-cec,hdmi2:sonos,hdmi3,hdmi4:fibe', 'every input is kept until the owner chooses ports');
+assert.ok(!/Nintendo Switch 2/.test(view.tiles.dev(devices[0], 0)), 'no console label without a chosen port list');
+assert.ok(/CEC Switch/.test(view.tiles.dev(devices[0], 0)), 'the input keeps the name its device reports');
 var appIds = ['youtube.leanback.v4', 'cdp-30', 'ca.bellmedia.crave', 'netflix', 'amazon', 'tv.tou.ici.webos', 'com.webos.app.hdmi4'];
 appIds.forEach(function (id) {
   var tile = view.tiles.app({ id: id, title: 'Name <safe>' }, 0);

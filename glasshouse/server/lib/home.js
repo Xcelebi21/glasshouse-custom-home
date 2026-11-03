@@ -36,6 +36,7 @@ var recent = require('./home-recent');
 var recentApps = require('./home-recent-apps');
 var search = require('./home-search');
 var recommended = require('./home-recommended');
+var tvProfile = require('./tv-profile');
 
 // The separate app earlier builds installed: removed, and its settings undone.
 var HOME_APP = 'com.tvweb.home';
@@ -147,6 +148,8 @@ var liveState = null;
 var historyModule = null;
 var stateDir = '/var/lib/tvweb';
 var webosVersion = null;
+// The model as telemetry read it (config.device.model), '' when it did not.
+var modelName = '';
 var installFn = null;
 var procDir = '/proc';
 var execFn = execFile;
@@ -245,6 +248,17 @@ function stringList(v, max) {
   return out;
 }
 
+// HDMI port numbers 1 to 4, each once, lowest first; [] for everything else.
+function portList(v) {
+  var out = [];
+  if (!isArray(v)) return out;
+  v.forEach(function (n) {
+    n = Number(n);
+    if (n === Math.floor(n) && n >= 1 && n <= 4 && out.indexOf(n) === -1) out.push(n);
+  });
+  return out.sort(function (a, b) { return a - b; });
+}
+
 function defaults() {
   return {
     enabled: false,
@@ -285,6 +299,10 @@ function defaults() {
     // Inputs with nothing plugged in left out of the Inputs row, rather than
     // shown greyed out.
     hideUnused: false,
+    // HDMI ports the Inputs row keeps, 1 to 4; [] keeps every port. The
+    // public build ships every port, so a row called Consoles is the owner's
+    // choice of ports rather than this set's.
+    devPorts: [],
     // { text, accent } as #rrggbb, or null for the view's own colours.
     colours: null,
     photosAppId: '',
@@ -349,6 +367,7 @@ function normalise(raw) {
   d.hidden.rec = [];
   d.fade = raw.fade === true;
   d.hideUnused = raw.hideUnused === true;
+  d.devPorts = portList(raw.devPorts);
   d.colours = validColours(raw.colours);
   d.photosAppId = PHOTOS_APPS.indexOf(raw.photosAppId) !== -1 ? raw.photosAppId : '';
   if (typeof raw.hideLgHomeAtStart === 'boolean') d.hideLgHomeAtStart = raw.hideLgHomeAtStart;
@@ -480,6 +499,7 @@ function setLayout(body, cb) {
     recommended: typeof body.recommended === 'boolean' ? body.recommended : c.recommended,
     fade: typeof body.fade === 'boolean' ? body.fade : c.fade,
     hideUnused: typeof body.hideUnused === 'boolean' ? body.hideUnused : c.hideUnused,
+    devPorts: body.devPorts !== undefined ? body.devPorts : c.devPorts,
     // null puts the view's own colours back.
     colours: body.colours !== undefined ? body.colours : c.colours,
     photosAppId: body.photosAppId !== undefined ? body.photosAppId : c.photosAppId
@@ -506,7 +526,7 @@ function setLayout(body, cb) {
 function layoutOf(c) {
   return { rows: c.rows, order: c.order, sort: c.sort, hidden: c.hidden, folder: c.folder, channels: c.channels, hintSeen: c.hintSeen,
     searchHintSeen: c.searchHintSeen, picture: c.picture, search: c.search, recommended: c.recommended,
-    fade: c.fade, hideUnused: c.hideUnused, showClock: c.showClock, rowsBottom: c.rowsBottom, view: c.view,
+    fade: c.fade, hideUnused: c.hideUnused, devPorts: c.devPorts, showClock: c.showClock, rowsBottom: c.rowsBottom, view: c.view,
     showLastOn: c.showLastOn, showAppCount: c.showAppCount, showCec: c.showCec, colours: c.colours, photosAppId: c.photosAppId,
     // Not saved: { host, by } while the ad blocker blocks LG's search (lib/home-search).
     searchBlocked: search.blocked() };
@@ -543,13 +563,7 @@ function launchPoints(cb) {
       });
       sidebarApps(LG_SIDEBAR_APPS.slice(), out, done);
     });
-  }, function (apps) {
-    // shortcut: local Bell HDMI tile; reapply this fork after a Glasshouse upgrade.
-    if (!apps || readConfig().order.app.indexOf('com.webos.app.hdmi4') === -1) return cb(apps);
-    var icon = '';
-    apps.forEach(function (a) { if (a.id === 'com.bell.fibetv.production') icon = a.icon; });
-    cb(apps.concat([{ id: 'com.webos.app.hdmi4', title: 'Bell Fibe TV', icon: icon }]));
-  });
+  }, cb);
 }
 
 // Each of LG_SIDEBAR_APPS that this TV has, on the end of the list.
@@ -717,7 +731,10 @@ function build(c, apps, devs, chans, recs) {
     order: order,
     // recommended: false while the row is off, null when the TV gave no list.
     sources: { apps: !!apps, devices: !!devs, channels: chans ? chans.length : null,
-      recommended: c.recommended ? (recs ? recs.length : null) : false }
+      recommended: c.recommended ? (recs ? recs.length : null) : false,
+      // available, unavailable or unknown: whether the TV has the apps'
+      // recommendations call at all (lib/home-recommended).
+      recommendations: recommended.available() }
   };
 }
 
@@ -1074,18 +1091,26 @@ function change(action, cb) {
 
 function copy(o) { return JSON.parse(JSON.stringify(o)); }
 
+// The model and version this TV reports, and what they allow (lib/tv-profile).
+function profile() {
+  return tvProfile.detect({
+    model: modelName,
+    webosVersion: webosVersion,
+    allowExperimental: allowExperimentalFn() === true
+  });
+}
+
 function supported() {
-  var v = String(webosVersion || '');
-  if (/^9\./.test(v)) return { ok: true, webos: v };
-  // LG's Home is the same native app as on webOS 9; sam is nudged from the
-  // country's blocked list (lib/samrescan). Tried on a 65UQ801C0SB (7.6.0).
-  if (/^7\./.test(v)) return { ok: true, webos: v, experimental: true };
-  // LG's Home is a Flutter app there, under the same id and folder (#612).
-  // Tried on a G5 (webOS 10.3.1); webOS 11 is untried and needs the setting.
-  if (/^10\./.test(v) || (/^11\./.test(v) && allowExperimentalFn())) return { ok: true, webos: v, experimental: true };
+  var p = profile();
+  if (p.home.ok) {
+    var out = { ok: true, webos: p.webos };
+    // webOS 7, 10 and 11 are offered as experimental; 9 is supported.
+    if (p.home.tier === 'experimental') out.experimental = true;
+    return out;
+  }
   return {
-    ok: false, webos: v || null,
-    reason: msg('srv.home.untested', 'Glasshouse Home has been tried only on webOS 7, 9 and 10. This TV runs webOS {version}.', { version: v || '?' })
+    ok: false, webos: p.webos || null,
+    reason: msg('srv.home.untested', 'Glasshouse Home has been tried only on webOS 7, 9 and 10. This TV runs webOS {version}.', { version: p.webos || '?' })
   };
 }
 
@@ -1716,6 +1741,7 @@ function powerChanged(active) {
 
 function status(cb) {
   var sup = supported();
+  var p = profile();
   takeover.samType(function (type) {
     readSettings(['homeAutoLaunch'], function (s) {
       var hal = s && typeof s.homeAutoLaunch === 'string' ? s.homeAutoLaunch : '';
@@ -1725,6 +1751,14 @@ function status(cb) {
         // Both dashboards leave Home out where it is false, as for other features a TV lacks.
         available: sup.ok || c.enabled || c.restorePending,
         supported: sup,
+        // The set as it reports itself (lib/tv-profile): model, family, and the
+        // webOS name LG markets it by. Never a claim that it was tried.
+        profile: { model: p.model, family: p.family, webos: p.webos, marketing: p.marketing,
+          tier: p.home.tier },
+        // available, unavailable or unknown: whether the TV answered the apps'
+        // recommendations call (lib/home-recommended). Before webOS 10 it may
+        // not have it, and the view then says so instead of showing a blank row.
+        recommendationsAvailable: recommended.available(),
         enabled: c.enabled,
         restorePending: c.restorePending,
         // In LG's Home's place now; false while one of the ways back has LG's Home open.
@@ -1747,7 +1781,7 @@ function status(cb) {
 
 // LG's Home reads its layout from /mnt/lg/cmn_data/manifest on webOS 9 only;
 // webOS 10 and 11 have no writable layout path (TV-RESEARCH).
-function startLayoutAvailable() { return /^9\./.test(String(webosVersion || '')); }
+function startLayoutAvailable() { return profile().hideLgHomeAtStart; }
 
 function init(opts) {
   opts = opts || {};
@@ -1776,9 +1810,10 @@ function init(opts) {
     exec: opts.exec,
     kill: opts.kill,
     blankAtStart: function () { return startLayoutAvailable() && readConfig().hideLgHomeAtStart === true; },
-    blockFirst: function () { return /^1[01]\./.test(String(webosVersion || '')); }
+    blockFirst: function () { return profile().blockFirst; }
   });
   webosVersion = opts.webosVersion || null;
+  modelName = typeof opts.model === 'string' ? opts.model : '';
   installFn = opts.installApp || null;
   procDir = opts.procDir || '/proc';
   slowOpenMs = typeof opts.slowOpenMs === 'number' ? opts.slowOpenMs : FIRST_BEAT_GRACE_MS;

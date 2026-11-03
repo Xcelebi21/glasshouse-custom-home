@@ -52,11 +52,13 @@ annoncer une installation qu’il n’a pas vérifiée.
 | Ordinateur avec Node.js 22+ | Démo hors ligne et tests. Aucun accès root, compte LG ou TV nécessaire. |
 | LG avec Developer Mode uniquement | Ce mode permet le développement/déploiement d’apps dans son environnement; il n’accorde pas les droits root requis par ce serveur, ses hooks et le remplacement de HOME. Ce guide s’arrête avant le déploiement système. |
 | TV déjà rootée, webOS 9 | Home accepté par le code. Le moteur, les entrées et les commandes doivent encore être vérifiés sur le modèle réel. |
+| TV déjà rootée, C2 (2022) | Selon la version réellement rapportée : webOS 22 (7.x) et 25 (10.x) expérimentales, webOS 24 (9.x) acceptée. Voir [la note C2](C2.md). Aucun essai matériel de ce fork sur C2 n’est revendiqué. |
 | TV déjà rootée, webOS 7 ou 10 | Home proposé avec statut expérimental dans la base 0.130. |
 | TV déjà rootée, webOS 11 | Home proposé seulement avec `allowExperimentalHome: true`. Le profil adapté a été utilisé sur une C6; cela ne certifie pas tous les modèles webOS 11. |
 | webOS 5 / Node système 8, notamment UN7300 | Le serveur upstream peut avoir des compatibilités distinctes, mais **Home public est refusé par cette version**. Le bundle de personnalisation exige `fs.rmSync` (Node 14.14+). La variante Lightkeeper observée sur ce matériel n’est pas livrée ici. |
 
-Les règles effectives de Home sont dans [`supported()`](../glasshouse/server/lib/home.js),
+Les règles effectives de Home sont dans [`supported()`](../glasshouse/server/lib/home.js)
+et le profil de modèle dans [`lib/tv-profile.js`](../glasshouse/server/lib/tv-profile.js),
 et les prérequis de persistance dans [son guide](../personalisation/README.md).
 Ne déduire la version webOS ni du nom commercial ni de la version du firmware.
 Ne pas modifier le contrôle de compatibilité pour faire apparaître un bouton.
@@ -71,22 +73,24 @@ configuration effective avant d’adapter les commandes.
 | Carrousel, verre au pointeur, focus clavier, mouvement réduit | Inclus. Démo à données fictives, canevas 1920×1080 redimensionné. | Adaptation C6 observée; effet aussi porté séparément à Lightkeeper. Performance prolongée et pointeur physique doivent être validés sur chaque cible. |
 | Tuiles et légendes | Apps 280×157,5; consoles/Photos 224×126. Noms sous les tuiles masqués, noms accessibles conservés, titre Photos visible. | Apparence commune recherchée; les sources Lightkeeper ne sont pas dans ce dépôt. |
 | Logos d’apps | Icônes natives disponibles sur la TV, sinon noms typographiques dans la face. Neuf logos privés ne sont pas redistribués. | Les écrans privés peuvent donc différer visuellement. Une fidélité pixel pour pixel n’est pas promise. |
-| HDMI | Profil écrit dans le code : ports 1 et 3 dans Consoles; port 4 présenté comme Bell Fibe si `order.app` le sélectionne; port 2 filtré hors de cette rangée. | Ne représente pas automatiquement votre câblage. La TV avec Firestick seul utilise un port Lightkeeper séparé et ne doit recevoir aucune console inventée. Voir l’adaptation HDMI dans le guide. |
+| HDMI | Liste de ports réglable (`layout.devPorts`); liste vide par défaut, donc toutes les entrées restent visibles. Aucune tuile d'app injectée pour un port précis. | Ne représente pas automatiquement votre câblage. La TV avec Firestick seul utilise un port Lightkeeper séparé et ne doit recevoir aucune console inventée. Voir l’adaptation HDMI dans le guide. |
 | Photos / Immich | Fleur officielle transparente. `photosAppId` vide par défaut, puis identifiant d’une app réellement installée. Glasshouse ne fournit pas le client, le compte ou le serveur photo. | Lancement confirmé dans les adaptations privées C6 et UN7300, avec mécanismes distincts; cela ne rend pas Lightkeeper disponible dans ce paquet. |
 | Toutes les apps | Catalogue de points de lancement Glasshouse, hors favoris/masquage du carrousel; ce n’est pas une liste exhaustive de tous les services système. | Fonctionnel dans le parcours Glasshouse testé. Sur le port Lightkeeper webOS 5, le catalogue de son contexte app était inaccessible; aucun contournement n’est fourni ici. |
 | Paramètres et G | Engrenage discret, toggle natif Recommandations, fermeture et lancement de `com.tvweb.dashboard` si cette app est installée. | Lancement natif et résultat visuel confirmés sur C6; aucun réglage privé copié dans le dépôt. |
-| Recommandations | Accordéon par identifiant d’app exact, replié par défaut, sans repli vers un autre fournisseur. Espace réservé pour stabiliser le dock; aucune carte visible si l’app n’en fournit pas. | Catalogue disponible sur la C6 testée. Ce ne sont ni des reprises ni des résultats personnalisés garantis; la présence de Plex ou d’une autre app ne prouve pas qu’elle publie des cartes. |
+| Recommandations | Accordéon par identifiant d’app exact, replié par défaut, sans repli vers un autre fournisseur. Espace réservé pour stabiliser le dock; aucune carte visible si l’app n’en fournit pas. L’absence de l’appel TV est détectée à l’exécution et signalée dans les paramètres. | Catalogue disponible sur la C6 testée. Ce ne sont ni des reprises ni des résultats personnalisés garantis; la présence de Plex ou d’une autre app ne prouve pas qu’elle publie des cartes. Sur une C2 restée en webOS 22/24, l’appel peut manquer. |
 | News → Plex | Support natif `haystack` si la TV webOS 11 expose cette entrée et si Plex est installé. Aucun mapping préconfiguré. | Appui physique vérifié sur C6. Aucun équivalent News établi sur l’UN7300; ne pas copier un code de touche entre modèles. |
 | Fonds et météo | Cinq paysages synthétiques; rotation quotidienne et nuit 17 h–6 h. Météo fictive en démo, réelle désactivée par défaut. | Heure, fuseau, ville et coordonnées appartiennent à chaque utilisateur; les réglages privés ne sont pas fournis. |
 | Démarrage / HOME | Le serveur et le gardien ont leurs hooks. Home doit ensuite être activé explicitement; retour vers LG et restauration séparés. | Un réveil, un démarrage à froid et une mise à jour sont des essais distincts. L’appui News qui allume la TV peut encore suivre LG avant la réapplication du mapping. |
 
-Les différences de profil sont visibles dans [`items()` / `TILE.dev`](../glasshouse/server/assets/home.html)
-et [`launchPoints()`](../glasshouse/server/lib/home.js). Modifier seulement un exemple
-JSON ne change pas ces choix de présentation. Le guide indique les points à
+Les différences de profil sont visibles dans [`items()` / `TILE.dev`](../glasshouse/server/assets/home.html),
+[`launchPoints()`](../glasshouse/server/lib/home.js) et le profil de modèle
+[`lib/tv-profile.js`](../glasshouse/server/lib/tv-profile.js). Modifier seulement un
+exemple JSON ne change pas ces choix de présentation. Le guide indique les points à
 adapter et les tests à relancer avant tout déploiement.
-La tuile Applications Bell peut cibler l’app native vérifiée indépendamment de la
-boîte Bell Fibe sur HDMI. Aucun mapping News/Plex ni client Photos n’est configuré
-pour une autre TV par l’exemple. Aucun PIN personnalisé n’est inclus.
+La personnalisation ne cible plus une app ou une boîte Bell précise : aucune tuile
+HDMI n’est injectée dans la rangée Applications. Aucun mapping News/Plex ni client
+Photos n’est configuré pour une autre TV par l’exemple. Aucun PIN personnalisé
+n’est inclus.
 
 ## Installation, accès de secours et restauration
 

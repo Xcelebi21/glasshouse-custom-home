@@ -28,11 +28,19 @@ var MAX_TEXT = 200;
 var IMAGE_RE = /^https?:\/\/[^\s"'<>\\]+$/i;
 
 var lunaFn = null;
+// unknown until read() answers; unavailable where the TV has no such call, or
+// refused it. LG's Home uses the call from webOS 10 on, and a C2 on webOS 9.2
+// or 7.x may not have it at all.
+var availability = 'unknown';
 
 function init(opts) {
   opts = opts || {};
   lunaFn = opts.luna || null;
+  availability = 'unknown';
 }
+
+// available, unavailable or unknown: what the last read found.
+function available() { return availability; }
 
 function text(v) {
   return typeof v === 'string' ? v.replace(/\s+/g, ' ').trim().slice(0, MAX_TEXT) : '';
@@ -59,7 +67,11 @@ function cards(cb) {
 function read(cb) {
   if (!lunaFn) return cb(null);
   lunaFn(SERVICE, {}, function (r) {
-    if (!r || r.returnValue === false || Object.prototype.toString.call(r.allContents) !== '[object Array]') return cb(null);
+    if (!r || r.returnValue === false || Object.prototype.toString.call(r.allContents) !== '[object Array]') {
+      availability = 'unavailable';
+      return cb(null);
+    }
+    availability = 'available';
     var out = [], seen = {}, count = {};
     r.allContents.forEach(function (lp) {
       var contents = lp && Object.prototype.toString.call(lp.contents) === '[object Array]' ? lp.contents : [];
@@ -97,6 +109,7 @@ function open(id, cb) {
 
 module.exports = {
   init: init,
+  available: available,
   cards: cards,
   open: open
 };

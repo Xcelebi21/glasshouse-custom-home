@@ -7,10 +7,10 @@ Lightkeeper utilise un mécanisme distinct et n'est pas couverte ici.
 
 Les quatre patches portent sur `assets/home.html`, `lib/home.js`,
 `lib/routes.js` et `lib/remotekeys.js` (touche News sur webOS 11).
-Cinq ressources sont ajoutées : `lib/home-weather.js`, le
-fond nocturne et les trois fichiers du logo officiel Immich (SVG intact, licence
-AGPL-3.0 complète et notice). Les logos propriétaires personnalisés ne sont pas
-redistribués. Le rendu public
+Six ressources sont ajoutées : `lib/home-weather.js`, `lib/tv-profile.js`
+(profil C2/C6 et règles webOS), le fond nocturne et les trois fichiers du logo
+officiel Immich (SVG intact, licence AGPL-3.0 complète et notice). Les logos
+propriétaires personnalisés ne sont pas redistribués. Le rendu public
 utilise les alternatives prévues dans l'interface; l'ajout privé de logos dont
 vous avez les droits reste séparé de ce bundle.
 
@@ -27,7 +27,7 @@ node personalisation/test-guard.js
 
 `generate.js` vérifie les empreintes des quatre sources MIT conservées dans
 `base/`, calcule des patches sans horodatage avec `difflib` de Python (même
-algorithme sur macOS et Linux), copie uniquement les cinq ressources
+algorithme sur macOS et Linux), copie uniquement les six ressources
 autorisées et écrit leurs SHA-256 dans `manifest.json`. Il n'accède à aucun
 appareil et ne lit aucune configuration personnelle. Relancez-le après une
 modification des sources publiques; `--check` échoue si le bundle est périmé.

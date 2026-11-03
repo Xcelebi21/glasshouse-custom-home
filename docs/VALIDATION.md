@@ -34,12 +34,15 @@ badge vert ne le remplacent.
 
 Les contrôles de l’interface couvrent notamment :
 
-- Bell vers une app native, Photos et son état non configuré, Toutes les apps,
+- lancement d’une app native, Photos et son état non configuré, Toutes les apps,
   réorganisation, focus/Retour et mouvement réduit;
+- profil C2/C6 et règles webOS (`test-home-c2.js`), ports HDMI configurables
+  (`layout.devPorts`) et absence de tuile Bell injectée;
 - Paramètres au pointeur et à la télécommande, confinement du focus, appui OK
 maintenu, absence de lancement derrière le modal, fermeture et retour à l’engrenage;
 - écriture limitée à `recommended`, réponse tardive antérieure à une sauvegarde,
-  erreur de sauvegarde et relecture de l’état, sans confirmation optimiste;
+  erreur de sauvegarde et relecture de l’état, sans confirmation optimiste, et
+  note « recommandations indisponibles » quand la TV n’expose pas l’appel;
 - accordéon replié sans chargement d’affiche, attribution à l’app exacte, navigation
   horizontale et suppression des cartes d’une réponse YouTube tardive après passage
   à Plex, Bell, ICI TOU.TV ou Crave;

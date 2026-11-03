@@ -87,11 +87,14 @@ abonnements, sessions et données ne sont pas inclus. L'accueil LG reste accessi
 Pour lancer Bell comme une app, choisissez son identifiant réellement installé
 (le profil accepte `com.bell.fibetv.production`), pas l’entrée HDMI de la boîte.
 L’existence de cet ID sur une autre TV ne prouve pas sa présence sur la vôtre.
-Le profil visuel C6 associe Switch 2 à HDMI 1, Xbox Series X à HDMI 3 et Bell Fibe à
-HDMI 4; HDMI 2 n'est pas affiché parmi les consoles. Ce sont des choix de ce profil,
-pas une détection universelle du matériel. Pour d'autres ports, adapter `items` et
-`TILE.dev` dans `glasshouse/server/assets/home.html` et la tuile Bell dans
-`glasshouse/server/lib/home.js`, puis régénérer le bundle et exécuter les tests.
+La rangée Consoles suit `layout.devPorts` dans `home.json` : une liste vide, valeur
+par défaut, garde toutes les entrées; `[1, 3]` ne garde que ces ports. Aucune tuile
+HDMI n’est injectée dans la rangée Applications. Les libellés Switch 2 et Xbox
+restent des choix visuels du profil pour les ports 1 et 3, et seulement quand une
+liste de ports est définie; sans liste, chaque entrée garde le nom que son appareil
+HDMI-CEC rapporte. Pour un autre matériel, adaptez `TILE.dev` dans
+`glasshouse/server/assets/home.html`, puis régénérez le bundle et exécutez les
+tests. La configuration HDMI n’est pas une détection universelle du matériel.
 
 Les quatre fonds diurnes sont téléversés dans les emplacements de Glasshouse Home :
 
