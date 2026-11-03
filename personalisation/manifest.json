@@ -13,7 +13,7 @@
       "file": "lib/home.js",
       "patch": "patches/lib-home.js.patch",
       "baseSha256": "1c629931aed49bba02aa13efd60a0d7b832f5e1bf4674138790df7da58503890",
-      "customSha256": "73d7c816d4f87c97b08315604f55d37ff0f4a8064c0f0c9ce5e0e76ebcda8939"
+      "customSha256": "5f6f6d0fb91272b73098c1e3ada1e9cb3431f9d409a49a7a0aa78d77a6d69949"
     },
     {
       "file": "lib/routes.js",

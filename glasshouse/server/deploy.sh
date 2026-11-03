@@ -132,7 +132,10 @@ cp "$DIR/50-tvweb.sh" "$WORK/b/50-tvweb.sh"
 # this can only be worked out here.
 if commit=$(git -C "$DIR" rev-parse --short HEAD 2>/dev/null); then
   dirty=false
-  [ -n "$(git -C "$DIR" status --porcelain -- . 2>/dev/null)" ] && dirty=true
+  # A Windows checkout deployed from WSL has CRLF in the working tree and LF in
+  # the blobs, so the plain comparison calls every file modified. autocrlf=true
+  # compares the text git would commit, which is what actually reaches the TV.
+  [ -n "$(git -C "$DIR" -c core.autocrlf=true status --porcelain -- . 2>/dev/null)" ] && dirty=true
   version=$(sed -n "s/^var TVWEB_VERSION = '\([^']*\)';.*/\1/p" "$DIR/tvweb.js")
   printf '{"version":"%s","commit":"%s","dirty":%s}\n' "$version" "$commit" "$dirty" > "$WORK/b/build.json"
 fi
