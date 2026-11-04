@@ -20,13 +20,13 @@ Glasshouse Custom Home is a community customization of [Glasshouse](https://gith
 - An **All apps** library that includes apps outside the carousel, shows an app count, sorts by TV order or A–Z from the remote or pointer, and closes with its button, remote Back or a click outside. Up from the first app row moves to the sort/close toolbar.
 - A **Recommendations** accordion scoped to the selected app; it does not invent cards when a provider publishes none.
 - Compact settings with a recommendations toggle and a shortcut to the native Glasshouse app.
-- Daily wallpapers, dark mode from 17:00 to 06:00 and optional weather.
+- Daily wallpapers, dark mode from 17:00 to 06:00 and optional weather, shown in Fahrenheit as an icon, temperature and city.
 
 The UI and project documentation are English-only. Upstream Spanish, German, Russian, Hungarian and Italian language packs and the language picker are retained. The public demo uses synthetic weather and launches; it does not connect to a TV or external service. Moonlight and photo clients are not installed by this project.
 
 ## Compatibility and safe installation
 
-The source baseline is **Glasshouse 0.130.0**, upstream commit `1543769cfeb28c3ce0936dc6d20b24cd58c70255`. One **OLED55C2PUA** running webOS `9.2.2-61 (ombre-okapi)`, firmware `23.25.55`, was hardware-verified: the profile identified family `c2` and tier `supported`, the server returned HTTP 200 on loopback `127.0.0.1:8080` with token authentication, and the developer Home tile launched. This verifies one C2 only; other sizes, firmware versions and regions remain uncertified. Home takeover, startup hiding and boot persistence were not enabled. See the [C2 compatibility note](docs/C2.md).
+The source baseline is **Glasshouse 0.130.0**, upstream commit `1543769cfeb28c3ce0936dc6d20b24cd58c70255`. One **OLED55C2PUA** running webOS `9.2.2-61 (ombre-okapi)`, firmware `23.25.55`, was hardware-verified: the profile identified family `c2` and tier `supported`, the server returned HTTP 200 on loopback `127.0.0.1:8080` with token authentication, and the developer Home tile launched. The Glasshouse Home takeover was then mounted in LG Home's place and the boot hook `/var/lib/webosbrew/init.d/50-tvweb` was installed; running that hook re-mounted the takeover and started the server. Hiding LG Home at startup remains off, so a failed start still leaves LG Home reachable. This verifies one C2 only; other sizes, firmware versions and regions remain uncertified. See the [C2 compatibility note](docs/C2.md).
 
 1. Try the [local demo](#local-demo); it requires no TV or AI assistant.
 2. Follow the [manual guide](docs/MANUAL_GUIDE.md) to check the exact model, existing root access, Node runtime and maintenance path. Developer Mode alone does not provide the privileges needed for system deployment.
@@ -81,7 +81,7 @@ See [Contributing](CONTRIBUTING.md). Keep real settings, personal photos, backup
 - Glasshouse: [upstream MIT license](glasshouse/LICENSE), Rory Gallagher; notices retained.
 - Fonts: Outfit, Manrope and Inter, SIL OFL 1.1, notices included. Inter is the Apple TV-style face; SF Pro cannot be redistributed.
 - Immich logo: separate AGPL-3.0 asset with [license and attribution](glasshouse/server/assets/third-party/immich/NOTICE.txt). It is used by the legacy Photos shortcut only.
-- Weather: Open-Meteo, with attribution in the widget.
+- Weather: Open-Meteo, with attribution in the dashboard's Home settings.
 - Service marks, app icons and images in screenshots belong to their respective owners; no affiliation or trademark license is implied.
 
 See [detailed provenance](docs/PROVENANCE.md). No blanket new license applies to the wallpapers or the repository.
