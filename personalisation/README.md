@@ -1,22 +1,12 @@
-# Personnalisation persistante de Glasshouse
+# Persistent Glasshouse customization
 
-Ce bundle reproduit les changements publics de l'accueil C6 sur Glasshouse
-**0.130.0**, base `1543769cfeb28c3ce0936dc6d20b24cd58c70255`. Il garde les
-personnalisations hors du répertoire remplacé par les mises à jour. La variante
-Lightkeeper utilise un mécanisme distinct et n'est pas couverte ici.
+This bundle reproduces the public C6 Home changes on Glasshouse **0.130.0**, based on commit `1543769cfeb28c3ce0936dc6d20b24cd58c70255`. It keeps customizations outside the directory replaced by updates. The Lightkeeper variant uses a separate mechanism and is not covered here.
 
-Les quatre patches portent sur `assets/home.html`, `lib/home.js`,
-`lib/routes.js` et `lib/remotekeys.js` (touche News sur webOS 11).
-Six ressources sont ajoutées : `lib/home-weather.js`, `lib/tv-profile.js`
-(profil C2/C6 et règles webOS), le fond nocturne et les trois fichiers du logo
-officiel Immich (SVG intact, licence AGPL-3.0 complète et notice). Les logos
-propriétaires personnalisés ne sont pas redistribués. Le rendu public
-utilise les alternatives prévues dans l'interface; l'ajout privé de logos dont
-vous avez les droits reste séparé de ce bundle.
+Four patches modify `assets/home.html`, `lib/home.js`, `lib/routes.js` and `lib/remotekeys.js` (News key support on webOS 11). Six assets are added: `lib/home-weather.js`, `lib/tv-profile.js` (C2/C6 profile and webOS rules), the night wallpaper, and the three official Immich-logo files (unchanged SVG, complete AGPL-3.0 license and notice). Proprietary custom app logos are not redistributed. The public UI uses its built-in alternatives; privately adding logos you have redistribution rights for is separate from this bundle.
 
-## Génération et tests sur ordinateur
+## Generate and test on a computer
 
-Depuis la racine du dépôt, avec Node.js 22, Python 3 et la commande `patch` :
+From the repository root, with Node.js 22, Python 3 and the `patch` command:
 
 ```sh
 node personalisation/generate.js
@@ -25,34 +15,17 @@ node personalisation/test-apply.js
 node personalisation/test-guard.js
 ```
 
-`generate.js` vérifie les empreintes des quatre sources MIT conservées dans
-`base/`, calcule des patches sans horodatage avec `difflib` de Python (même
-algorithme sur macOS et Linux), copie uniquement les six ressources
-autorisées et écrit leurs SHA-256 dans `manifest.json`. Il n'accède à aucun
-appareil et ne lit aucune configuration personnelle. Relancez-le après une
-modification des sources publiques; `--check` échoue si le bundle est périmé.
+`generate.js` checks the hashes of the four MIT source files kept in `base/`, creates timestamp-free patches using Python's `difflib` (the same algorithm on macOS and Linux), copies only the six allow-listed assets and writes their SHA-256 hashes to `manifest.json`. It does not access a device or read personal configuration. Run it after changing public sources; `--check` fails if the bundle is stale.
 
-Les tests construisent leurs propres dossiers temporaires. Ils couvrent les
-conflits, l'intégrité des ressources, les chemins et symlinks, les écritures
-concurrentes, le retour arrière en cas d'échec, la conservation des réglages et
-les relances du service. Ils ne valident pas une nouvelle version sur une télé.
+The tests create their own temporary directories. They cover conflicts, asset integrity, paths and symlinks, concurrent writes, rollback on failure, preservation of settings and service restarts. They do not validate a new release on a TV. On Windows, use a checkout with LF line endings (`core.autocrlf=false`) for generation and `--check`; a CRLF checkout can fail the pinned source hashes.
 
-## Installation manuelle facultative
+## Optional manual installation
 
-Cette procédure modifie une télé **déjà rootée** disposant de Glasshouse 0.130.0,
-de Homebrew Channel, de `patch`, de `start-stop-daemon` et d'un Node.js système
-compatible avec `fs.rmSync` (14.14 minimum). Elle ne convient pas aux anciens
-modèles limités à Node.js 8. Elle ne réalise ni root, ni installation de firmware,
-ni modification des protections de confidentialité. Préparez une sauvegarde
-privée de votre installation et vérifiez la compatibilité avant de l'exécuter.
+This procedure changes a **rooted TV that already has** Glasshouse 0.130.0, Homebrew Channel, `patch`, `start-stop-daemon` and a system Node.js compatible with `fs.rmSync` (14.14 minimum). It does not suit older models limited to Node.js 8. It does not root the TV, install firmware or change privacy protections. Review the plan, obtain explicit approval for adding a startup hook, prepare a private backup and verify compatibility before running it. This procedure is different from the conservative source deployment described in the [manual guide](../docs/MANUAL_GUIDE.md).
 
-Les réglages, l'ordre et les fonds existants restent dans `/var/lib/tvweb`.
-Configurez les tuiles et la météo selon la documentation du dépôt; ce bundle ne
-remplace pas `home.json` ou `config.json`. Aucun identifiant ou état de votre
-télé ne doit être ajouté à ce dépôt.
+Settings, row order and wallpapers remain under `/var/lib/tvweb`. Configure tiles and weather according to the project docs; this bundle does not replace `home.json` or `config.json`. Do not add a TV's identity or state to this repository.
 
-Après génération et tests, créez une archive contenant uniquement les fichiers
-nécessaires. Remplacez `tv.example.invalid` par le nom de votre télé :
+After generation and local tests, create an archive containing only the required files. Replace the example host locally:
 
 ```sh
 TV_HOST=tv.example.invalid
@@ -61,15 +34,13 @@ tar -czf /tmp/glasshouse-personalisation.tgz -C personalisation \
 scp /tmp/glasshouse-personalisation.tgz "root@$TV_HOST:/tmp/glasshouse-personalisation.tgz"
 ```
 
-Ouvrez une session SSH sur cette télé, puis exécutez les commandes ci-dessous.
-Elles refusent d'écraser un bundle ou un hook déjà présents. Ne contournez pas ce
-refus : l'ancienne personnalisation peut contenir des changements privés.
+Open an SSH session to the TV, then run the following commands only after approval. They refuse to overwrite an existing bundle or hook. Do not bypass that refusal; an existing customization may include private changes.
 
 ```sh
 ssh "root@$TV_HOST"
 ```
 
-Sur la télé :
+On the TV:
 
 ```sh
 set -eu
@@ -90,65 +61,36 @@ chmod 755 /var/lib/webosbrew/init.d/49-glasshouse-personalisation
 cat /var/lib/glasshouse-personalisation/status.json
 ```
 
-Le hook applique le bundle au démarrage, avant le hook officiel `50-tvweb`, puis
-surveille les fichiers toutes les dix secondes. Il attend deux observations
-stables après une mise à jour et relance Glasshouse une seule fois s'il était
-déjà actif. Il ne démarre pas un service volontairement arrêté.
-L’installation du hook et une réapplication peuvent donc interrompre Home :
-prévoir une fenêtre acceptée avant de l’exécuter pendant un visionnement.
+The hook applies the bundle at boot, before the official `50-tvweb` hook, then checks files every ten seconds. It waits for two stable observations after an update and restarts Glasshouse once if it was already running. It does not start a service that was deliberately stopped. Installing the hook or reapplying a patch may interrupt Home; schedule an approved maintenance window before running it during viewing.
 
-## Diagnostic et limites
+## Status and limitations
 
-- `current` : fichiers personnalisés présents.
-- `applied` : application terminée; consulter aussi le champ `restart`.
-- `busy` : installation ou autre application en cours.
-- `blocked` : conflit ou contrôle échoué; lire `message` et adapter le bundle.
-- `waiting` : Glasshouse absent; aucune réinstallation automatique.
-- `restart: failed` : fichiers appliqués mais relance du service échouée.
+- `current`: customized files are present.
+- `applied`: application completed; also check the `restart` field.
+- `busy`: installation or another apply operation is in progress.
+- `blocked`: a conflict or check failed; read `message` and adapt the bundle.
+- `waiting`: Glasshouse is absent; it is not installed automatically.
+- `restart: failed`: files were applied, but restarting the service failed.
 
-Les changements upstream hors des patches sont conservés. Un contexte ambigu,
-une ressource existante différente ou un fichier incompatible bloque
-l'application avant remplacement. Les deux dernières sauvegardes techniques
-restent dans `backups/latest` et `backups/previous` **sur la télé**. Gardez-les
-privées. N'envoyez pas non plus `status.json`, les verrous ou les journaux au dépôt.
+Upstream changes outside the patches are preserved. Ambiguous context, an existing different asset or an incompatible file blocks the apply before replacement. The two most recent technical backups remain under `backups/latest` and `backups/previous` **on the TV**. Keep them private. Do not send `status.json`, lock files or logs to the repository.
 
-Cette méthode ne garantit pas la compatibilité de toutes les futures versions,
-d'une refonte de Glasshouse, d'une désinstallation, d'une remise à zéro ou d'une
-mise à jour du firmware. Après une mise à jour, vérifiez l'état, le rendu et les
-actions de la télécommande. Le changement de version reste un test distinct de
-l'application locale des patches.
+This method cannot guarantee compatibility with every future version, a Glasshouse redesign, uninstall, factory reset or firmware update. After an update, check status, rendering and remote actions. Changing versions is a separate test from applying patches locally.
 
-En cas de menu revenu au rendu amont, préserver d’abord l’installation actuelle
-et `/var/lib/tvweb/.previous` s’il existe, avant une autre mise à jour. Cette copie
-appartient à l’updater en place, n’est pas créée par un premier `deploy.sh` et n’est
-pas garantie pour une installation IPK. Elle est remplacée à la prochaine mise
-à jour. Les préférences peuvent survivre alors que les fichiers d’interface sont
-remplacés; une sauvegarde de code n’autorise pas l’écrasement des réglages récents.
+If the menu returns to upstream rendering, first preserve the current installation and `/var/lib/tvweb/.previous` if it exists, before another update. That copy belongs to the updater in place, is not created by a first `deploy.sh`, and is not guaranteed for an IPK installation. It is replaced at the next update. Preferences may survive even when UI files are replaced; a code backup does not authorize overwriting recent settings.
 
-Un bundle bloqué doit être adapté à la version réellement installée. Comparer les
-patches, les assets et les champs personnalisés normalisés par cette version,
-puis tester le résultat localement; ne pas installer les bases de référence ni
-rétrograder le serveur. Après application, contrôler les hashes sur disque **et**
-la page HTTP servie. Le cache mémoire des assets peut nécessiter une relance du
-seul service Glasshouse pendant une fenêtre approuvée, suivie d’un rafraîchissement
-de Home. Les mises à jour LG/HBC et les protections ne sont pas modifiées par ce
-bundle. Aucun gardien PIN n’est inclus.
+A blocked bundle must be adapted to the actually installed version. Compare patches, assets and the fields normalized by that version, then test locally; do not install the reference base or downgrade the server. After applying, check hashes on disk **and** the page served over HTTP. The in-memory asset cache may require restarting only the Glasshouse service during an approved maintenance window, followed by a Home refresh. This bundle does not change LG/Homebrew updates or security protections. It includes no PIN guard.
 
-Pour arrêter l'automatisme sans restaurer d'anciens fichiers, sur la télé :
+To stop automation without restoring older files, on the TV:
 
 ```sh
 chmod -x /var/lib/webosbrew/init.d/49-glasshouse-personalisation
 start-stop-daemon -K -q -p /var/run/glasshouse-personalisation.pid
 ```
 
-Cela conserve l'accueil et les réglages actuels. Pour réactiver, rendez le hook
-exécutable puis lancez-le. Pour réessayer après une adaptation compatible :
+This leaves the current Home and settings in place. To re-enable it, make the hook executable and run it. To retry after a compatible adaptation:
 
 ```sh
 /usr/bin/node /var/lib/glasshouse-personalisation/guard.js --once
 ```
 
-La notice MIT des sources upstream est conservée dans [base/LICENSE](base/LICENSE).
-Le logo Immich conserve sa licence AGPL-3.0 séparée sous
-`files/assets/third-party/immich/`; conserver ensemble le SVG, la licence et la
-notice. Aucun logo n'est présenté comme une affiliation avec Immich ou FUTO.
+The upstream MIT notice remains in [base/LICENSE](base/LICENSE). The Immich logo retains its separate AGPL-3.0 license under `files/assets/third-party/immich/`; keep the SVG, license and notice together. No logo implies affiliation with Immich or FUTO.

@@ -45,17 +45,19 @@ function call(route, body, headers) {
     assert.ok(home.headers['content-security-policy'].includes("connect-src 'self'"));
     const weather = (await call('/api/home/weather')).body;
     assert.strictEqual(weather.demo, true);
-    assert.strictEqual(weather.label, 'Ville de démonstration');
+    assert.strictEqual(weather.label, 'Demo City');
     const catalogue = (await call('/api/home/catalogue')).body;
     assert.deepStrictEqual(catalogue.order.app.filter(id => !catalogue.layout.hidden.app.includes(id)),
       ['youtube.leanback.v4', 'netflix', 'cdp-30', 'ca.bellmedia.crave', 'amazon', 'tv.tou.ici.webos', 'com.bell.fibetv.production', 'lg-home']);
-    assert.deepStrictEqual(catalogue.layout.hidden.app, ['org.example.demo.music', 'org.example.demo.browser', 'org.example.demo.games', 'com.tvweb.dashboard']);
+    assert.deepStrictEqual(catalogue.layout.hidden.app, ['org.example.demo.music', 'org.example.demo.browser', 'org.example.demo.games', 'com.tvweb.dashboard', 'com.limelight.webos']);
     assert.ok(catalogue.layout.hidden.app.every(id => catalogue.apps.some(app => app.id === id)), 'drawer apps exist in the synthetic catalogue');
     assert.deepStrictEqual(catalogue.photos, { appId: '', installed: false, icon: null });
     assert.strictEqual(catalogue.layout.photosAppId, '');
+    assert.deepStrictEqual(catalogue.shortcut, { appId: 'com.limelight.webos', title: 'Moonlight', installed: true, icon: null });
+    assert.strictEqual(catalogue.layout.shortcutAppId, 'com.limelight.webos');
     assert.strictEqual((await call('/api/home/open', { kind: 'photos', id: 'netflix' })).body.ok, false);
     assert.deepStrictEqual((await call('/api/home/now')).body, { kind: null }, 'unconfigured Photos never launches another tile');
-    assert.deepStrictEqual(catalogue.devices.map(device => device.port), [1, 3]);
+    assert.deepStrictEqual(catalogue.devices.map(device => device.port), [1, 2, 3, 4]);
     for (const slot of ['morning', 'afternoon', 'evening', 'night']) assert.strictEqual((await call('/api/home/wallpaper?slot=' + slot)).status, 200);
     for (const slot of ['__proto__', 'constructor', 'toString']) assert.strictEqual((await call('/api/home/wallpaper?slot=' + slot)).status, 404);
     assert.strictEqual((await call('/assets/home-wallpaper-dark.jpg')).status, 200);
@@ -75,9 +77,16 @@ function call(route, body, headers) {
     assert.deepStrictEqual((await call('/api/home/catalogue')).body.order.app, reversed);
     assert.strictEqual((await call('/api/home/layout', { order: { app: ['private-unknown'] } })).status, 400);
     assert.strictEqual((await call('/api/home/layout', { hidden: { app: ['lg-home'] } })).status, 400);
+    for (const invalid of ['https://example.invalid', '../config', null, 12]) {
+      assert.strictEqual((await call('/api/home/layout', { shortcutAppId: invalid })).status, 400,
+        'shortcut config rejects non-package IDs and non-string values');
+    }
     assert.strictEqual((await call('/api/home/open', { kind: 'app', id: 'netflix' })).body.demo, true);
     assert.strictEqual((await call('/api/home/now')).body.appId, 'netflix');
     assert.strictEqual((await call('/api/home/recents')).body.apps.length, 1);
+    assert.strictEqual((await call('/api/home/open', { kind: 'shortcut', id: 'netflix', url: 'https://example.invalid' })).body.demo, true);
+    assert.strictEqual((await call('/api/home/now')).body.appId, 'com.limelight.webos',
+      'shortcut launch uses the saved Moonlight ID rather than request fields');
     assert.strictEqual((await call('/api/home/layout', { reset: true })).status, 200);
     assert.deepStrictEqual((await call('/api/home/catalogue')).body.order.app, catalogue.order.app);
     assert.deepStrictEqual((await call('/api/home/catalogue')).body.layout.hidden.app, catalogue.layout.hidden.app);
@@ -90,7 +99,7 @@ function call(route, body, headers) {
     assert.strictEqual(JSON.stringify(Object.assign({}, enabled, { recommended: undefined })), beforeRecommended, 'toggle preserves all other preferences');
     const recommended = (await call('/api/home/catalogue')).body.recommended;
     assert.strictEqual(recommended.length, 21);
-    assert.ok(recommended.every(card => card.id.startsWith('demo-card-') && card.title.startsWith('Exemple vidéo ') && card.category === 'Démonstration'));
+    assert.ok(recommended.every(card => card.id.startsWith('demo-card-') && card.title.startsWith('Sample video ') && card.category === 'Demo'));
     assert.ok(recommended.every(card => catalogue.apps.some(app => app.id === card.app)));
     assert.ok(!recommended.some(card => card.app === 'cdp-30'), 'an app with no fixture receives no foreign cards');
     for (const card of recommended) {

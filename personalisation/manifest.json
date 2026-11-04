@@ -7,13 +7,13 @@
       "file": "assets/home.html",
       "patch": "patches/assets-home.html.patch",
       "baseSha256": "d06a2782462f6565cda0311c9e8bd667aa0fd7444b4f9f20eba793365b7a8573",
-      "customSha256": "1e6fc85540dadc1c659a47c133e77eb2dde0707a01fa9cae5e72d7423b6d497f"
+      "customSha256": "fd289e40ab24e948a2bf393049e6fa79a53d6738793945da8b358f4d05ef9778"
     },
     {
       "file": "lib/home.js",
       "patch": "patches/lib-home.js.patch",
       "baseSha256": "1c629931aed49bba02aa13efd60a0d7b832f5e1bf4674138790df7da58503890",
-      "customSha256": "5f6f6d0fb91272b73098c1e3ada1e9cb3431f9d409a49a7a0aa78d77a6d69949"
+      "customSha256": "21dc3e495b2e0ee9c7f43ab8fd1f1cdef44d323a70796119eb50822d12e5b060"
     },
     {
       "file": "lib/routes.js",
@@ -58,6 +58,36 @@
       "file": "assets/third-party/immich/NOTICE.txt",
       "source": "files/assets/third-party/immich/NOTICE.txt",
       "sha256": "18fb9ded86f5ae87b0c3a2191258b254127e611a85b7c1c9c8f38a72d05e5cca"
+    },
+    {
+      "file": "assets/fonts/Inter-Light.woff2",
+      "source": "files/assets/fonts/Inter-Light.woff2",
+      "sha256": "e111a1e2ad914ccda9179b95e83fb10234dd52a1932e0b93c480476227983fd9"
+    },
+    {
+      "file": "assets/fonts/Inter-Regular.woff2",
+      "source": "files/assets/fonts/Inter-Regular.woff2",
+      "sha256": "e06f6b1bc553aaea4e4668023ed0ab0a147129c3107f511bc7d03d361b0ae085"
+    },
+    {
+      "file": "assets/fonts/Inter-Medium.woff2",
+      "source": "files/assets/fonts/Inter-Medium.woff2",
+      "sha256": "0ff3e94614e1493eb556314fd247ae6c4a85a7783b4cc86be539940cf83f2a48"
+    },
+    {
+      "file": "assets/fonts/Inter-SemiBold.woff2",
+      "source": "files/assets/fonts/Inter-SemiBold.woff2",
+      "sha256": "5cb7103e4e605989afebc03d989c79201e54b21b5183db33981f70db9178a301"
+    },
+    {
+      "file": "assets/fonts/Inter-Bold.woff2",
+      "source": "files/assets/fonts/Inter-Bold.woff2",
+      "sha256": "fa888127b6da015b65569f0351f3b5c391ad928904951f1c20e9f8462a8d95ea"
+    },
+    {
+      "file": "assets/fonts/OFL-Inter.txt",
+      "source": "files/assets/fonts/OFL-Inter.txt",
+      "sha256": "262481e844521b326f5ecd053e59b98c8b2da78c8ee1bdbb6e8174305e54935a"
     }
   ]
 }

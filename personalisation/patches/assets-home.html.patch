@@ -1,17 +1,31 @@
 --- a/assets/home.html
 +++ b/assets/home.html
-@@ -1,5 +1,9 @@
+@@ -1,4 +1,8 @@
  <!doctype html>
--<html lang="en">
 +<!-- Official Immich logo: unchanged original asset, AGPL-3.0.
 +     Source: https://github.com/immich-app/immich/blob/256eb55dbe92ac77e02794442f9487e88ffed2b1/design/immich-logo.svg
 +     License: https://github.com/immich-app/immich/blob/256eb55dbe92ac77e02794442f9487e88ffed2b1/LICENSE
 +     Immich/FUTO trademarks; independent launcher, no affiliation or endorsement. -->
-+<html lang="fr-CA">
+ <html lang="en">
  <head>
  <meta charset="utf-8">
- <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
-@@ -33,19 +37,28 @@
+@@ -14,9 +18,14 @@
+ @font-face{font-family:'Outfit';src:url('/assets/fonts/Outfit-Regular.ttf') format('truetype');font-weight:400;font-display:swap}
+ @font-face{font-family:'Manrope';src:url('/assets/fonts/Manrope-Regular.ttf') format('truetype');font-weight:400;font-display:swap}
+ @font-face{font-family:'Manrope';src:url('/assets/fonts/Manrope-SemiBold.ttf') format('truetype');font-weight:600;font-display:swap}
++@font-face{font-family:'Inter';src:url('/assets/fonts/Inter-Light.woff2') format('woff2');font-weight:300;font-display:swap}
++@font-face{font-family:'Inter';src:url('/assets/fonts/Inter-Regular.woff2') format('woff2');font-weight:400;font-display:swap}
++@font-face{font-family:'Inter';src:url('/assets/fonts/Inter-Medium.woff2') format('woff2');font-weight:500;font-display:swap}
++@font-face{font-family:'Inter';src:url('/assets/fonts/Inter-SemiBold.woff2') format('woff2');font-weight:600;font-display:swap}
++@font-face{font-family:'Inter';src:url('/assets/fonts/Inter-Bold.woff2') format('woff2');font-weight:700;font-display:swap}
+ *{margin:0;padding:0;box-sizing:border-box}
+ html,body{height:100%;background:#000;overflow:hidden}
+-body{font-family:'Manrope',sans-serif;color:#ece7df;-webkit-font-smoothing:antialiased;cursor:default}
++body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'SF Pro Text','SF Pro Display','Helvetica Neue',Arial,sans-serif;color:#ece7df;-webkit-font-smoothing:antialiased;cursor:default}
+ 
+ #stage{position:absolute;left:0;top:0;width:1920px;height:1080px;background:#000;overflow:hidden;
+   -webkit-transform-origin:0 0;transform-origin:0 0}
+@@ -33,24 +42,33 @@
  #scrim{position:absolute;left:0;top:0;right:0;bottom:0;
    background:radial-gradient(ellipse 34% 30% at 92% 14%,rgba(0,0,0,.55),rgba(0,0,0,0)),
      linear-gradient(90deg,rgba(0,0,0,.72) 0%,rgba(0,0,0,.35) 38%,rgba(0,0,0,0) 70%),
@@ -28,13 +42,13 @@
 -/* The hour cycle, in 12-hour time only: small enough to stay inside #when,
 -   which is sized for the digits alone. */
 +#greeting{font-size:23px;letter-spacing:4px;margin-bottom:18px;color:#d0d5dd}
-+#clock{font-family:'Outfit',sans-serif;font-size:144px;line-height:.8;font-weight:300;letter-spacing:-4px}
++#clock{font-family:'Inter',sans-serif;font-size:144px;line-height:.8;font-weight:300;letter-spacing:-4px}
 +#date{margin-top:18px;font-size:26px;color:#d0d5dd}
 +#weather{position:absolute;right:112px;top:66px;text-align:right;color:#f4f6fb;text-shadow:0 2px 14px rgba(0,0,0,.5)}
 +#weatherMain{display:-webkit-flex;display:flex;-webkit-align-items:center;align-items:center;-webkit-justify-content:flex-end;justify-content:flex-end}
 +#weatherIcon{width:76px;height:76px;margin-right:18px;color:#e1eaff}
 +#weatherIcon svg{display:block;width:100%;height:100%}
-+#weatherTemp{font-family:'Outfit',sans-serif;font-weight:300;font-size:76px;line-height:1}
++#weatherTemp{font-family:'Inter',sans-serif;font-weight:300;font-size:76px;line-height:1}
 +#weatherCity{font-size:25px;font-weight:600;margin-top:12px}
 +#weatherDetail{font-size:21px;color:#d0d8e4;margin-top:5px}
 +#weatherCredit a{color:inherit}
@@ -47,7 +61,22 @@
  .no-clock #when{visibility:hidden}
  #source{-webkit-flex:1 1 auto;flex:1 1 auto;min-width:0;padding-left:24px;border-left:1px solid #2a2825;padding-bottom:2px}
  #source.none{visibility:hidden}
-@@ -101,6 +114,11 @@
+ #srcKind{font-size:23px;color:#e9ad55}
+-#srcTitle{font-family:'Outfit',sans-serif;font-size:70px;line-height:1;font-weight:400;letter-spacing:-1px;margin:8px 0 12px;
++#srcTitle{font-family:'Inter',sans-serif;font-size:70px;line-height:1;font-weight:400;letter-spacing:-1px;margin:8px 0 12px;
+   white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+ #srcVia{font-size:26px;color:#a39d93}
+ 
+@@ -64,7 +82,7 @@
+ #plate.none{display:none}
+ #plSig{font-size:23px;height:32px;line-height:32px;color:#a39d93}
+ #plSig span+span{margin-left:22px}
+-#plMode{font-family:'Outfit',sans-serif;font-size:52px;height:70px;line-height:70px;font-weight:400;letter-spacing:-.5px;margin:15px 0 5px;
++#plMode{font-family:'Inter',sans-serif;font-size:52px;height:70px;line-height:70px;font-weight:400;letter-spacing:-.5px;margin:15px 0 5px;
+   overflow:hidden;text-overflow:ellipsis}
+ #plStrip{font-size:23px;height:36px;line-height:38px;color:#a39d93}
+ #plStrip b{font-weight:400;color:#6b665e;margin-right:12px}
+@@ -101,6 +119,11 @@
  .alternative .dev{width:340px;height:108px}
  .alternative .dev .nm{font-size:26px}
  .alternative .dev .path,.alternative .dev .st{font-size:17px}
@@ -59,7 +88,7 @@
  .row{-webkit-flex:0 0 auto;flex:0 0 auto}
  .row.empty{display:none}
  .arranging .row.empty{display:block}
-@@ -108,9 +126,13 @@
+@@ -108,9 +131,13 @@
    border:2px dashed #2a2825;border-radius:6px}
  .arranging .row.active .slot{color:#ece7df;border-color:#e9ad55;border-style:solid}
  .arranging .row.held-row .slot{border-style:dashed;background:#231d12}
@@ -75,7 +104,7 @@
  .wrap{position:relative;overflow:hidden;margin:0 90px;padding:6px 22px}
  /* Moved by script, a frame at a time (scrollTrack). Relative, so a tile's
     offsetLeft is always from the track, also before it has been moved; its own
-@@ -134,21 +156,69 @@
+@@ -134,24 +161,85 @@
  .row:not(.active) .tile{opacity:.58}
  .tile.focus{background:rgba(20,19,16,.86);outline-color:#ece7df;opacity:1}
  
@@ -96,50 +125,63 @@
 -.dev.last .st em:before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:#e9ad55;margin-right:10px;vertical-align:2px}
 +/* Wide faces lift independently so remote navigation and arranging keep their native geometry. */
 +#rows .wrap{position:relative;padding-top:22px;padding-bottom:22px}
-+#rows .wrap:before{content:"";position:absolute;left:0;right:0;top:8px;height:186px;border-radius:33px;
++#rows .wrap:before{content:"";position:absolute;left:0;right:0;top:6px;height:212px;border-radius:36px;
 +  background:rgba(215,230,255,.09);border:1px solid rgba(255,255,255,.13);
 +  box-shadow:inset 0 1px 0 rgba(255,255,255,.1)}
 +#rows .row[data-key="dev"] .wrap:before{display:none}
 +#rows .row[data-key="ch"] .wrap:before{display:none}
-+#rows .app,#rows .dev{width:280px;height:auto;padding:0;margin-right:28px;border-radius:21px;opacity:1;display:block}
-+#rows .dev{width:224px;margin-right:24px;border-radius:17px}
++#rows .app,#rows .dev{width:320px;height:auto;padding:0;margin-right:26px;border-radius:24px;opacity:1;display:block}
++#rows .dev{width:300px;margin-right:26px;border-radius:22px}
 +#rows .app:last-child,#rows .dev:last-child{margin-right:0}
 +#rows .app.focus,#rows .dev.focus{background:none;outline-color:transparent;z-index:1}
-+.face{position:relative;width:280px;height:157.5px;display:-webkit-flex;display:flex;
++.face{position:relative;width:320px;height:180px;display:-webkit-flex;display:flex;
 +  -webkit-align-items:center;align-items:center;-webkit-justify-content:center;justify-content:center;
 +  border-radius:23px;background:#23272f;overflow:hidden;box-shadow:0 6px 16px rgba(0,0,0,.24),inset 0 1px 0 rgba(255,255,255,.14);
-+  -webkit-transition:-webkit-transform .22s cubic-bezier(.2,.8,.2,1),box-shadow .22s;
-+  transition:transform .22s cubic-bezier(.2,.8,.2,1),box-shadow .22s}
++  -webkit-transition:-webkit-transform .26s cubic-bezier(.2,.9,.25,1),box-shadow .26s;
++  transition:transform .26s cubic-bezier(.2,.9,.25,1),box-shadow .26s}
 +.face:after{content:"";position:absolute;left:0;right:0;top:0;bottom:0;border-radius:inherit;pointer-events:none;
 +  background:linear-gradient(135deg,rgba(255,255,255,.17),rgba(255,255,255,0) 52%);opacity:.35;transition:opacity .22s}
-+#rows .tile.focus .face{-webkit-transform:translateY(-5px) scale(1.06);transform:translateY(-5px) scale(1.06);
-+  box-shadow:0 16px 24px rgba(0,0,0,.42),0 0 0 3px rgba(255,255,255,.92),inset 0 1px 0 rgba(255,255,255,.3)}
++#rows .tile.focus .face{-webkit-transform:translateY(-8px) scale(1.12);transform:translateY(-8px) scale(1.12);
++  box-shadow:0 24px 40px rgba(0,0,0,.5),0 0 0 3px rgba(255,255,255,.95),inset 0 1px 0 rgba(255,255,255,.4);
++  z-index:10}
 +#rows .tile.focus .face:after{opacity:1}
-+.dev .face,.photos-face{width:224px;height:126px;border-radius:18px}
++.dev .face,.photos-face{width:300px;height:168.75px;border-radius:22px}
 +.face.immich{background:#0b0b0d}
 +.glass-glint{position:absolute;left:0;right:0;top:0;bottom:0;border-radius:inherit;pointer-events:none;opacity:0}
-+.face img{display:block;width:191px;height:94.5px;object-fit:contain}
-+.brand-name{font-family:Arial,sans-serif;font-size:30px;font-weight:600;padding:18px;text-align:center}
-+.face .mono{font-family:'Outfit',sans-serif;font-size:42px;font-weight:400}
-+.face .native-icon{width:87.5px;height:87.5px;border-radius:17.5px}
++.face img{display:block;width:218px;height:104px;object-fit:contain}
++.brand-name{font-family:Arial,sans-serif;font-size:34px;font-weight:600;padding:18px;text-align:center}
++.face .mono{font-family:'Inter',sans-serif;font-size:48px;font-weight:400}
++.face .native-icon{width:100px;height:100px;border-radius:20px}
 +.face.youtube{background:#202124}
-+.face.youtube img{width:245px;height:110px}
++.face.youtube img{width:280px;height:126px}
 +.face.plex{background:#17191d}
 +.face.crave{background:#101020}
 +.face.netflix{background:#0b0b0d}
 +.face.prime{background:#10283f}
-+.face.prime img{width:191px;height:87.5px}
++.face.prime img{width:218px;height:100px}
 +.face.bell{background:linear-gradient(145deg,#14273b,#0b1523)}
-+.face.bell img{width:121px;height:87.5px;-webkit-filter:brightness(1.9);filter:brightness(1.9)}
-+.face.crave img{width:180px;height:63px}
-+.face.plex img{width:164.5px;height:84px}
++.face.bell img{width:138px;height:100px;-webkit-filter:brightness(1.9);filter:brightness(1.9)}
++.face.crave img{width:206px;height:72px}
++.face.plex img{width:188px;height:96px}
 +.face.toutv{background:linear-gradient(145deg,#087f8b,#075964)}
-+.face.toutv img{width:212px;height:55px}
++.face.toutv img{width:242px;height:63px}
 +.face.lg{background:linear-gradient(145deg,#454e5c,#262c36)}
 +.face.switch{background:#e60012}
-+.face.switch img{width:104px;height:92px}
++.face.switch img{width:119px;height:105px}
 +.face.xbox{background:#107c10}
-+.face.xbox img{width:157px;height:67px}
++.face.xbox img{width:179px;height:77px}
++/* Console and input faces: a mark where the device is known, an HDMI
++   connector where it is not, so a tile is never only its name in text. */
++.face.hdmi{-webkit-flex-direction:column;flex-direction:column;background:linear-gradient(145deg,#2c3644,#161b23);color:#dfe8f5}
++.face.hdmi .console-logo{width:141px;height:80px}
++.face.hdmi .port-name{margin-top:4px;font:600 19px Arial,sans-serif;letter-spacing:.12em;color:#c9d6e8}
++.face.xbox .console-logo{width:116px;height:116px}
++.face.switch .console-logo{width:150px;height:150px}
++.face.playstation{background:#003791}
++.face.playstation .console-logo{width:140px;height:140px}
++.face.moonlight{background:linear-gradient(145deg,#1d2340,#0c1020)}
++.face.moonlight .console-logo{width:128px;height:128px}
++.console-logo{display:block}
 +#rows .app .nm,#rows .dev .nm,#rows .dev .path{display:none}
 +#rows .tile.focus .nm{color:#fff}
 +.dev .st{display:none}
@@ -159,8 +201,12 @@
 +.night #greeting,.night #date,.night #weatherDetail{color:#c2cbd9}
  
  .ch{width:224px;height:176px}
- .ch .num{font-family:'Outfit',sans-serif;font-size:48px;line-height:.9;font-weight:300}
-@@ -169,6 +239,8 @@
+-.ch .num{font-family:'Outfit',sans-serif;font-size:48px;line-height:.9;font-weight:300}
++.ch .num{font-family:'Inter',sans-serif;font-size:48px;line-height:.9;font-weight:300}
+ .ch .nm{font-size:21px;color:#a39d93;margin-top:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+ .ch .prog{font-size:21px;font-weight:600;margin-top:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+ .ch .bar{height:2px;background:#2a2825;margin-top:10px}
+@@ -169,6 +257,8 @@
  .alternative .rec .pic{border-radius:8px}
  
  /* Arranging */
@@ -169,7 +215,7 @@
  .arranging .row h2{color:#ece7df}
  .row h2 .sort{display:none;margin-left:22px;font-style:normal;font-size:20px;color:#a39d93;padding:4px 14px;border-radius:5px;background:#141310;
    outline:2px solid transparent;vertical-align:2px}
-@@ -190,12 +262,22 @@
+@@ -190,12 +280,22 @@
  #banner .btn{margin-left:12px;padding:8px 18px;border-radius:5px;color:#ece7df;background:#231d12;outline:2px solid transparent}
  #banner .btn.focus{outline-color:#e9ad55}
  
@@ -193,7 +239,88 @@
  
  /* Recent apps: Back's panel, in place of the one in LG's Home. The
     snapshots are the panel: each a small copy of the screen as it was left,
-@@ -335,8 +417,103 @@
+@@ -210,7 +310,7 @@
+ .recents #rows,.recents #now{opacity:.25}
+ .recents #rows .tile.focus{outline-color:transparent;background:none}
+ #recents .head{display:-webkit-flex;display:flex;-webkit-align-items:baseline;align-items:baseline;padding:0 112px;margin-bottom:18px}
+-#recents h2{-webkit-flex:1 1 auto;flex:1 1 auto;font-family:'Outfit',sans-serif;font-size:40px;font-weight:300;letter-spacing:-.3px;color:#ece7df}
++#recents h2{-webkit-flex:1 1 auto;flex:1 1 auto;font-family:'Inter',sans-serif;font-size:40px;font-weight:300;letter-spacing:-.3px;color:#ece7df}
+ #btnCloseAll{font-size:21px;color:#a39d93;padding:8px 18px;margin-right:-18px;border-radius:5px;outline:2px solid transparent}
+ #btnCloseAll.focus{color:#ece7df;background:rgba(20,19,16,.86);outline-color:#ece7df}
+ #btnCloseAll.none{display:none}
+@@ -222,13 +322,13 @@
+ .rc.on-x .shot{outline-color:#3a3732}
+ .rc .shot img{display:block;width:100%;height:100%;object-fit:cover}
+ .rc .shot .mono{position:absolute;left:0;top:0;right:0;bottom:0;text-align:center;line-height:209px;
+-  font-family:'Outfit',sans-serif;font-size:72px;font-weight:300;color:#6b665e}
++  font-family:'Inter',sans-serif;font-size:72px;font-weight:300;color:#6b665e}
+ .rc .nm{font-size:22px;font-weight:600;margin-top:18px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+ .rc .x{display:inline-block;visibility:hidden;font-size:19px;color:#a39d93;margin:10px 0 0 -12px;padding:5px 12px;border-radius:4px;outline:2px solid transparent}
+ .rc.focus .x{visibility:visible}
+ .rc.on-x .x{color:#ece7df;background:rgba(20,19,16,.86);outline-color:#ece7df}
+ #recents .empty{padding:8px 0 0;font-size:26px;color:#a39d93}
+-#recents .empty b{display:block;font-family:'Outfit',sans-serif;font-size:32px;font-weight:300;color:#ece7df;margin-bottom:8px}
++#recents .empty b{display:block;font-family:'Inter',sans-serif;font-size:32px;font-weight:300;color:#ece7df;margin-bottom:8px}
+ 
+ /* More apps: the Apps row's folder. Its tile shows the first four icons
+    small; OK opens them all as a grid over the screen, Back closes it. */
+@@ -236,7 +336,7 @@
+ .app .fold{display:block;width:112px;height:112px;margin:0 auto;border-radius:14px;background:#2a2825;padding:10px;
+   font-size:0;line-height:0;text-align:left;white-space:normal;overflow:hidden}
+ .app .fold i{display:inline-block;width:42px;height:42px;margin:0 8px 8px 0;border-radius:7px;background:#141310;
+-  font-style:normal;font-family:'Outfit',sans-serif;font-size:20px;line-height:42px;text-align:center;color:#a39d93;overflow:hidden}
++  font-style:normal;font-family:'Inter',sans-serif;font-size:20px;line-height:42px;text-align:center;color:#a39d93;overflow:hidden}
+ .app .fold i:nth-child(2n){margin-right:0}
+ .app .fold i img{display:block;width:42px;height:42px;border-radius:7px}
+ .tile .fld{display:none;position:absolute;left:50%;top:50%;-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%);
+@@ -248,14 +348,14 @@
+   visibility:hidden;opacity:0;-webkit-transition:opacity .2s,visibility 0s .2s;transition:opacity .2s,visibility 0s .2s}
+ .folder #folder{visibility:visible;opacity:1;-webkit-transition-delay:0s;transition-delay:0s}
+ .folder #rows,.folder #now{opacity:.15}
+-#folder h2{font-family:'Outfit',sans-serif;font-size:40px;font-weight:300;letter-spacing:-.3px;color:#ece7df;margin-bottom:26px}
++#folder h2{font-family:'Inter',sans-serif;font-size:40px;font-weight:300;letter-spacing:-.3px;color:#ece7df;margin-bottom:26px}
+ #folder .gwrap{height:820px;overflow:hidden;padding:6px}
+ #folderGrid{width:1584px;-webkit-transition:-webkit-transform .28s cubic-bezier(.2,.7,.2,1);transition:transform .28s cubic-bezier(.2,.7,.2,1)}
+ #folderGrid .tile{display:inline-block;vertical-align:top;margin:0 8px 14px 0}
+ 
+ #fault{position:absolute;left:112px;top:420px;width:1200px;display:none}
+ #fault.show{display:block}
+-#fault h1{font-family:'Outfit',sans-serif;font-weight:300;font-size:56px;margin-bottom:18px}
++#fault h1{font-family:'Inter',sans-serif;font-weight:300;font-size:56px;margin-bottom:18px}
+ #fault p{font-size:26px;color:#a39d93}
+ 
+ /* Search. A rail in the left gutter, one quiet mark level with the rows,
+@@ -291,7 +391,7 @@
+ /* Line height above the face's ascent and descent, so a field, which clips
+    its text, keeps the tails of g and y. */
+ #query{-webkit-flex:1 1 auto;flex:1 1 auto;min-width:0;height:116px;padding:0;margin:0;border:0;outline:0;background:transparent;border-radius:0;
+-  font-family:'Outfit',sans-serif;font-size:84px;line-height:116px;font-weight:300;letter-spacing:-1.5px;color:#ece7df;caret-color:#ece7df}
++  font-family:'Inter',sans-serif;font-size:84px;line-height:116px;font-weight:300;letter-spacing:-1.5px;color:#ece7df;caret-color:#ece7df}
+ #query::-webkit-input-placeholder{color:#3a3732}
+ #query::placeholder{color:#3a3732}
+ #status{font-size:23px;color:#a39d93;margin-top:18px;height:32px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@@ -303,9 +403,9 @@
+ .hit .poster{position:relative;-webkit-flex:0 0 auto;flex:0 0 auto;width:272px;height:153px;border-radius:6px;overflow:hidden;background:#141310}
+ .hit .poster img{display:block;width:100%;height:100%;object-fit:cover}
+ .hit .poster .mono{position:absolute;left:0;top:0;right:0;bottom:0;text-align:center;line-height:153px;
+-  font-family:'Outfit',sans-serif;font-size:64px;font-weight:300;color:#6b665e}
++  font-family:'Inter',sans-serif;font-size:64px;font-weight:300;color:#6b665e}
+ .hit .info{-webkit-flex:1 1 auto;flex:1 1 auto;min-width:0;margin-left:36px}
+-.hit .ttl{font-family:'Outfit',sans-serif;font-size:40px;line-height:1.15;font-weight:300;letter-spacing:-.3px;
++.hit .ttl{font-family:'Inter',sans-serif;font-size:40px;line-height:1.15;font-weight:300;letter-spacing:-.3px;
+   white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+ .hit .meta{font-size:21px;color:#a39d93;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+ .hit .meta span+span{margin-left:22px}
+@@ -314,7 +414,7 @@
+   margin-right:4px;padding:7px 18px 7px 10px;border-radius:6px;outline:2px solid transparent;font-size:20px;font-weight:600;
+   -webkit-transition:background-color .12s,outline-color .12s;transition:background-color .12s,outline-color .12s}
+ .chip img,.chip .mono{display:block;width:46px;height:46px;border-radius:8px;margin-right:12px}
+-.chip .mono{background:#2a2825;text-align:center;line-height:46px;font-family:'Outfit',sans-serif;font-size:22px;font-weight:300}
++.chip .mono{background:#2a2825;text-align:center;line-height:46px;font-family:'Inter',sans-serif;font-size:22px;font-weight:300}
+ .hit.on .chip.focus{background:rgba(20,19,16,.86);outline-color:#ece7df}
+ /* Above the keyboard: a line each, the year and the apps' icons. */
+ .typing .hit{height:76px;opacity:.75}
+@@ -335,8 +435,131 @@
  html.fades.in #stage{-webkit-transition:opacity .3s ease-out;transition:opacity .3s ease-out}
  html.faded #stage{opacity:0}
  
@@ -203,15 +330,22 @@
 +#rows .wrap:before{background:linear-gradient(135deg,rgba(226,237,255,.17),rgba(135,156,184,.07));
 +  border-color:rgba(255,255,255,.22);box-shadow:inset 0 1px 1px rgba(255,255,255,.28),0 8px 24px rgba(0,0,0,.12)}
 +#rows .tile.focus .face,#photosTile.focus .photos-face,#allApps .tile.focus .face{
-+  -webkit-transform:translateY(-5px) scale(1.045);transform:translateY(-5px) scale(1.045);
++  -webkit-transform:translateY(-10px) scale(1.12);transform:translateY(-10px) scale(1.12);
 +  box-shadow:0 18px 30px rgba(0,0,0,.42),0 0 0 3px rgba(255,255,255,.94),0 0 0 8px rgba(218,233,255,.14),
 +    inset 0 2px 2px rgba(255,255,255,.48),inset 0 -2px 1px rgba(156,188,229,.2)}
 +#rows .tile.focus .face:after{background:linear-gradient(135deg,rgba(255,255,255,.28),rgba(255,255,255,0) 42%,rgba(196,220,255,.08));opacity:1}
-+#rows .row[data-key="dev"]{position:relative;min-height:200px}
-+#rows .row[data-key="dev"]>.wrap{margin-right:420px}
-+#photos{position:absolute;right:112px;top:0;width:224px;text-align:center}
++/* The name rises out of the artwork on focus, as Apple TV's tile labels do. */
++.face .cap{position:absolute;left:0;right:0;bottom:0;z-index:2;padding:34px 18px 13px;font-size:20px;line-height:24px;font-weight:600;
++  text-align:left;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-shadow:0 1px 6px rgba(0,0,0,.7);
++  background:linear-gradient(0deg,rgba(0,0,0,.78),rgba(0,0,0,0));opacity:0;-webkit-transform:translateY(12px);transform:translateY(12px);
++  -webkit-transition:opacity .22s ease,-webkit-transform .26s cubic-bezier(.2,.9,.25,1);transition:opacity .22s ease,transform .26s cubic-bezier(.2,.9,.25,1);pointer-events:none}
++#rows .tile:not(.focus) .face .cap,#allApps .tile:not(.focus) .face .cap{opacity:.0}
++#rows .tile.focus .face .cap,#allApps .tile.focus .face .cap{opacity:1;-webkit-transform:none;transform:none}
++#rows .row[data-key="dev"]{position:relative;min-height:220px}
++#rows .row[data-key="dev"]>.wrap{margin-right:496px}
++#photos{position:absolute;right:112px;top:0;width:300px;text-align:center}
 +#photos h2{padding:0;text-align:left;font-size:23px;line-height:30px}
-+#photosTile{display:block;width:224px;padding:22px 0 0;border:0;background:none;color:#ece7df;font:inherit;cursor:pointer;outline:none}
++#photosTile{display:block;width:300px;padding:22px 0 0;border:0;background:none;color:#ece7df;font:inherit;cursor:pointer;outline:none}
 +.photos-face img.immich-logo{width:112px;height:112px}
 +#photosStatus{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 +.arranging #photos,.arranging #allAppsTrigger{display:none}
@@ -221,23 +355,44 @@
 +  color:#dce3ef;font:inherit;font-size:21px;cursor:pointer;outline:none;transition:background-color .2s,border-color .2s}
 +.down-chevron{display:inline-block;width:10px;height:10px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;
 +  -webkit-transform:rotate(45deg);transform:rotate(45deg);vertical-align:5px;margin-right:16px}
-+#allAppsTrigger.focus,#allAppsClose:focus{color:#fff;background:rgba(140,166,200,.2);border-color:rgba(255,255,255,.9);box-shadow:0 0 0 3px rgba(222,237,255,.15)}
++#allAppsTrigger.focus,#allAppsClose:focus,#allAppsClose.focus,#allAppsSort.focus{color:#fff;background:rgba(140,166,200,.2);border-color:rgba(255,255,255,.9);box-shadow:0 0 0 3px rgba(222,237,255,.15)}
 +#allApps{position:absolute;z-index:3;left:64px;right:64px;bottom:28px;height:730px;padding:40px 48px 24px;border-radius:34px;
 +  border:1px solid rgba(239,245,255,.25);background:rgba(16,23,34,.97);box-shadow:0 -20px 90px rgba(0,0,0,.5),inset 0 1px 1px rgba(255,255,255,.2);
-+  -webkit-transform:translateY(110%);transform:translateY(110%);visibility:hidden;
-+  -webkit-transition:-webkit-transform .25s ease,visibility 0s .25s;transition:transform .25s ease,visibility 0s .25s}
-+.all-apps #allApps{-webkit-transform:none;transform:none;visibility:visible;-webkit-transition-delay:0s;transition-delay:0s}
++  display:-webkit-flex;display:flex;-webkit-flex-direction:column;flex-direction:column;
++  -webkit-transform:translateY(56px) scale(.965);transform:translateY(56px) scale(.965);opacity:0;visibility:hidden;
++  -webkit-transition:-webkit-transform .42s cubic-bezier(.16,1,.3,1),opacity .3s ease,visibility 0s .42s;
++  transition:transform .42s cubic-bezier(.16,1,.3,1),opacity .3s ease,visibility 0s .42s}
++.all-apps #allApps{-webkit-transform:none;transform:none;opacity:1;visibility:visible;-webkit-transition-delay:0s,0s,0s;transition-delay:0s,0s,0s}
 +.all-apps #rows,.all-apps #now,.all-apps #weather{opacity:.2}
 +.all-apps #allAppsTrigger,.recents #allAppsTrigger{visibility:hidden}
 +.recents #photos{opacity:.25}
 +.drawer-head{display:-webkit-flex;display:flex;-webkit-justify-content:space-between;justify-content:space-between;-webkit-align-items:center;align-items:center;margin-bottom:26px}
-+.drawer-head h2{font-family:'Outfit',sans-serif;font-size:42px;font-weight:300;line-height:1.2}
++.drawer-head h2{font-family:'Inter',sans-serif;font-size:42px;font-weight:300;line-height:1.2}
 +.drawer-head p{font-size:20px;color:#c3ccda;margin-top:10px}
 +#allAppsClose{font:inherit;font-size:20px;color:#ece7df;border:1px solid rgba(255,255,255,.3);border-radius:25px;background:rgba(255,255,255,.06);padding:12px 20px;cursor:pointer}
-+#allAppsScroll{height:540px;overflow-y:auto;overflow-x:hidden;padding:12px 12px 24px;margin:0 -12px}
++.drawer-tools{display:-webkit-flex;display:flex;-webkit-align-items:center;align-items:center}
++#allAppsCount{font-size:19px;color:#a9b6c8;margin-right:18px}
++#allAppsSort{font:inherit;font-size:19px;color:#ece7df;border:1px solid rgba(255,255,255,.25);border-radius:20px;background:rgba(255,255,255,.05);padding:9px 16px;margin-right:14px;cursor:pointer;outline:none}
++#allAppsSort[aria-pressed="true"]{color:#fff;border-color:rgba(255,255,255,.8);background:rgba(140,166,200,.3)}
++#allAppsHint{margin-top:12px;font-size:18px;color:#93a1b5}
++#allAppsScroll{-webkit-flex:1 1 auto;flex:1 1 auto;min-height:0;overflow-y:auto;overflow-x:hidden;padding:14px 20px 30px;margin:0 -20px;
++  -webkit-overflow-scrolling:touch;scrollbar-width:none}
++#allAppsScroll::-webkit-scrollbar{width:0;height:0}
++/* Apple TV-style context sheet */
++#contextSheet{position:absolute;z-index:4;left:0;top:0;right:0;bottom:0;display:-webkit-flex;display:flex;-webkit-align-items:center;align-items:center;-webkit-justify-content:center;justify-content:center;background:rgba(0,0,0,.6);visibility:hidden;opacity:0;-webkit-transition:opacity .25s ease,visibility 0s .25s;transition:opacity .25s ease,visibility 0s .25s}
++.all-context #contextSheet{visibility:visible;opacity:1;-webkit-transition-delay:0s;transition-delay:0s}
++.context-card{width:480px;padding:40px 44px 32px;border-radius:28px;background:rgba(24,32,46,.97);border:1px solid rgba(239,245,255,.2);box-shadow:0 24px 60px rgba(0,0,0,.6);text-align:center}
++.context-card h2{font-family:'Inter',-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',sans-serif;font-size:36px;font-weight:300;margin-bottom:8px}
++.context-app{font-size:20px;color:#a9b6c8;margin-bottom:24px}
++.context-actions{display:-webkit-flex;display:flex;-webkit-flex-direction:column;flex-direction:column}
++.context-action+.context-action{margin-top:10px}
++.context-action{font:inherit;font-size:20px;color:#ece7df;border:1px solid rgba(255,255,255,.25);border-radius:18px;background:rgba(255,255,255,.06);padding:14px 20px;cursor:pointer;outline:none}
++.context-action.focus{background:rgba(140,166,200,.3);border-color:rgba(255,255,255,.9)}
++#contextClose{margin-top:18px;font:inherit;font-size:18px;color:#a9b6c8;border:0;background:none;cursor:pointer}
 +#allAppsGrid{display:-webkit-flex;display:flex;-webkit-flex-wrap:wrap;flex-wrap:wrap}
-+#allApps .tile{width:280px;padding:0;margin:0 44px 30px 0;opacity:1;outline:none;background:none;cursor:pointer}
++#allApps .tile{width:320px;padding:0;margin:0 12px 26px 0;opacity:1;outline:none;background:none;cursor:pointer}
 +#allApps .tile:nth-child(5n){margin-right:0}
++#allApps .face{width:320px;height:180px}
 +#allApps .nm{display:none}
 +#allApps .empty{font-size:25px;color:#d0d9e7;padding:30px 0}
 +#allApps .tile .hid{display:none}
@@ -270,7 +425,7 @@
 +.settings-open #homeSettings{display:block}
 +.settings-sheet{position:absolute;right:112px;bottom:92px;width:590px;padding:34px;border-radius:28px;border:1px solid rgba(239,245,255,.25);
 +  background:rgba(16,23,34,.98);box-shadow:0 18px 60px rgba(0,0,0,.4),inset 0 1px 1px rgba(255,255,255,.2)}
-+.settings-sheet h2{font-family:'Outfit',sans-serif;font-size:34px;font-weight:300;margin:0 0 26px}
++.settings-sheet h2{font-family:'Inter',sans-serif;font-size:34px;font-weight:300;margin:0 0 26px}
 +#recommendedToggle{display:-webkit-flex;display:flex;-webkit-align-items:center;align-items:center;-webkit-justify-content:space-between;justify-content:space-between;
 +  width:100%;padding:16px 18px;border:1px solid rgba(255,255,255,.22);border-radius:15px;color:#ece7df;background:rgba(255,255,255,.04);font:inherit;font-size:24px;text-align:left;cursor:pointer;outline:none}
 +#recommendedToggle .switch-track{display:block;width:44px;height:26px;margin-left:16px;border-radius:15px;background:#59626f;flex-shrink:0}
@@ -298,7 +453,7 @@
    #wall .layer{-webkit-animation:none;animation:none}
  }
  </style>
-@@ -348,6 +525,7 @@
+@@ -348,6 +571,7 @@
  
    <section id="now">
      <div id="when">
@@ -306,76 +461,97 @@
        <div id="clock"><span id="hm">&mdash;</span><span id="mer" hidden></span></div>
        <div id="date">&mdash;</div>
      </div>
-@@ -363,12 +541,41 @@
+@@ -363,6 +587,12 @@
      </div>
    </section>
  
-+  <aside id="weather" class="unavailable" aria-label="Météo" aria-live="polite">
++  <aside id="weather" class="unavailable" aria-label="Weather" data-t-aria-label="home.weather.title" aria-live="polite">
 +    <div id="weatherMain"><span id="weatherIcon" aria-hidden="true"></span><span id="weatherTemp"></span></div>
-+    <div id="weatherCity">Météo</div>
-+    <div id="weatherDetail" data-t="home.weather.loading">Météo en cours de chargement</div>
++    <div id="weatherCity"></div>
++    <div id="weatherDetail" data-t="home.weather.loading">Loading weather</div>
 +    <div id="weatherCredit"><a href="https://open-meteo.com/" rel="noreferrer" data-t="home.weather.provider">Open-Meteo</a> · <a href="https://creativecommons.org/licenses/by/4.0/" rel="noreferrer" data-t="home.weather.license">CC BY 4.0</a></div>
 +  </aside>
    <main id="rows"></main>
    <div id="rail"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg><span class="word" data-t="home.search.rail">Search</span></div>
    <section id="finder">
-     <div id="ask"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg><input id="query" type="text" autocomplete="off" spellcheck="false" maxlength="80" placeholder="Film or series" data-t-placeholder="home.search.placeholder"></div>
+@@ -370,6 +600,47 @@
      <div id="status">&mdash;</div>
      <div id="results"><div id="hits"></div></div>
-+  </section>
+   </section>
 +  <button type="button" id="allAppsTrigger" tabindex="-1" aria-controls="allApps" aria-expanded="false">
-+    <span class="down-chevron" aria-hidden="true"></span><span data-t="home.allApps.title">Toutes les apps</span>
++    <span class="down-chevron" aria-hidden="true"></span><span data-t="home.allApps.title">All apps</span>
 +  </button>
-+  <button type="button" id="homeSettingsTrigger" tabindex="0" aria-label="Paramètres" data-t-aria-label="home.quickSettings.title" aria-haspopup="dialog" aria-controls="homeSettings" aria-expanded="false">
++  <button type="button" id="homeSettingsTrigger" tabindex="0" aria-label="Settings" data-t-aria-label="home.quickSettings.title" aria-haspopup="dialog" aria-controls="homeSettings" aria-expanded="false">
 +    <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="18.93,9.13 19.34,10.44 21.85,10.26 21.85,13.74 19.34,13.56 18.93,14.87 18.29,16.08 20.19,17.74 17.74,20.19 16.08,18.29 14.87,18.93 13.56,19.34 13.74,21.85 10.26,21.85 10.44,19.34 9.13,18.93 7.92,18.29 6.26,20.19 3.81,17.74 5.71,16.08 5.07,14.87 4.66,13.56 2.15,13.74 2.15,10.26 4.66,10.44 5.07,9.13 5.71,7.92 3.81,6.26 6.26,3.81 7.92,5.71 9.13,5.07 10.44,4.66 10.26,2.15 13.74,2.15 13.56,4.66 14.87,5.07 16.08,5.71 17.74,3.81 20.19,6.26 18.29,7.92" stroke-linejoin="round"/><circle cx="12" cy="12" r="3"/></svg>
 +  </button>
 +  <section id="homeSettings" role="dialog" aria-modal="true" aria-labelledby="homeSettingsTitle" aria-hidden="true">
 +    <div class="settings-sheet">
-+      <h2 id="homeSettingsTitle" data-t="home.quickSettings.title">Paramètres</h2>
-+      <button type="button" id="recommendedToggle" role="switch" aria-checked="false" aria-describedby="homeSettingsHelp" tabindex="-1"><span data-t="home.quickSettings.recommended">Recommandations</span><span class="switch-track" aria-hidden="true"></span></button>
-+      <p id="homeSettingsHelp" data-t="home.quickSettings.help">Contenus proposés par vos apps. Les images viennent de leurs serveurs.</p>
-+      <p id="homeSettingsUnavailable" role="note" hidden>Cette version de webOS ne fournit pas de recommandations.</p>
++      <h2 id="homeSettingsTitle" data-t="home.quickSettings.title">Settings</h2>
++      <button type="button" id="recommendedToggle" role="switch" aria-checked="false" aria-describedby="homeSettingsHelp" tabindex="-1"><span data-t="home.quickSettings.recommended">Recommendations</span><span class="switch-track" aria-hidden="true"></span></button>
++      <p id="homeSettingsHelp" data-t="home.quickSettings.help">Content suggested by your apps. Images come from their servers.</p>
++      <p id="homeSettingsUnavailable" role="note" hidden data-t="home.quickSettings.unavailable">This version of webOS does not provide recommendations.</p>
 +      <p id="homeSettingsStatus" role="status" aria-live="polite"></p>
-+      <div id="homeSettingsActions"><button type="button" id="homeSettingsClose" tabindex="-1" data-t="home.quickSettings.close">Fermer</button>
-+        <button type="button" id="homeSettingsLaunch" tabindex="-1" aria-label="Ouvrir Glasshouse" data-t-aria-label="home.quickSettings.openGlasshouse" title="Ouvrir Glasshouse" data-t-title="home.quickSettings.openGlasshouse"><img src="/assets/favicon.svg" alt=""></button></div>
++      <div id="homeSettingsActions"><button type="button" id="homeSettingsClose" tabindex="-1" data-t="home.quickSettings.close">Close</button>
++        <button type="button" id="homeSettingsLaunch" tabindex="-1" aria-label="Open Glasshouse" data-t-aria-label="home.quickSettings.openGlasshouse" title="Open Glasshouse" data-t-title="home.quickSettings.openGlasshouse"><img src="/assets/favicon.svg" alt=""></button></div>
 +    </div>
 +  </section>
 +  <section id="allApps" role="dialog" aria-modal="true" aria-labelledby="allAppsTitle" aria-hidden="true">
-+    <div class="drawer-head"><div><h2 id="allAppsTitle" data-t="home.allApps.title">Toutes les apps</h2>
-+      <p data-t="home.allApps.description">Les applications installées, y compris celles hors du carrousel.</p></div>
-+      <button type="button" id="allAppsClose" tabindex="-1" data-t="home.allApps.close">Retour au carrousel ↑</button></div>
++    <div class="drawer-head"><div><h2 id="allAppsTitle" data-t="home.allApps.title">All apps</h2>
++      <p data-t="home.allApps.description">Installed apps, including those outside the carousel.</p></div>
++      <div class="drawer-tools"><span id="allAppsCount" role="status"></span>
++        <button type="button" id="allAppsSort" tabindex="-1" aria-pressed="false" data-t="home.allApps.sort">A–Z</button>
++        <button type="button" id="allAppsClose" tabindex="-1" data-t="home.allApps.close">Back to the carousel ↑</button></div></div>
 +    <div id="allAppsScroll"><div id="allAppsGrid"></div></div>
-   </section>
++    <p id="allAppsHint" data-t="home.allApps.hint">OK opens · Up reaches sort/close · Back closes · click outside closes</p>
++  </section>
++
++   <!-- Context sheet for long-press on a drawer app (Apple TV-style action menu) -->
++   <section id="contextSheet" role="dialog" aria-modal="true" aria-labelledby="contextTitle" aria-hidden="true">
++     <div class="context-card">
++       <h2 id="contextTitle" data-t="home.context.title">App actions</h2>
++       <p id="contextApp" class="context-app"></p>
++       <div class="context-actions">
++         <button type="button" class="context-action" data-action="open" data-t="home.context.open">Open</button>
++         <button type="button" class="context-action" data-action="hide" data-t="home.context.hide">Hide from Home</button>
++         <button type="button" class="context-action" data-action="folder" data-t="home.context.folder">Move to folder</button>
++         <button type="button" class="context-action" data-action="info" data-t="home.context.info">App info</button>
++       </div>
++       <button type="button" id="contextClose" data-t="home.context.close">Close</button>
++     </div>
++   </section>
  
    <div id="banner">
-@@ -379,7 +586,8 @@
+     <span><b data-t="home.arrange.title">Arranging</b><span id="bannerState">&mdash;</span></span>
+@@ -379,7 +650,8 @@
      <span class="btn" id="btnReset" data-t="home.arrange.reset">Reset</span>
      <span class="btn" id="btnDone" data-t="home.arrange.done">Done</span>
    </div>
 -  <div id="toast"></div>
-+  <div id="moveHint"><span data-t="home.arrange.quickMove">← → Déplacer la tuile</span> <span data-t="home.arrange.quickSave">OK Enregistrer</span><span data-t="home.arrange.quickDone">Retour Terminer</span></div>
++  <div id="moveHint"><span data-t="home.arrange.quickMove">← → Move tile</span> <span data-t="home.arrange.quickSave">OK Save</span><span data-t="home.arrange.quickDone">Back Done</span></div>
 +  <div id="toast" role="status" aria-live="polite"></div>
  
    <section id="recents">
      <div class="head">
-@@ -410,11 +618,12 @@
+@@ -410,15 +682,16 @@
   * browser shows.
   */
  (function () {
-+  // shortcut: local French console layout and daily wallpapers; reapply this fork after a Glasshouse upgrade.
++  // shortcut: local console layout and daily wallpapers; reapply this fork after a Glasshouse upgrade.
    var ROW_TITLES = {
--    app: t('home.row.apps', 'Apps'),
+     app: t('home.row.apps', 'Apps'),
 -    dev: t('home.row.inputs', 'Inputs'),
--    ch: t('home.row.channels', 'Channels'),
--    rec: t('home.row.recommended', 'Recommended')
-+    app: 'Applications',
-+    dev: 'Consoles',
-+    ch: 'Chaînes',
-+    rec: 'Recommandations'
++    dev: t('home.row.consoles', 'Consoles'),
+     ch: t('home.row.channels', 'Channels'),
+     rec: t('home.row.recommended', 'Recommended')
    };
    var LG_HOME_TILE = 'lg-home';
    // The remote's keys as webOS reports them to a page.
-@@ -431,12 +640,11 @@
+-  var KEY = { left: 37, up: 38, right: 39, down: 40, ok: 13, back: 461, red: 403, green: 404, yellow: 405 };
++  var KEY = { left: 37, up: 38, right: 39, down: 40, ok: 13, back: 461, red: 403, green: 404, yellow: 405, pageUp: 33, pageDown: 34 };
+   // The More apps tile, last in the Apps row while any app is in the folder.
+   var FOLDER_TILE = 'more-apps';
+   // Tiles per line in the More apps grid: 9 of 176px fill the 1696px between the margins.
+@@ -431,12 +704,11 @@
    var layout = null;     // rows, order, sort, hidden, channels, hintSeen, picture, show*
    var guideData = {};
    var lastOn = { kind: null };
@@ -391,7 +567,7 @@
    var beatFails = 0;
    // The TV's own 12 or 24 hour setting, which the server repeats with each heartbeat.
    var hour12 = false;
-@@ -445,7 +653,7 @@
+@@ -445,7 +717,7 @@
    // was changed elsewhere, such as from a dashboard, and the layout is reloaded.
    var layoutVersion = null;
    var loadRetry = null, wallAvailable = false, initialEscape = false;
@@ -400,17 +576,7 @@
  
    function $(id) { return document.getElementById(id); }
    function pad(n) { return (n < 10 ? '0' : '') + n; }
-@@ -475,6 +683,9 @@
-   // form that follows a number: "24 октября", not "октябрь".
-   function dateText(d) {
-     var lang = (window.I18N && I18N.lang) ? I18N.lang() : 'en';
-+    // French Home remains French when the untranslated dashboard falls back to English.
-+    var pageLang = typeof document !== 'undefined' && document.documentElement ? document.documentElement.lang : '';
-+    if (lang === 'en' && /^fr(?:-|$)/i.test(pageLang)) lang = pageLang;
-     function part(opts) {
-       try { return d.toLocaleDateString(lang === 'en' ? undefined : lang, opts); } catch (e) { return ''; }
-     }
-@@ -515,6 +726,7 @@
+@@ -515,6 +787,7 @@
    // ---------------------------------------------------------------- stage
  
    function fit() {
@@ -418,7 +584,7 @@
      var s = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
      var st = $('stage');
      stageScale = s;
-@@ -526,7 +738,7 @@
+@@ -526,7 +799,7 @@
  
    function byId(kind, id) {
      if (kind === 'app') {
@@ -427,7 +593,7 @@
        return find(data.apps, id);
      }
      if (kind === 'rec') return find(data.recommended, id);
-@@ -552,7 +764,11 @@
+@@ -552,7 +825,11 @@
      if (kind === 'rec') return state.arranging ? out : recCards();
      (data.order[kind] || []).forEach(function (id) {
        var it = byId(kind, id);
@@ -435,12 +601,12 @@
 +      // Kept ports only where the owner chose some; [] keeps every input.
 +      if (kind === 'dev' && it && layout && layout.devPorts && layout.devPorts.length &&
 +          layout.devPorts.indexOf(it.port) === -1) return;
-+      if (kind === 'app' && data.photos && data.photos.appId === id && !(state.arranging && !state.quickArrange)) return;
++      if (kind === 'app' && ((data.photos && data.photos.appId === id) || (data.shortcut && data.shortcut.appId === id)) && !(state.arranging && !state.quickArrange)) return;
 +      if (it && ((state.arranging && !state.quickArrange) || (!hidden(kind, id) && !inFolder(kind, id))) && !leftOut(kind, it)) out.push(it);
      });
      if (kind === 'app' && !state.arranging) {
        var inside = folderItems();
-@@ -571,14 +787,14 @@
+@@ -571,14 +848,14 @@
    }
    /*
     * The Recommended row shows the cards of the app in focus on the Apps row,
@@ -458,7 +624,7 @@
      return all.filter(function (it) { return it.app === recApp; });
    }
    function hasCards(app) {
-@@ -588,28 +804,42 @@
+@@ -588,28 +865,42 @@
    function followApps() {
      if (state.arranging || state.bar >= 0 || state.rail || rowKey() !== 'app') return;
      var it = items('app')[colOf('app')];
@@ -514,7 +680,7 @@
    }
  
    // An input with nothing plugged in, where the layout leaves those out, as well
-@@ -617,7 +847,7 @@
+@@ -617,7 +908,7 @@
    function leftOut(kind, it) { return kind === 'dev' && it.unused && layout.hideUnused === true && !state.arranging; }
    function rowKey() { return layout.rows[state.row]; }
    // A row with nothing to show is left out of the view, but not while arranging.
@@ -523,7 +689,7 @@
    // The first shown row from ri on in direction dir, or ri when there is none.
    function nextShown(ri, dir) {
      for (var i = ri; i >= 0 && i < layout.rows.length; i += dir) if (shown(i)) return i;
-@@ -662,21 +892,23 @@
+@@ -662,21 +953,23 @@
    }
  
    function render() {
@@ -550,7 +716,7 @@
      });
      // Rebuilt only when something shown changed: the minute's refresh of
      // what was last on leaves the rows, and where they are scrolled, alone.
-@@ -700,6 +932,8 @@
+@@ -700,6 +993,8 @@
        if (active) scrollTrack(active, active.querySelector('.tile.focus'), !animating);
      }
      if (folder.open) renderFolder();
@@ -559,7 +725,7 @@
    }
    var renderedRows = '', barWidths = [];
  
-@@ -716,7 +950,7 @@
+@@ -716,7 +1011,7 @@
  
    function appIcon(a) {
      return a.icon ? '<img src="' + esc(a.icon) + '" alt="">' :
@@ -568,7 +734,7 @@
    }
    // The first four of the folder's icons, as the tile that opens it.
    function folderIcon(inside) {
-@@ -727,24 +961,44 @@
+@@ -727,24 +1022,79 @@
      return '<span class="fold">' + html + '</span>';
    }
  
@@ -582,6 +748,38 @@
 +    'com.bell.fibetv.production': { brand: 'bell' },
 +    'com.webos.app.hdmi4': { brand: 'bell' }
 +  };
++
++  // Console and input faces. The name a TV's HDMI-CEC device reports picks
++  // the mark; an input with no console behind it shows its HDMI connector.
++  function consoleBrand(name) {
++    var n = String(name || '');
++    if (/xbox/i.test(n)) return 'xbox';
++    if (/playstation|dualsense|\bps\s?[345]\b/i.test(n)) return 'playstation';
++    if (/switch|nintendo|joy-?con/i.test(n)) return 'switch';
++    return '';
++  }
++  var CONSOLE_ART = {
++    // The real marks (Simple Icons paths). The Xbox X is the white sphere
++    // showing through the four green quadrants of the mark.
++    xbox: '<svg class="console-logo" viewBox="0 0 24 24" aria-hidden="true">' +
++      '<circle cx="12" cy="12" r="12" fill="#fff"/>' +
++      '<path fill="#107c10" d="M4.102 21.033C6.211 22.881 8.977 24 12 24c3.026 0 5.789-1.119 7.902-2.967 1.877-1.912-4.316-8.709-7.902-11.417-3.582 2.708-9.779 9.505-7.898 11.417zm11.16-14.406c2.5 2.961 7.484 10.313 6.076 12.912C23.002 17.48 24 14.861 24 12.004c0-3.34-1.365-6.362-3.57-8.536 0 0-.027-.022-.082-.042-.063-.022-.152-.045-.281-.045-.592 0-1.985.434-4.805 3.246zM3.654 3.426c-.057.02-.082.041-.086.042C1.365 5.642 0 8.664 0 12.004c0 2.854.998 5.473 2.661 7.533-1.401-2.605 3.579-9.951 6.08-12.91-2.82-2.813-4.216-3.245-4.806-3.245-.131 0-.223.021-.281.046v-.002zM12 3.551S9.055 1.828 6.755 1.746c-.903-.033-1.454.295-1.521.339C7.379.646 9.659 0 11.984 0H12c2.334 0 4.605.646 6.766 2.085-.068-.046-.615-.372-1.52-.339C14.946 1.828 12 3.545 12 3.545v.006z"/></svg>',
++    playstation: '<svg class="console-logo" viewBox="0 0 24 24" aria-hidden="true">' +
++      '<path fill="#fff" d="M8.984 2.596v17.547l3.915 1.261V6.688c0-.69.304-1.151.794-.991.636.18.76.814.76 1.505v5.875c2.441 1.193 4.362-.002 4.362-3.152 0-3.237-1.126-4.675-4.438-5.827-1.307-.448-3.728-1.186-5.39-1.502zm4.656 16.241l6.296-2.275c.715-.258.826-.625.246-.818-.586-.192-1.637-.139-2.357.123l-4.205 1.5V14.98l.24-.085s1.201-.42 2.913-.615c1.696-.18 3.785.03 5.437.661 1.848.601 2.04 1.472 1.576 2.072-.465.6-1.622 1.036-1.622 1.036l-8.544 3.107V18.86zM1.807 18.6c-1.9-.545-2.214-1.668-1.352-2.32.801-.586 2.16-1.052 2.16-1.052l5.615-2.013v2.313L4.205 17c-.705.271-.825.632-.239.826.586.195 1.637.15 2.343-.12L8.247 17v2.074c-.12.03-.256.044-.39.073-1.939.331-3.996.196-6.038-.479z"/></svg>',
++    switch: '<svg class="console-logo" viewBox="0 0 24 24" aria-hidden="true">' +
++      '<path fill="#fff" d="M14.176 24h3.674c3.376 0 6.15-2.774 6.15-6.15V6.15C24 2.775 21.226 0 17.85 0H14.1c-.074 0-.15.074-.15.15v23.7c-.001.076.075.15.226.15zm4.574-13.199c1.351 0 2.399 1.125 2.399 2.398 0 1.352-1.125 2.4-2.399 2.4-1.35 0-2.4-1.049-2.4-2.4-.075-1.349 1.05-2.398 2.4-2.398zM11.4 0H6.15C2.775 0 0 2.775 0 6.15v11.7C0 21.226 2.775 24 6.15 24h5.25c.074 0 .15-.074.15-.149V.15c.001-.076-.075-.15-.15-.15zM9.676 22.051H6.15c-2.326 0-4.201-1.875-4.201-4.201V6.15c0-2.326 1.875-4.201 4.201-4.201H9.6l.076 20.102zM3.75 7.199c0 1.275.975 2.25 2.25 2.25s2.25-.975 2.25-2.25c0-1.273-.975-2.25-2.25-2.25s-2.25.977-2.25 2.25z"/></svg>',
++    moonlight: '<svg class="console-logo" viewBox="0 0 100 100" aria-hidden="true">' +
++      '<path d="M64 16a36 36 0 1 0 22 60A30 30 0 0 1 64 16Z" fill="#fff"/>' +
++      '<circle cx="30" cy="74" r="3" fill="#fff" opacity=".7"/><circle cx="24" cy="46" r="2" fill="#fff" opacity=".5"/>' +
++      '<circle cx="76" cy="80" r="2" fill="#fff" opacity=".5"/></svg>'
++  };
++  function hdmiArt(port) {
++    return '<svg class="console-logo" viewBox="0 0 128 74" aria-hidden="true">' +
++      '<path d="M10 12h108l-12 40H22z" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/>' +
++      '<path d="M46 12l5 12h26l5-12" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/>' +
++      '<path d="M30 61h68" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg>' +
++      '<span class="port-name">' + esc(t('home.dev.port', 'HDMI {port}', { port: port })) + '</span>';
++  }
 +
    var TILE = {
      app: function (a, i) {
@@ -597,7 +795,7 @@
 +        '<img class="native-icon" src="' + esc(a.icon) + '" alt="">' :
 +        '<span class="brand-name">' + esc(a.lg ? 'LG' : a.title) + '</span>';
 +      return '<div class="' + cls + '" data-c="' + i + '" role="button" aria-label="' + esc((a.title || a.id) + (hidden('app', a.id) ? ' ' + t('home.hidden', 'Hidden') : '')) + '"><div class="face ' + (art ? art.brand : a.lg ? 'lg' : '') + '">' +
-+        icon + '</div><div class="nm">' + esc(a.title) + '</div>' + hiddenLabel + folderLabel + '</div>';
++        icon + '<span class="cap">' + esc(a.title) + '</span></div><div class="nm">' + esc(a.title) + '</div>' + hiddenLabel + folderLabel + '</div>';
      },
      dev: function (d, i) {
        var last = layout.showLastOn !== false && lastOn.kind === 'input' && lastOn.port === d.port;
@@ -614,14 +812,17 @@
 +      // own HDMI-CEC devices report.
 +      var consolePort = !!(layout.devPorts && layout.devPorts.length && layout.devPorts.indexOf(d.port) !== -1);
 +      var name = consolePort ? (d.port === 1 ? 'Nintendo Switch 2' : d.port === 3 ? 'Xbox Series X' : d.name) : d.name;
-+      var brand = consolePort ? (d.port === 1 ? 'switch' : 'xbox') : '';
-+      return '<div class="' + cls + '" data-c="' + i + '" role="button" aria-label="' + esc(name + ', ' + path + (hidden('dev', d.id) ? ' ' + t('home.hidden', 'Hidden') : '')) + '"><div class="face ' + brand + '">' +
-+        '<span class="brand-name">' + esc(consolePort ? (d.port === 1 ? 'Switch 2' : 'Xbox') : d.name) + '</span></div><div class="nm">' + esc(name) + '</div>' +
-+        '<div class="path">' + esc(path) + '</div>' + hiddenLabel + '</div>';
++      var brand = consoleBrand(name) || (consolePort ? (d.port === 1 ? 'switch' : 'xbox') : '');
++      // An unnamed input is its port: no second line repeating it.
++      var label = name || path;
++      var sub = name ? '<div class="path">' + esc(path) + '</div>' : '';
++      return '<div class="' + cls + '" data-c="' + i + '" role="button" aria-label="' + esc(label + (name ? ', ' + path : '') + (hidden('dev', d.id) ? ' ' + t('home.hidden', 'Hidden') : '')) + '"><div class="face ' + (brand || 'hdmi') + '">' +
++        (CONSOLE_ART[brand] || hdmiArt(d.port)) + '</div><div class="nm">' + esc(label) + '</div>' +
++        sub + hiddenLabel + '</div>';
      },
      ch: function (c, i) {
        var cls = 'tile ch' + (hidden('ch', c.id) ? ' hidden' : '');
-@@ -761,18 +1015,19 @@
+@@ -761,18 +1111,19 @@
      rec: function (r, i) {
        var app = find(data.apps, r.app);
        var pic = r.image ? ' style="background-image:url(\'' + esc(r.image.replace(/'/g, '%27')) + '\')"' : '';
@@ -645,7 +846,7 @@
        var tiles = rowEl.querySelectorAll('.tile'), c = colOf(kind);
        for (var ci = 0; ci < tiles.length; ci++) {
          var on = active && ci === c;
-@@ -783,6 +1038,9 @@
+@@ -783,6 +1134,9 @@
        // stays where it was left.
        if (!noScroll && active) scrollTrack(rowEl, tiles[c], instant);
      }
@@ -655,7 +856,7 @@
      for (var b = 0; b < BAR.length; b++) $(BAR[b]).className = 'btn' + (state.bar === b ? ' focus' : '');
      $('rail').className = state.rail && !finder.open ? 'focus' : '';
      followApps();
-@@ -803,6 +1061,7 @@
+@@ -803,6 +1157,7 @@
          : inFolder(rowKey(), it.id) ? t('home.arrange.isInFolder', '{name} (in More apps)', { name: it.title })
          : (it.title || it.name);
      }
@@ -663,7 +864,7 @@
    }
  
    // ---------------------------------------------------------------- scrolling
-@@ -1031,7 +1290,7 @@
+@@ -1031,7 +1386,7 @@
    function aim() {
      glide = null;
      hoverKey = null;
@@ -672,16 +873,26 @@
        var list = recents.open ? [$('recents')] : document.querySelectorAll('.row');
        for (var i = 0; i < list.length; i++) {
          var wrap = list[i].querySelector('.wrap');
-@@ -1068,6 +1327,8 @@
+@@ -1068,6 +1423,18 @@
     * wheelDelta has the opposite sign to deltaY.
     */
    function onWheel(e) {
 +    if (homeSettings.open) { e.preventDefault(); return; }
-+    if (drawer.open || finder.open) return;
++    if (drawer.open) {
++      // The Magic Remote's wheel scrolls the grid itself; the page never scrolls.
++      var sc = $('allAppsScroll');
++      var wd = e.deltaY !== undefined ? e.deltaY : -e.wheelDelta;
++      if (sc && wd) {
++        e.preventDefault();
++        sc.scrollTop = Math.max(0, Math.min(sc.scrollHeight - sc.clientHeight, sc.scrollTop + wd));
++      }
++      return;
++    }
++    if (finder.open) return;
      e.preventDefault();
      if (!data || !layout || layoutBusy || state.held || folder.open) return;
      var d = e.deltaY !== undefined ? e.deltaY : -e.wheelDelta;
-@@ -1086,10 +1347,54 @@
+@@ -1086,10 +1453,55 @@
      kick();
    }
  
@@ -689,22 +900,23 @@
 +    var sun = '<circle cx="24" cy="24" r="9"/><path d="M24 3v6m0 30v6M3 24h6m30 0h6M9 9l4 4m22 22 4 4M9 39l4-4m22-22 4-4"/>';
 +    var moon = '<path d="M35 34A17 17 0 0 1 16 8a17 17 0 1 0 19 26Z"/>';
 +    var cloud = '<path d="M13 33h22a8 8 0 0 0 0-16h-2A12 12 0 0 0 10 20a7 7 0 0 0 3 13Z"/>';
-+    var body = cloud, name = 'Conditions indisponibles';
-+    if (code === 0 || code === 1) { body = isDay ? sun : moon; name = code === 0 ? 'Ciel dégagé' : 'Généralement dégagé'; }
++    var body = cloud, name = 'Conditions unavailable';
++    if (code === 0 || code === 1) { body = isDay ? sun : moon; name = code === 0 ? 'Clear sky' : 'Mostly clear'; }
 +    else if (code === 2) {
 +      body = '<g transform="translate(0 -5) scale(.7)">' + (isDay ? sun : moon) + '</g>' + cloud;
-+      name = 'Partiellement nuageux';
-+    } else if (code === 3) { name = 'Couvert'; }
-+    else if (code === 45 || code === 48) { body = cloud + '<path d="M7 39h34M12 44h24"/>'; name = 'Brouillard'; }
++      name = 'Partly cloudy';
++    } else if (code === 3) { name = 'Overcast'; }
++    else if (code === 45 || code === 48) { body = cloud + '<path d="M7 39h34M12 44h24"/>'; name = 'Fog'; }
 +    else if ([51,53,55,56,57,61,63,65,66,67,80,81,82].indexOf(code) !== -1) {
 +      body = cloud + '<path d="m15 38-2 6m12-6-2 6m12-6-2 6"/>';
-+      name = code < 60 ? 'Bruine' : 'Pluie';
-+      if ([56,57,66,67].indexOf(code) !== -1) name += ' verglaçante';
-+      else if (code >= 80) name = 'Averses';
++      name = code < 60 ? 'Drizzle' : 'Rain';
++      if ([56,57].indexOf(code) !== -1) name = 'Freezing drizzle';
++      else if ([66,67].indexOf(code) !== -1) name = 'Freezing rain';
++      else if (code >= 80) name = 'Showers';
 +    } else if ([71,73,75,77,85,86].indexOf(code) !== -1) {
-+      body = cloud + '<path d="M15 38v7m-3-5 6 3m0-3-6 3m21-5v7m-3-5 6 3m0-3-6 3"/>'; name = 'Neige';
++      body = cloud + '<path d="M15 38v7m-3-5 6 3m0-3-6 3m21-5v7m-3-5 6 3m0-3-6 3"/>'; name = 'Snow';
 +    } else if ([95,96,99].indexOf(code) !== -1) {
-+      body = cloud + '<path d="m25 33-6 8h7l-5 7"/>'; name = code === 95 ? 'Orage' : 'Orage et grêle';
++      body = cloud + '<path d="m25 33-6 8h7l-5 7"/>'; name = code === 95 ? 'Thunderstorm' : 'Thunderstorm with hail';
 +    }
 +    return { name: name, svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">' + body + '</svg>' };
 +  }
@@ -715,16 +927,16 @@
 +      if (!r || !r.ok || typeof r.temperature !== 'number' || !isFinite(r.temperature) ||
 +          typeof r.observedAt !== 'number' || Date.now() - r.observedAt > 60 * 60000) {
 +        $('weather').className = 'unavailable';
-+        $('weatherDetail').textContent = 'Météo indisponible';
++        $('weatherDetail').textContent = 'Weather unavailable';
 +        return;
 +      }
 +      var icon = weatherSymbol(r.code, r.isDay);
 +      $('weather').className = '';
-+      $('weatherCity').textContent = r.label || 'Météo';
++      $('weatherCity').textContent = r.label || 'Weather';
 +      $('weatherCredit').style.display = r.demo ? 'none' : '';
 +      $('weatherIcon').innerHTML = icon.svg;
 +      $('weatherTemp').textContent = Math.round(r.temperature) + '°C';
-+      $('weatherDetail').textContent = (r.demo ? 'Démo · ' : '') + icon.name + (r.stale ? ' · à ' + hm(new Date(r.observedAt)) : '');
++      $('weatherDetail').textContent = (r.demo ? 'Demo · ' : '') + icon.name + (r.stale ? ' · at ' + hm(new Date(r.observedAt)) : '');
 +    });
 +  }
 +
@@ -732,11 +944,11 @@
  
    function renderNow() {
      var d = new Date();
-+    $('greeting').textContent = d.getHours() >= 18 || d.getHours() < 6 ? 'Bonsoir' : 'Bonjour';
++    $('greeting').textContent = d.getHours() >= 18 || d.getHours() < 6 ? 'Good evening' : 'Good morning';
      var p = hmParts(d);
      $('hm').textContent = p[0];
      $('mer').textContent = p[1];
-@@ -1276,20 +1581,55 @@
+@@ -1276,20 +1688,55 @@
    }
  
    function move(dr, dc) {
@@ -797,7 +1009,7 @@
      }
      // Up and down from a row's Order go to the next row's.
      if (dr && onSort) state.col[rowKey()] = -1;
-@@ -1302,14 +1642,104 @@
+@@ -1302,14 +1749,104 @@
        if (outside) state.col[kind] = dc > 0 ? span[0] : span[1];
        else state.col[kind] = Math.max(state.arranging ? -1 : 0, Math.min(items(kind).length - 1, c + dc));
      }
@@ -810,7 +1022,8 @@
 +    $('stage').className = (state.arranging ? 'arranging' : '') + (state.quickArrange ? ' quick-arranging' : '') + (nightMode ? ' night' : '') + (drawer.open ? ' all-apps' : '') + (homeSettings.open ? ' settings-open' : '') + (recents.open ? ' recents' : '') +
        (finder.open ? ' finding' : '') + (finder.typing ? ' typing' : '') + (searchOn() ? '' : ' no-search') + (folder.open ? ' folder' : '') +
        (layout && layout.showClock === false ? ' no-clock' : '') + (layout && layout.rowsBottom === true ? ' rows-bottom' : '') +
-       (layout && layout.view === 'alternative' ? ' alternative' : '');
+-      (layout && layout.view === 'alternative' ? ' alternative' : '');
++      (layout && layout.view === 'alternative' ? ' alternative' : '') + (contextSheet.open ? ' all-context' : '');
 +  }
 +
 +  // ---------------------------------------------------------------- simple Home settings
@@ -839,7 +1052,7 @@
 +    clearTimeout(okTimer); okDownAt = 0;
 +    state.rail = false; state.zone = 'settings';
 +    homeSettings.open = true; homeSettings.okDown = false;
-+    $('homeSettingsStatus').textContent = homeSettings.busy ? 'Enregistrement…' : '';
++    $('homeSettingsStatus').textContent = homeSettings.busy ? 'Saving…' : '';
 +    $('homeSettings').setAttribute('aria-hidden', 'false');
 +    $('homeSettingsTrigger').setAttribute('aria-expanded', 'true');
 +    stageClass(); applyFocus(); focusHomeSettings(0);
@@ -855,12 +1068,12 @@
 +  function toggleRecommended() {
 +    if (!layout || homeSettings.busy || homeSettings.launching || layoutBusy) return;
 +    homeSettings.busy = true; layoutBusy = true; layoutRevision++;
-+    $('homeSettingsStatus').textContent = 'Enregistrement…'; paintHomeSettings();
++    $('homeSettingsStatus').textContent = 'Saving…'; paintHomeSettings();
 +    // Send only this preference: preserve concurrent app order, Photos and all other settings.
 +    postJson('/api/home/layout', { recommended: layout.recommended !== true }, function (r) {
 +      homeSettings.busy = false; layoutBusy = false; layoutRevision++;
 +      if (!r || !r.ok || !r.layout) {
-+        $('homeSettingsStatus').textContent = 'Enregistrement non confirmé. Vérifiez le réglage avant de réessayer.';
++        $('homeSettingsStatus').textContent = 'Save not confirmed. Check the setting before trying again.';
 +        paintHomeSettings();
 +        return load(function () { paintHomeSettings(); });
 +      }
@@ -873,12 +1086,12 @@
 +  function launchGlasshouseSettings() {
 +    if (homeSettings.launching || homeSettings.busy || layoutBusy) return;
 +    homeSettings.launching = true;
-+    $('homeSettingsStatus').textContent = 'Ouverture de Glasshouse…'; paintHomeSettings();
++    $('homeSettingsStatus').textContent = 'Opening Glasshouse…'; paintHomeSettings();
 +    // Existing installed webOS app, validated by the server's launch-point list.
 +    postJson('/api/home/open', { kind: 'app', id: 'com.tvweb.dashboard' }, function (r) {
 +      homeSettings.launching = false; paintHomeSettings();
 +      if (!r || !r.ok) {
-+        $('homeSettingsStatus').textContent = 'Glasshouse n’a pas confirmé l’ouverture.';
++        $('homeSettingsStatus').textContent = 'Glasshouse did not confirm the launch.';
 +        return;
 +      }
 +      $('homeSettingsStatus').textContent = '';
@@ -904,37 +1117,61 @@
    }
  
    // ---------------------------------------------------------------- more apps
-@@ -1378,6 +1808,126 @@
+@@ -1378,6 +1915,282 @@
      focusFolder();
    }
  
-+  // ---------------------------------------------------------------- photos and installed apps
++  // ---------------------------------------------------------------- shortcut and installed apps
 +
-+  // These are launch shortcuts only: no photo service, URL or credentials enter Home.
-+  var drawer = { open: false, apps: [], index: 0, busy: false, revision: 0, returnRow: 0, returnCol: {} };
++  // A launch shortcut beside the Consoles: one app named in the layout, with
++  // no service URL or credentials in Home. Unset, it falls back to the photo
++  // client the layout names, as earlier builds did.
++  var drawer = { open: false, apps: [], index: 0, busy: false, revision: 0, returnRow: 0, returnCol: {}, sorted: false, tools: false, tool: 0 };
++  var contextSheet = { open: false, app: null, index: 0 };
 +  var photosBusy = false;
 +  var DRAWER_COLUMNS = 5;
-+  function photosStatus() {
-+    var photos = data && data.photos;
-+    if (!photos || !photos.appId) return t('home.photos.unconfigured', 'Non configuré');
-+    return photos.installed ? t('home.photos.ready', 'Prêt') : t('home.photos.missing', 'Application absente');
++  function shortcut() {
++    var s = data && data.shortcut;
++    if (s && s.appId) {
++      var brand = /moonlight|limelight/i.test(s.appId) ? 'moonlight' : /immich/i.test(s.appId) ? 'immich' : '';
++      return { appId: s.appId, title: s.title || s.appId, installed: s.installed === true, brand: brand };
++    }
++    var p = data && data.photos;
++    if (p && p.appId) return { appId: p.appId, title: t('home.photos.title', 'Photos'), installed: p.installed === true, brand: 'immich' };
++    return null;
 +  }
-+  function photosMarkup() {
++  function photosStatus() {
++    var s = shortcut();
++    if (!s) return t('home.shortcut.unconfigured', 'Not configured');
++    return s.installed ? t('home.shortcut.ready', 'Ready') : t('home.shortcut.missing', 'App not installed');
++  }
++  function shortcutMarkup() {
++    var s = shortcut();
++    var title = s ? s.title : t('home.photos.title', 'Photos');
++    var brand = s ? s.brand : 'immich';
++    var label = data && data.shortcut && data.shortcut.appId ? title : 'Immich';
 +    // The official transparent flower stays consistent even if a client ships a white app icon.
-+    var icon = '<img class="immich-logo" src="/assets/third-party/immich/immich-logo.svg" alt="">';
-+    return '<aside id="photos" aria-labelledby="photosTitle"><h2 id="photosTitle">' + esc(t('home.photos.title', 'Photos')) + '</h2>' +
-+      '<button type="button" id="photosTile" tabindex="-1" aria-label="Immich" aria-describedby="photosStatus"><span class="face photos-face immich">' + icon + '</span>' +
++    var art = brand === 'immich' ? '<img class="immich-logo" src="/assets/third-party/immich/immich-logo.svg" alt="">' :
++      (CONSOLE_ART[brand] || '<span class="brand-name">' + esc(title.charAt(0).toUpperCase()) + '</span>');
++    return '<aside id="photos" aria-labelledby="photosTitle"><h2 id="photosTitle">' + esc(title) + '</h2>' +
++      '<button type="button" id="photosTile" tabindex="-1" aria-label="' + esc(label) + '" aria-describedby="photosStatus"><span class="face photos-face ' + esc(brand) + '">' + art + '</span>' +
 +      '<span id="photosStatus">' + esc(photosStatus()) + '</span></button></aside>';
 +  }
++  function photosMarkup() { return shortcutMarkup(); }
 +  function activatePhotos() {
-+    var photos = data && data.photos;
-+    if (!photos || !photos.appId) return toast(t('home.photos.unconfigured', 'Non configuré'),
-+      t('home.photos.configureHint', 'Choisissez une application photo installée dans la configuration de Glasshouse.'));
-+    if (!photos.installed) return toast(t('home.photos.missing', 'Application absente'),
-+      t('home.photos.missingHint', 'Le client photo configuré n’est pas installé sur cette télévision.'));
++    var s = shortcut();
++    var kind = data && data.shortcut && data.shortcut.appId ? 'shortcut' : 'photos';
++    if (!s) {
++      return kind === 'shortcut' ? toast(t('home.shortcut.unconfigured', 'Not configured'),
++        t('home.shortcut.configureHint', 'Choose an app for this tile in the Glasshouse settings.')) :
++        toast(t('home.photos.unconfigured', 'Not configured'),
++          t('home.photos.configureHint', 'Choose an installed photo app in the Glasshouse settings.'));
++    }
++    if (!s.installed) return toast(t('home.shortcut.missing', 'App not installed'),
++      t('home.shortcut.missingHint', 'The app chosen for this tile is not installed on this TV.'));
 +    if (photosBusy) return;
 +    photosBusy = true;
-+    postJson('/api/home/open', { kind: 'photos' }, function (r) {
++    postJson('/api/home/open', { kind: kind }, function (r) {
 +      photosBusy = false;
 +      if (!r || !r.ok) toast(t('home.openFailed', 'That did not open'), r && r.error);
 +    });
@@ -954,7 +1191,7 @@
 +    drawer.returnRow = state.row;
 +    drawer.returnCol = {};
 +    for (var key in state.col) drawer.returnCol[key] = state.col[key];
-+    drawer.open = true; drawer.index = 0; drawer.revision++;
++    drawer.open = true; drawer.index = 0; drawer.revision++; drawer.tools = false; drawer.tool = 0;
 +    $('allAppsTrigger').setAttribute('aria-expanded', 'true');
 +    $('allApps').setAttribute('aria-hidden', 'false');
 +    renderDrawer(); stageClass(); applyFocus();
@@ -962,7 +1199,7 @@
 +  function closeDrawer() {
 +    if (!drawer.open) return;
 +    resetPointerGlass();
-+    drawer.open = false; drawer.revision++;
++    drawer.open = false; drawer.revision++; drawer.tools = false;
 +    state.zone = 'rows'; state.row = drawer.returnRow; state.col = drawer.returnCol;
 +    if (!shown(state.row)) state.row = nextShown(0, 1);
 +    if (rowKey() === 'dev' && !items('dev').length) state.row = layout.rows.indexOf('app');
@@ -970,20 +1207,47 @@
 +    $('allApps').setAttribute('aria-hidden', 'true');
 +    stageClass(); applyFocus();
 +  }
++  // The drawer lists every installed app, in the TV's order or by title.
++  function drawerApps() {
++    var apps = installedApps();
++    if (!drawer.sorted) return apps;
++    return apps.slice().sort(function (a, b) {
++      return String(a.title || a.id).toLowerCase().localeCompare(String(b.title || b.id).toLowerCase());
++    });
++  }
 +  function renderDrawer() {
 +    resetPointerGlass();
 +    var selected = drawer.apps[drawer.index];
-+    drawer.apps = installedApps();
++    drawer.apps = drawerApps();
 +    if (selected) {
 +      for (var i = 0; i < drawer.apps.length; i++) if (drawer.apps[i].id === selected.id) drawer.index = i;
 +    }
 +    drawer.index = Math.max(0, Math.min(drawer.index, drawer.apps.length - 1));
 +    $('allAppsGrid').innerHTML = drawer.apps.length ? drawer.apps.map(function (app, i) {
 +      return TILE.app(app, i).replace('tile app', 'tile drawer-app').replace(/ hidden\b/g, '');
-+    }).join('') : '<p class="empty">' + esc(t('home.allApps.empty', 'Aucune application disponible. Retour pour revenir au carrousel.')) + '</p>';
-+    focusDrawer();
++    }).join('') : '<p class="empty">' + esc(t('home.allApps.empty', 'No apps available. Back returns to the carousel.')) + '</p>';
++    $('allAppsCount').textContent = drawer.apps.length === 1 ?
++      t('home.allApps.countOne', '1 app') : t('home.allApps.count', '{n} apps', { n: drawer.apps.length });
++    $('allAppsSort').setAttribute('aria-pressed', drawer.sorted ? 'true' : 'false');
++    $('allAppsSort').textContent = drawer.sorted ? t('home.allApps.sortOn', 'A–Z') : t('home.allApps.sortOff', 'TV order');
++    if (drawer.tools) focusDrawerTools(); else focusDrawer();
++  }
++  function clearDrawerToolsFocus() {
++    $('allAppsSort').className = '';
++    $('allAppsClose').className = '';
++    $('allAppsSort').setAttribute('tabindex', '-1');
++    $('allAppsClose').setAttribute('tabindex', '-1');
++  }
++  function focusDrawerTools() {
++    resetPointerGlass();
++    var sort = $('allAppsSort'), close = $('allAppsClose');
++    sort.className = drawer.tool === 0 ? 'focus' : '';
++    close.className = drawer.tool === 1 ? 'focus' : '';
++    sort.setAttribute('tabindex', drawer.tool === 0 ? '0' : '-1');
++    close.setAttribute('tabindex', drawer.tool === 1 ? '0' : '-1');
 +  }
 +  function focusDrawer() {
++    clearDrawerToolsFocus();
 +    var tiles = $('allAppsGrid').querySelectorAll('.drawer-app');
 +    for (var i = 0; i < tiles.length; i++) {
 +      tiles[i].className = 'tile drawer-app' + (i === drawer.index ? ' focus' : '');
@@ -992,11 +1256,16 @@
 +    }
 +    var tile = tiles[drawer.index], scroll = $('allAppsScroll');
 +    if (tile) {
-+      var top = tile.offsetTop - $('allAppsGrid').offsetTop;
-+      if (top < scroll.scrollTop) scroll.scrollTop = top;
++      var top = tile.offsetTop - $('allAppsGrid').offsetTop - 14;
++      if (top < scroll.scrollTop) scroll.scrollTop = Math.max(0, top);
 +      if (top + tile.offsetHeight > scroll.scrollTop + scroll.clientHeight) scroll.scrollTop = top + tile.offsetHeight - scroll.clientHeight;
 +    }
 +    if (pointerGlass.tile && pointerGlass.tile !== tile) resetPointerGlass();
++  }
++  function toggleDrawerSort() {
++    drawer.sorted = !drawer.sorted;
++    $('allAppsScroll').scrollTop = 0;
++    renderDrawer();
 +  }
 +  function activateDrawer() {
 +    var app = drawer.apps[drawer.index];
@@ -1011,14 +1280,114 @@
 +    });
 +  }
 +  function drawerKey(k) {
-+    if (k === KEY.ok) return activateDrawer();
-+    if (k === KEY.up && drawer.index < DRAWER_COLUMNS) return closeDrawer();
++    // Letter jump: pressing A-Z jumps to the first app whose title starts with that letter.
++    if (k >= 65 && k <= 90) {
++      var letter = String.fromCharCode(k).toLowerCase();
++      for (var i = 0; i < drawer.apps.length; i++) {
++        if (String(drawer.apps[i].title || drawer.apps[i].id).toLowerCase().charAt(0) === letter) {
++          drawer.index = i; focusDrawer(); return;
++        }
++      }
++      return;
++    }
++    if (k === KEY.ok) {
++      if (!drawer.tools) return activateDrawer();
++      if (drawer.tool === 0) return toggleDrawerSort();
++      return closeDrawer();
++    }
++    if (drawer.tools) {
++      if (k === KEY.left) drawer.tool = Math.max(0, drawer.tool - 1);
++      else if (k === KEY.right) drawer.tool = Math.min(1, drawer.tool + 1);
++      else if (k === KEY.down) { drawer.tools = false; return focusDrawer(); }
++      return focusDrawerTools();
++    }
++    if (k === KEY.up && drawer.index < DRAWER_COLUMNS) {
++      drawer.tools = true; drawer.tool = 0;
++      return focusDrawerTools();
++    }
 +    if (k === KEY.left) drawer.index = Math.max(0, drawer.index - 1);
 +    else if (k === KEY.right) drawer.index = Math.min(drawer.apps.length - 1, drawer.index + 1);
 +    else if (k === KEY.up) drawer.index = Math.max(0, drawer.index - DRAWER_COLUMNS);
 +    else if (k === KEY.down) drawer.index = Math.min(drawer.apps.length - 1, drawer.index + DRAWER_COLUMNS);
++    else if (k === KEY.pageUp) drawer.index = Math.max(0, drawer.index - DRAWER_COLUMNS * 3);
++    else if (k === KEY.pageDown) drawer.index = Math.min(drawer.apps.length - 1, drawer.index + DRAWER_COLUMNS * 3);
 +    drawer.index = Math.max(0, drawer.index);
 +    focusDrawer();
++  }
++  // Apple TV-style context sheet: long-press on a drawer app shows actions.
++  function openContextSheet() {
++    if (!drawer.open || !drawer.apps[drawer.index]) return;
++    var app = drawer.apps[drawer.index];
++    contextSheet.open = true;
++    contextSheet.app = app;
++    contextSheet.index = 0;
++    $('contextApp').textContent = app.title || app.id;
++    $('contextSheet').setAttribute('aria-hidden', 'false');
++    stageClass();
++    focusContextSheet();
++  }
++  function closeContextSheet() {
++    if (!contextSheet.open) return;
++    contextSheet.open = false;
++    contextSheet.app = null;
++    $('contextSheet').setAttribute('aria-hidden', 'true');
++    stageClass();
++    if (drawer.open) focusDrawer();
++  }
++  function focusContextSheet() {
++    var btns = document.querySelectorAll('.context-action');
++    for (var i = 0; i < btns.length; i++) {
++      btns[i].className = 'context-action' + (i === contextSheet.index ? ' focus' : '');
++    }
++    var close = $('contextClose');
++    if (close) close.className = contextSheet.index === btns.length ? 'focus' : '';
++  }
++  function contextSheetKey(k) {
++    var n = 4;
++    if (k === KEY.back || k === 27) return closeContextSheet();
++    if (k === KEY.up) contextSheet.index = Math.max(0, contextSheet.index - 1);
++    else if (k === KEY.down) contextSheet.index = Math.min(n, contextSheet.index + 1);
++    else if (k === KEY.ok) {
++      var actions = ['open', 'hide', 'folder', 'info'];
++      if (contextSheet.index < actions.length) {
++        var action = actions[contextSheet.index];
++        var app = contextSheet.app;
++        if (action === 'open') {
++          closeContextSheet();
++          drawer.busy = true;
++          var rev = drawer.revision;
++          postJson('/api/home/open', { kind: 'app', id: app.id }, function (r) {
++            drawer.busy = false;
++            if (rev !== drawer.revision) return;
++            if (!r || !r.ok) toast(t('home.openFailed', 'That did not open'), r && r.error);
++            else closeDrawer();
++          });
++        } else if (action === 'hide') {
++          var hiddenApps = layout.hidden.app.slice();
++          var at = hiddenApps.indexOf(app.id);
++          if (at >= 0) hiddenApps.splice(at, 1); else hiddenApps.push(app.id);
++          postJson('/api/home/layout', { hidden: { app: hiddenApps } }, function (r) {
++            if (r && r.layout) layout = r.layout;
++            toast(at >= 0 ? t('home.context.shown', 'Back on Home') : t('home.context.hidden', 'Hidden from Home'));
++          });
++          closeContextSheet();
++        } else if (action === 'folder') {
++          if ((layout.folder || []).indexOf(app.id) < 0) layout.folder = (layout.folder || []).concat([app.id]);
++          postJson('/api/home/layout', { folder: layout.folder }, function (r) {
++            if (r && r.layout) layout = r.layout;
++            toast(t('home.context.moved', 'Moved to folder'));
++          });
++          closeContextSheet();
++        } else if (action === 'info') {
++          toast(app.title || app.id, app.id);
++          closeContextSheet();
++        }
++      } else {
++        closeContextSheet();
++      }
++      return;
++    }
++    focusContextSheet();
 +  }
 +  function ancestorId(target, id) {
 +    while (target && target !== document.body) {
@@ -1031,7 +1400,7 @@
    // ---------------------------------------------------------------- recent apps
  
    /*
-@@ -1388,6 +1938,7 @@
+@@ -1388,6 +2201,7 @@
    var recents = { open: false, loading: false, revision: 0, apps: [], col: 0, onX: false, onAll: false, busy: false, stamp: 0 };
  
    function openRecents() {
@@ -1039,7 +1408,7 @@
      if (recents.busy) return;
      recents.busy = true;
      recents.loading = true;
-@@ -1414,6 +1965,8 @@
+@@ -1414,6 +2228,8 @@
      if (glide && glide.key === 'recents') glide = null;
      if (hoverKey === 'recents') hoverKey = null;
      stageClass();
@@ -1048,12 +1417,12 @@
    }
  
    function showRecents(apps) {
-@@ -1863,14 +2416,14 @@
+@@ -1863,14 +2679,14 @@
        layoutRevision++;
        if (!r || !r.ok || !r.layout) {
          layoutBusy = false;
 -        return toast(t('home.arrange.saveFailed', 'Layout could not be saved'));
-+        return toast('Impossible d’enregistrer l’ordre');
++        return toast('Could not save the order');
        }
        movedRows = {};
        channelsChanged = false;
@@ -1061,11 +1430,11 @@
        if (!stay) {
          layoutBusy = false;
 -        toast(t('home.arrange.saved', 'Layout saved'), t('home.arrange.savedDesc', 'The dashboard\'s Home tab shows it too'));
-+        toast('Ordre enregistré');
++        toast('Order saved');
          return load();
        }
        // Keep edits blocked until the new order has arrived as well as the save.
-@@ -1878,12 +2431,14 @@
+@@ -1878,12 +2694,14 @@
      });
    }
  
@@ -1081,7 +1450,7 @@
      state.held = false;
      state.bar = -1;
      state.rail = false;
-@@ -2012,6 +2567,12 @@
+@@ -2012,6 +2830,12 @@
    }
  
    function arrangeKey(k) {
@@ -1094,23 +1463,69 @@
      if (state.bar >= 0) {
        if (k === KEY.left) state.bar = Math.max(0, state.bar - 1);
        else if (k === KEY.right) state.bar = Math.min(BAR.length - 1, state.bar + 1);
-@@ -2038,7 +2599,10 @@
+@@ -2038,44 +2862,71 @@
    function onKeyDown(e) {
      stopPointing();
      landAll();
 +    resetPointerGlass();
++    var k = e.keyCode;
++    // Handle Back only once Home has a usable view. Before the first catalogue
++    // arrives, preserve webOS's native Back so a blank preview can be exited.
++    if (k === KEY.back || k === 27) {
++      if (!data || !layout) return;
++      e.preventDefault();
++      if (backDown) return;
++      // The panel's own handler sets backDown as it closes.
++      if (homeSettings.open) return settingsKey(e);
++      if (finder.open) return finderKey(KEY.back);
++      backDown = true;
++      if (folder.open) return closeFolder();
++      if (recExpanded && !drawer.open && !recents.open && state.zone === 'rows') return closeRecommendations();
++      clearTimeout(okTimer); okDownAt = 0;
++      if (contextSheet.open) return closeContextSheet();
++      if (drawer.open) return closeDrawer();
++      if (state.zone !== 'rows') { state.zone = 'rows'; return applyFocus(); }
++      if (recents.open || recents.loading) return closeRecents();
++      if (state.quickArrange) return setArranging(false);
++      if (state.arranging && state.held) { state.held = false; return toggleHidden(); }
++      if (state.arranging) return setArranging(false);
++      return openRecents();
++    }
      if (!data || !layout) return;
-+    if (!homeSettings.open && homeSettings.okDown && (e.keyCode === KEY.ok || e.keyCode === 32)) { e.preventDefault(); return; }
++    if (!homeSettings.open && homeSettings.okDown && (k === KEY.ok || k === 32)) { e.preventDefault(); return; }
 +    if (homeSettings.open) return settingsKey(e);
      if (finder.open) {
        // OK held repeats: one press opens one app. The keyboard's Enter sends
        // no key up (ime/sendEnterKey on a G3), so it is not counted.
-@@ -2057,24 +2621,33 @@
+-      if (e.keyCode === KEY.ok && finder.okDown) { e.preventDefault(); return; }
+-      if (e.keyCode === KEY.ok && !finder.typing) finder.okDown = true;
+-      if (finderKey(e.keyCode)) e.preventDefault();
++      if (k === KEY.ok && finder.okDown) { e.preventDefault(); return; }
++      if (k === KEY.ok && !finder.typing) finder.okDown = true;
++      if (finderKey(k)) e.preventDefault();
+       return;
+     }
+     if (layoutBusy) { e.preventDefault(); return; }
+-    var k = e.keyCode;
+     if (k === KEY.ok) {
+-      // Acted on at release, unless held: a long press arranges.
++      // Acted on at release, unless held: a long press arranges the carousel.
+       e.preventDefault();
+       if (okDownAt) return;
+       okDownAt = Date.now();
        okLong = false;
        okInRecents = recents.open;
        okInFolder = folder.open;
 -      if (okInRecents || okInFolder) return;
 +      okSurface = drawer.open ? 'drawer' : okInRecents ? 'recents' : state.zone;
++      if (okSurface === 'drawer') {
++        okTimer = setTimeout(function () {
++          if (!drawer.open) return;
++          okLong = true;
++          openContextSheet();
++        }, LONG_PRESS_MS);
++        return;
++      }
 +      if (okInFolder || okInRecents || okSurface !== 'rows') return;
        okTimer = setTimeout(function () {
          okLong = true;
@@ -1123,26 +1538,22 @@
        return;
      }
 -    if (k === KEY.back) {
-+    if (k === KEY.back || k === 27) {
-       e.preventDefault();
-       if (backDown) return;
-       backDown = true;
-       if (folder.open) return closeFolder();
-+      if (recExpanded && !drawer.open && !recents.open && state.zone === 'rows') return closeRecommendations();
-+      clearTimeout(okTimer); okDownAt = 0;
-+      if (drawer.open) return closeDrawer();
-+      if (state.zone !== 'rows') { state.zone = 'rows'; return applyFocus(); }
-       if (recents.open || recents.loading) return closeRecents();
-+      if (state.quickArrange) return setArranging(false);
-       if (state.arranging && state.held) { state.held = false; return toggleHidden(); }
-       if (state.arranging) return setArranging(false);
-       return openRecents();
-     }
+-      e.preventDefault();
+-      if (backDown) return;
+-      backDown = true;
+-      if (folder.open) return closeFolder();
+-      if (recents.open || recents.loading) return closeRecents();
+-      if (state.arranging && state.held) { state.held = false; return toggleHidden(); }
+-      if (state.arranging) return setArranging(false);
+-      return openRecents();
+-    }
+-    if (folder.open) { e.preventDefault(); return folderKey(k); }
++    if (contextSheet.open) { e.preventDefault(); return contextSheetKey(k); }
 +    if (drawer.open) { e.preventDefault(); return drawerKey(k); }
-     if (folder.open) { e.preventDefault(); return folderKey(k); }
      if (recents.open) { e.preventDefault(); return recentsKey(k); }
      if (state.arranging) { arrangeKey(k); e.preventDefault(); return; }
-@@ -2087,13 +2660,19 @@
+     if (k === KEY.left) move(0, -1);
+@@ -2087,13 +2938,19 @@
    }
  
    function onKeyUp(e) {
@@ -1163,7 +1574,7 @@
      if (okInRecents) { if (recents.open) recentsKey(KEY.ok); return; }
      if (okInFolder) { if (folder.open) folderKey(KEY.ok); return; }
      if (recents.open || recents.loading || folder.open) return;
-@@ -2101,6 +2680,65 @@
+@@ -2101,6 +2958,65 @@
      else activate();
    }
  
@@ -1229,7 +1640,7 @@
    // The Magic Remote's pointer: hovering focuses a tile, clicking opens it.
    function tileAt(target) {
      while (target && target !== document.body) {
-@@ -2110,6 +2748,31 @@
+@@ -2110,6 +3026,36 @@
      return null;
    }
    function onPointer(e) {
@@ -1244,8 +1655,13 @@
 +    var tile = tileAt(e.target);
 +    if (drawer.open) {
 +      if (tile && /\bdrawer-app\b/.test(tile.className)) {
++        drawer.tools = false;
 +        drawer.index = +tile.getAttribute('data-c'); focusDrawer();
 +        queuePointerGlass(tile, e);
++      } else if (ancestorId(e.target, 'allAppsSort')) {
++        drawer.tools = true; drawer.tool = 0; focusDrawerTools();
++      } else if (ancestorId(e.target, 'allAppsClose')) {
++        drawer.tools = true; drawer.tool = 1; focusDrawerTools();
 +      } else resetPointerGlass();
 +      return;
 +    }
@@ -1261,7 +1677,7 @@
      pointerX = e.clientX;
      pointerY = e.clientY;
      pointing = true;
-@@ -2118,7 +2781,7 @@
+@@ -2118,7 +3064,7 @@
    }
    // Focuses the tile under the pointer, without moving its row.
    function hoverTile(target) {
@@ -1270,7 +1686,7 @@
      if (finder.open) return finderPointer(target);
      if (folder.open) {
        var inFolder = tileAt(target);
-@@ -2129,29 +2792,46 @@
+@@ -2129,29 +3075,60 @@
        return;
      }
      if (!state.arranging && searchOn() && within(target, 'rail')) {
@@ -1311,18 +1727,32 @@
 +      return;
 +    }
 +    if (layoutBusy) return;
++    if (contextSheet.open) {
++      if (ancestorId(e.target, 'contextClose')) return closeContextSheet();
++      var actionBtn = e.target && e.target.getAttribute && e.target.getAttribute('data-action');
++      if (actionBtn) {
++        var idx = ['open', 'hide', 'folder', 'info'].indexOf(actionBtn);
++        if (idx >= 0) { contextSheet.index = idx; focusContextSheet(); contextSheetKey(KEY.ok); }
++      }
++      if (!ancestorId(e.target, 'context-card')) closeContextSheet();
++      return;
++    }
 +    if (drawer.open) {
 +      if (ancestorId(e.target, 'allAppsClose')) return closeDrawer();
++      if (ancestorId(e.target, 'allAppsSort')) return toggleDrawerSort();
 +      var card = tileAt(e.target);
 +      if (card && /\bdrawer-app\b/.test(card.className)) {
 +        drawer.index = +card.getAttribute('data-c'); focusDrawer(); activateDrawer();
++        return;
 +      }
++      // A click on the dimmed Home, or anywhere off the panel, closes it too.
++      if (!ancestorId(e.target, 'allApps')) return closeDrawer();
 +      return;
 +    }
      if (folder.open) {
        var picked = tileAt(e.target);
        if (!picked || !picked.hasAttribute('data-f')) return closeFolder();
-@@ -2161,6 +2841,10 @@
+@@ -2161,6 +3138,10 @@
      if (recents.open) return recentsClick(e.target);
      if (finder.open) return finderClick(e.target);
      if (!state.arranging && searchOn() && within(e.target, 'rail')) return openSearch();
@@ -1333,7 +1763,7 @@
      var btn = e.target && e.target.id;
      if (BAR.indexOf(btn) !== -1) return pressBar(BAR.indexOf(btn));
      if (state.arranging && /\bsort\b/.test(e.target.className || '')) {
-@@ -2173,7 +2857,8 @@
+@@ -2173,7 +3154,8 @@
      // The tile clicked, which a glide may have moved under the pointer since
      // the focus last followed it.
      hoverTile(e.target);
@@ -1343,7 +1773,7 @@
      else activate();
    }
  
-@@ -2187,7 +2872,7 @@
+@@ -2187,7 +3169,7 @@
      { key: 'evening', from: 17, strength: 0.72 },
      { key: 'night', from: 21, strength: 0.65 }
    ];
@@ -1352,7 +1782,7 @@
    /*
     * ?wall=morning or ?hour=19 shows another slot, to check each one, as does
     * launching the app with { wall } or { hour }: a running app gets them at
-@@ -2202,33 +2887,57 @@
+@@ -2202,33 +3184,57 @@
    }
    function wallSlot() {
      if (preview.wall) for (var i = 1; i < WALL_SLOTS.length; i++) if (WALL_SLOTS[i].key === preview.wall) return WALL_SLOTS[i];
@@ -1424,7 +1854,7 @@
    }
  
    // ---------------------------------------------------------------- colours
-@@ -2292,6 +3001,10 @@
+@@ -2292,6 +3298,10 @@
        var firstLoad = !data;
        data = r;
        layout = r.layout;
@@ -1435,7 +1865,7 @@
        renderNow();
        if (!searchOn()) { closeSearch(); state.rail = false; }
        setFadeOn(layout.fade === true);
-@@ -2392,12 +3105,16 @@
+@@ -2392,12 +3402,16 @@
    function returned() {
      var dark = faded;
      if (!dark) fadeIn();
@@ -1453,7 +1883,7 @@
      readLaunchParams();
      updateWall();
      // Back from an app, Home is as it was left: the same tile in focus and
-@@ -2412,6 +3129,7 @@
+@@ -2412,6 +3426,7 @@
      }
      if (state.arranging) setArranging(false);
      beat();
@@ -1461,7 +1891,7 @@
      if (!dark) return load();
      // In once both the rows and what was last on have come back, or before long.
      var waiting = 2, shown = false;
-@@ -2422,6 +3140,11 @@
+@@ -2422,6 +3437,11 @@
    }
  
    window.addEventListener('resize', fit);
@@ -1473,7 +1903,7 @@
    document.addEventListener('keydown', onKeyDown, true);
    document.addEventListener('keyup', onKeyUp, true);
    document.addEventListener('mousemove', onPointer);
-@@ -2438,25 +3161,32 @@
+@@ -2438,25 +3458,32 @@
    document.addEventListener('onwheel' in document ? 'wheel' : 'mousewheel', onWheel);
    // webOS says when the pointer hides, after a few still seconds or a key.
    document.addEventListener('cursorStateChange', function (e) {

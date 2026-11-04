@@ -9,8 +9,9 @@ source = source.slice(0, source.indexOf("  window.addEventListener('resize'")) +
   'postJson = function (url, body, cb) { transport(url, body, cb); };' +
   'toast = function (main, detail) { notify(main, detail); };' +
   'this.view = { down: onKeyDown, up: onKeyUp, click: onClick, pointer: onPointer,' +
-  ' state: state, drawer: drawer, recents: recents, open: openDrawer, close: closeDrawer, items: items, photosMarkup: photosMarkup,' +
+  ' state: state, drawer: drawer, contextSheet: contextSheet, recents: recents, open: openDrawer, close: closeDrawer, items: items, photosMarkup: photosMarkup,' +
   ' setup: function (d, l) { data = d; layout = l; }, data: function () { return data; },' +
+  ' wheel: onWheel, scrollTop: function () { return document.getElementById(\'allAppsScroll\').scrollTop; },' +
   ' render: render, photoStatus: photosStatus, pointerOut: onPointerOut, resetGlass: resetPointerGlass }; })();';
 var KEYS = { left: 37, up: 38, right: 39, down: 40, ok: 13, back: 461, escape: 27 };
 function copy(value) { return JSON.parse(JSON.stringify(value)); }
@@ -28,7 +29,7 @@ function harness(options) {
   function element(id) {
     if (!elements[id]) {
       var el = { id: id, className: '', textContent: '', style: {}, attrs: {}, offsetTop: 0,
-        scrollTop: 0, clientHeight: 400, offsetHeight: 215,
+        scrollTop: 0, clientHeight: 400, scrollHeight: 1200, offsetHeight: 215,
         setAttribute: function (key, value) { this.attrs[key] = value; },
         getAttribute: function (key) { return this.attrs[key]; },
         querySelectorAll: function (selector) { return selector === '.drawer-app' ? this.tiles || [] : []; },
@@ -114,7 +115,7 @@ assert.strictEqual(h.view.state.zone, 'photos', 'Right from last console reaches
 assert.strictEqual(h.element('photosTile').className, 'focus', 'Photos receives visible focus');
 h.tap('ok');
 assert.strictEqual(h.posts.length, 0, 'nonconfigured Photos does not send a launch or access a service');
-assert.strictEqual(h.messages[0][0], 'Non configuré');
+assert.strictEqual(h.messages[0][0], 'Not configured');
 h.hold();
 assert.strictEqual(h.view.state.arranging, false, 'long OK on Photos never enters arrange mode');
 assert.strictEqual(h.posts.length, 0);
@@ -133,6 +134,7 @@ assert.strictEqual(h.view.drawer.open, true, 'down from chevron opens drawer');
 assert.strictEqual(h.element('allApps').attrs['aria-hidden'], 'false');
 assert.strictEqual(h.element('allAppsTrigger').attrs['aria-expanded'], 'true');
 assert.strictEqual(h.view.drawer.apps.length, 9, 'drawer lists installed apps, including hidden apps, excluding synthetic shortcuts');
+assert.strictEqual(h.element('allAppsCount').textContent, '9 apps', 'drawer shows the installed-app count');
 assert.ok(h.view.drawer.apps.some(function (a) { return a.id === 'app1'; }), 'nonfavorite app is available');
 h.tap('right'); h.tap('down');
 assert.strictEqual(h.view.drawer.index, 6, 'down advances one grid row');
@@ -140,16 +142,70 @@ assert.ok(h.element('allAppsScroll').scrollTop > 0, 'focused second row scrolls 
 h.tap('up');
 assert.strictEqual(h.view.drawer.index, 1);
 h.tap('up');
-assert.strictEqual(h.view.drawer.open, false, 'up from top row closes drawer');
+assert.strictEqual(h.view.drawer.tools, true, 'up from the top row moves focus to drawer tools');
+assert.strictEqual(h.element('allAppsSort').className, 'focus', 'remote focus starts on the sort control');
+h.tap('right');
+assert.strictEqual(h.element('allAppsClose').className, 'focus', 'remote can focus the close control');
+h.tap('ok');
+assert.strictEqual(h.view.drawer.open, false, 'remote OK on the close control returns to the carousel');
 assert.strictEqual(h.view.state.row, 1);
 assert.strictEqual(h.view.state.col.dev, 1, 'drawer exit restores the exact carousel/console focus');
 assert.strictEqual(h.view.state.zone, 'rows');
 assert.strictEqual(h.element('allAppsTrigger').attrs['aria-expanded'], 'false');
 
 h = harness();
+h.view.data().apps[0].title = 'Zulu';
+h.view.data().apps[1].title = 'Alpha';
+h.click('allAppsTrigger');
+assert.strictEqual(h.view.drawer.apps[0].id, 'app0', 'drawer initially retains TV/catalog order');
+assert.strictEqual(h.element('allAppsSort').attrs['aria-pressed'], 'false');
+h.click('allAppsSort');
+assert.strictEqual(h.element('allAppsSort').attrs['aria-pressed'], 'true', 'sort button exposes its selected state');
+assert.strictEqual(h.view.drawer.apps[0].id, 'app1', 'A–Z sort orders the installed app titles');
+h.click('allAppsSort');
+assert.strictEqual(h.view.drawer.apps[0].id, 'app0', 'sort toggle returns to TV order');
+h.click('allAppsClose');
+assert.strictEqual(h.view.drawer.open, false, 'small close button returns to the carousel');
+
+h = harness();
+h.view.data().apps[0].title = 'Zulu';
+h.view.data().apps[1].title = 'Alpha';
+h.click('allAppsTrigger'); h.tap('up'); h.tap('ok');
+assert.strictEqual(h.view.drawer.sorted, true, 'remote OK toggles the A–Z sort control');
+assert.strictEqual(h.view.drawer.apps[0].id, 'app1');
+h.tap('right'); h.tap('ok');
+assert.strictEqual(h.view.drawer.open, false, 'remote can sort and close without a pointer');
+
+h = harness();
+h.click('allAppsTrigger'); h.tap('back');
+assert.strictEqual(h.view.drawer.open, false, 'remote Back closes the drawer');
+
+// The Magic Remote's wheel scrolls the drawer itself, wherever the pointer rests.
+h = harness();
+h.click('allAppsTrigger');
+function spin(dy) {
+  var prevented = false;
+  h.view.wheel({ deltaY: dy, preventDefault: function () { prevented = true; } });
+  return prevented;
+}
+assert.strictEqual(spin(240), true, 'the wheel is consumed while the drawer is open');
+assert.strictEqual(h.view.scrollTop(), 240, 'the wheel scrolls the drawer grid');
+spin(4000);
+assert.strictEqual(h.view.scrollTop(), 800, 'the drawer stops at its last row');
+spin(-4000);
+assert.strictEqual(h.view.scrollTop(), 0, 'the drawer stops at its first row');
+assert.strictEqual(h.view.drawer.open, true, 'scrolling never closes the drawer');
+
+h = harness();
+h.click('allAppsTrigger'); h.click('rows');
+assert.strictEqual(h.view.drawer.open, false, 'clicking outside the drawer closes it');
+
+h = harness();
 h.click('allAppsTrigger'); h.tap('right'); h.hold();
 assert.strictEqual(h.view.state.arranging, false, 'long OK inside drawer never starts reordering');
-assert.deepStrictEqual(h.posts, [{ url: '/api/home/open', body: { kind: 'app', id: 'app1' } }], 'hidden app launches once on OK release');
+assert.strictEqual(h.view.contextSheet.open, true, 'long OK opens the context sheet instead of launching');
+h.tap('ok');
+assert.deepStrictEqual(h.posts, [{ url: '/api/home/open', body: { kind: 'app', id: 'app1' } }], 'context sheet opens the app on OK');
 h.tap('ok');
 assert.strictEqual(h.posts.length, 1, 'pending launch prevents duplicate requests');
 h.reply({ ok: false, error: 'Unavailable' });
@@ -173,25 +229,25 @@ assert.strictEqual(h.posts.length, 1, 'OK held while closing cannot launch a bac
 h = harness();
 h.view.data().apps = [];
 h.click('allAppsTrigger');
-assert.ok(/Aucune application/.test(h.element('allAppsGrid').innerHTML));
+assert.ok(/No apps available/.test(h.element('allAppsGrid').innerHTML));
 h.tap('ok'); h.tap('left'); h.tap('right'); h.tap('down');
 assert.strictEqual(h.posts.length, 0);
 assert.strictEqual(h.view.drawer.index, 0, 'empty drawer focus remains bounded');
-h.tap('up');
-assert.strictEqual(h.view.drawer.open, false, 'empty drawer is escapable');
+h.tap('up'); h.tap('right'); h.tap('ok');
+assert.strictEqual(h.view.drawer.open, false, 'empty drawer tools remain reachable and close it');
 
 h = harness();
 h.view.data().photos = { appId: 'com.immich.webos', installed: false };
 h.click('photosTile');
 assert.strictEqual(h.posts.length, 0, 'missing client never requests launch');
-assert.strictEqual(h.view.photoStatus(), 'Application absente');
+assert.strictEqual(h.view.photoStatus(), 'App not installed');
 h.view.data().photos = { appId: 'com.immich.webos', installed: true, icon: '/api/home/icon?id=com.immich.webos' };
 h.view.data().apps.push({ id: 'com.immich.webos', title: 'Immich' });
 h.view.data().order.app.push('com.immich.webos');
 assert.strictEqual(h.view.items('app').some(function (a) { return a.id === 'com.immich.webos'; }), false, 'configured Photos app is not duplicated as a large carousel tile');
 assert.ok(/class="immich-logo"/.test(h.view.photosMarkup()), 'installed client keeps the official transparent flower');
 assert.ok(!/\/api\/home\/icon/.test(h.view.photosMarkup()), 'a native white app icon never replaces the official flower');
-assert.strictEqual(h.view.photoStatus(), 'Prêt');
+assert.strictEqual(h.view.photoStatus(), 'Ready');
 h.click('photosTile'); h.click('photosTile');
 assert.deepStrictEqual(h.posts, [{ url: '/api/home/open', body: { kind: 'photos' } }], 'Photos sends only the kind, no app override/URL/auth and no duplicate');
 h.reply({ ok: false });
@@ -207,6 +263,23 @@ h.click('allAppsClose');
 assert.strictEqual(h.view.drawer.open, false, 'visible return button closes drawer');
 
 h = harness();
+var moonlightId = 'com.limelight.webos';
+h.view.data().shortcut = { appId: moonlightId, title: 'Moonlight', installed: true };
+h.view.data().apps.push({ id: moonlightId, title: 'Moonlight' });
+h.view.data().order.app.push(moonlightId);
+assert.strictEqual(h.view.items('app').some(function (app) { return app.id === moonlightId; }), false,
+  'the configured shortcut app is not duplicated in the carousel');
+var moonlightTile = h.view.photosMarkup();
+assert.ok(/<h2 id="photosTitle">Moonlight<\/h2>/.test(moonlightTile), 'the former Photos tile is titled Moonlight');
+assert.ok(/class="console-logo"/.test(moonlightTile), 'Moonlight uses its inline crescent mark');
+assert.ok(!/immich-logo/.test(moonlightTile), 'Moonlight does not show the legacy Immich flower');
+assert.strictEqual(h.view.photoStatus(), 'Ready');
+h.click('photosTile'); h.click('photosTile');
+assert.deepStrictEqual(h.posts, [{ url: '/api/home/open', body: { kind: 'shortcut' } }],
+  'shortcut launch sends no caller-selected app ID, URL or credentials and suppresses duplicates');
+h.reply({ ok: true });
+
+h = harness();
 h.view.data().apps[0].title = '<unsafe & title>';
 h.click('allAppsTrigger');
 assert.ok(/&lt;unsafe &amp; title&gt;/.test(h.element('allAppsGrid').innerHTML), 'application titles remain escaped');
@@ -214,6 +287,9 @@ h = harness();
 h.view.setup(null, null);
 h.hover('allAppsTrigger'); h.click('allAppsTrigger');
 assert.strictEqual(h.posts.length, 0, 'pointer before catalogue load does not access absent layout or launch');
+var blankBack = { keyCode: KEYS.back, prevented: false, preventDefault: function () { this.prevented = true; } };
+h.view.down(blankBack);
+assert.strictEqual(blankBack.prevented, false, 'Back remains native while the preview has no catalogue, so a blank view can be exited');
 // refreshNow renders periodically even when Recent apps is open. Its dimmed
 // background must receive visible focus again when Back closes that panel.
 h = harness();

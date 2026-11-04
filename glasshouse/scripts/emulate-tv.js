@@ -15,17 +15,20 @@ const APPS = [
   ['youtube.leanback.v4', 'YouTube'], ['netflix', 'Netflix'], ['cdp-30', 'Plex'],
   ['ca.bellmedia.crave', 'Crave'], ['amazon', 'Prime Video'],
   ['tv.tou.ici.webos', 'ICI TOU.TV'], ['com.bell.fibetv.production', 'Bell Fibe TV'],
-  ['org.example.demo.music', 'Musique démo'], ['org.example.demo.browser', 'Navigateur démo'],
-  ['org.example.demo.games', 'Jeux démo'], ['com.tvweb.dashboard', 'Glasshouse']
+  ['org.example.demo.music', 'Demo Music'], ['org.example.demo.browser', 'Demo Browser'],
+  ['org.example.demo.games', 'Demo Games'], ['com.tvweb.dashboard', 'Glasshouse'],
+  ['com.limelight.webos', 'Moonlight']
 ].map(([id, title]) => ({ id, title }));
 const DRAWER_APPS = APPS.slice(7).map(app => app.id);
 const DEVICES = [
   { id: 'hdmi1', port: 1, name: 'Nintendo Switch 2' },
-  { id: 'hdmi3', port: 3, name: 'Xbox Series X' }
+  { id: 'hdmi2', port: 2, name: '' },
+  { id: 'hdmi3', port: 3, name: 'Xbox Series X' },
+  { id: 'hdmi4', port: 4, name: '' }
 ];
 const RECOMMENDATIONS = ['youtube.leanback.v4', 'netflix', 'amazon'].flatMap((app, source) =>
   Array.from({ length: 7 }, (_, index) => ({ id: 'demo-card-' + source + '-' + index, app,
-    title: 'Exemple vidéo ' + (index + 1), category: 'Démonstration', image: '/demo/recommendations/' + source + '.svg' })));
+    title: 'Sample video ' + (index + 1), category: 'Demo', image: '/demo/recommendations/' + source + '.svg' })));
 const POSTERS = ['#385774', '#685978', '#64785b'].map(colour =>
   '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 294 142"><path fill="' + colour + '" d="M0 0h294v142H0z"/>' +
   '<path fill="#172536" d="M0 142L85 35l54 60 51-75 104 122z"/></svg>');
@@ -38,7 +41,8 @@ function initialLayout() {
   return { enabled: true, rows: ['app', 'rec', 'dev'], order: JSON.parse(JSON.stringify(IDS)),
     sort: { app: 'custom', dev: 'custom', ch: 'custom', rec: 'custom' }, hidden: { app: DRAWER_APPS.slice(), dev: [], ch: [], rec: [] },
     folder: [], recommended: false, search: false, searchHintSeen: true,
-    channels: [], hintSeen: true, picture: false, colours: null, photosAppId: '', devPorts: [] };
+    channels: [], hintSeen: true, picture: false, colours: null, photosAppId: '', devPorts: [],
+    shortcutAppId: 'com.limelight.webos' };
 }
 function uniqueKnown(value, known) {
   return Array.isArray(value) && value.length <= known.length &&
@@ -81,7 +85,16 @@ function updateLayout(layout, input) {
         new Set(input.devPorts).size !== input.devPorts.length) throw new Error('Invalid ports');
     next.devPorts = input.devPorts.slice().sort((a, b) => a - b);
   }
+  if (input.shortcutAppId !== undefined) {
+    if (input.shortcutAppId !== '' &&
+        (typeof input.shortcutAppId !== 'string' || !/^[A-Za-z0-9][A-Za-z0-9._-]{1,127}$/.test(input.shortcutAppId))) throw new Error('Invalid shortcut app');
+    next.shortcutAppId = input.shortcutAppId;
+  }
   return next;
+}
+function shortcutApp(layout) {
+  const app = APPS.find(entry => entry.id === layout.shortcutAppId);
+  return { appId: layout.shortcutAppId || '', title: app ? app.title : '', installed: !!app, icon: null };
 }
 function createDemoServer() {
   let layout = initialLayout(), revision = 1, last = { kind: null }, recents = [];
@@ -123,9 +136,10 @@ function createDemoServer() {
       if (route === '/api/home/catalogue') return json(200, { ok: true, apps: APPS, devices: DEVICES,
         channels: [], recommended: layout.recommended ? RECOMMENDATIONS : [],
         order: Object.assign({}, layout.order, { rec: layout.recommended ? layout.order.rec : [] }), layout, layoutVersion: String(revision), sources: { channels: 0, recommended: layout.recommended ? RECOMMENDATIONS.length : false, recommendations: 'available' }, wallpapers: WALL_STATE,
-        photos: { appId: '', installed: false, icon: null } });
+        photos: { appId: '', installed: false, icon: null },
+        shortcut: shortcutApp(layout) });
       if (route === '/api/home/weather') return json(200, { ok: true, temperature: 18, code: 2, isDay: true,
-        observedAt: Date.now(), stale: false, label: 'Ville de démonstration', demo: true });
+        observedAt: Date.now(), stale: false, label: 'Demo City', demo: true });
       if (route === '/api/home/now') return json(200, last);
       if (route === '/api/home/recents') return json(200, { ok: true, apps: recents });
       if (route === '/api/home/guide') return json(200, { ok: true, guide: {} });
@@ -154,7 +168,13 @@ function createDemoServer() {
           last = { kind: 'app', appId: app.id, title: app.title };
           return json(200, { ok: true, demo: true });
         }
-        if (input.kind === 'photos') return json(200, { ok: false, demo: true, error: 'Photos non configuré dans la démo hors ligne' });
+        if (input.kind === 'photos') return json(200, { ok: false, demo: true, error: 'Photos not configured in the offline demo' });
+        if (input.kind === 'shortcut') {
+          const app = APPS.find(entry => entry.id === layout.shortcutAppId);
+          if (!app) return json(200, { ok: false, demo: true, error: 'The shortcut app is not configured in the offline demo' });
+          last = { kind: 'app', appId: app.id, title: app.title };
+          return json(200, { ok: true, demo: true });
+        }
         const item = input.kind === 'app' ? APPS.find(app => app.id === input.id) : input.kind === 'dev' ? DEVICES.find(device => device.id === input.id) : null;
         if (item) {
           last = input.kind === 'app' ? { kind: 'app', appId: item.id, title: item.title } : { kind: 'input', port: item.port, name: item.name };

@@ -23,7 +23,7 @@ if (!hasRussian()) {
   process.exit(0);
 }
 
-var src = fs.readFileSync(path.join(__dirname, '..', 'server', 'assets', 'home.html'), 'utf8');
+var src = fs.readFileSync(path.join(__dirname, '..', 'server', 'assets', 'home.html'), 'utf8').replace(/\r\n/g, '\n');
 var start = src.indexOf('  function dateText(d) {');
 var end = src.indexOf('\n  }\n', start);
 assert.ok(start !== -1 && end !== -1, 'dateText is in home.html');

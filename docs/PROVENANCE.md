@@ -1,75 +1,23 @@
-# Sources et redistribution
+# Sources and redistribution
 
-La source Glasshouse importée est la version 0.130.0 de
-[rorygallagher2024/glasshouse](https://github.com/rorygallagher2024/glasshouse/tree/1543769cfeb28c3ce0936dc6d20b24cd58c70255),
-commit `1543769cfeb28c3ce0936dc6d20b24cd58c70255`. Sa licence MIT et son copyright
-sont conservés dans `glasshouse/LICENSE`. Les fichiers `personalisation/base/`
-proviennent du même commit; leur notice MIT est conservée dans ce dossier.
+The imported Glasshouse source is version 0.130.0 from [rorygallagher2024/glasshouse](https://github.com/rorygallagher2024/glasshouse/tree/1543769cfeb28c3ce0936dc6d20b24cd58c70255), commit `1543769cfeb28c3ce0936dc6d20b24cd58c70255`. Its MIT license and copyright notice remain in `glasshouse/LICENSE`. Files under `personalisation/base/` come from the same commit, with their MIT notice retained there.
 
-Les modifications de l'accueil C6 portent sur `home.html`, `home.js`, `routes.js`,
-la météo, les assets de nuit, le déploiement et leurs tests. Le bundle de persistance
-est reconstruit à partir de ces sources publiques. Il n'importe aucune sauvegarde
-ni configuration d'une télévision. Lightkeeper, utilisé sur une seconde télé,
-est un autre projet et n'est pas inclus.
+The C6 Home customization changes `home.html`, `home.js`, `routes.js`, weather, night assets, deployment and their tests. The persistence bundle is rebuilt from these public sources. It imports no TV backup or configuration. Lightkeeper, used on a second television, is a separate project and is not included.
 
-Le petit G des paramètres réutilise le SVG officiel Glasshouse déjà fourni,
-[`server/assets/favicon.svg`](../glasshouse/server/assets/favicon.svg). Il relève
-de la licence MIT amont (copyright 2026 Rory Gallagher); aucun nouvel asset n’est
-téléchargé pour ce bouton. Il identifie l’app native, sans changer l’affiliation
-du projet. Le contour d’engrenage est une géométrie SVG du code d’interface.
+The small G in Home Settings reuses the official Glasshouse SVG already included as [`server/assets/favicon.svg`](../glasshouse/server/assets/favicon.svg). It is covered by the upstream MIT license (copyright 2026 Rory Gallagher); no new asset was downloaded for the button. It identifies the native app without changing the project's affiliation. The gear outline is SVG geometry drawn in the UI code.
 
-Les polices Outfit et Manrope conservent leurs notices SIL Open Font License 1.1
-sous `glasshouse/server/assets/fonts/`. Les dépendances de développement verrouillées
-sont TypeScript 5.9.3 (Apache-2.0), @types/node 20.19.43 (MIT) et undici-types
-6.21.0 (MIT). Aucun paquet npm n'est nécessaire au serveur en production.
-Ces versions restent inchangées lors du passage à 0.130. Les quinze manifestes
-d’économiseurs fournis par l’amont (quatorze intégrés et l’exemple `pigs`)
-déclarent MIT; leurs sources et la licence du serveur restent présentes. Les
-nouvelles particules visuelles de ces exemples sont procédurales selon l’amont.
+Outfit, Manrope and Inter retain their SIL Open Font License 1.1 notices under `glasshouse/server/assets/fonts/`. Inter is bundled as the Apple TV-style UI face because SF Pro is not redistributable; the console marks are the public Simple Icons paths, used to identify the hardware and not as a claim of affiliation. Locked development dependencies are TypeScript 5.9.3 (Apache-2.0), @types/node 20.19.43 (MIT) and undici-types 6.21.0 (MIT). No npm package is required by the production server. These versions are unchanged from the 0.130 update. The fifteen upstream screensaver manifests (fourteen built-ins and the `pigs` example) declare MIT; their sources and the server license remain present. New visual particles in these examples are procedural, following upstream.
 
-Les cinq fonds JPEG étaient déjà publics, décrits comme générés par IA. Leur statut
-n'est pas changé. Le fond nocturne embarqué est une copie de `05-lac-nuit.jpg`.
-Aucune licence globale nouvelle n'est appliquée aux fonds ou au dépôt.
+The five JPEG wallpapers were already public and described as AI-generated. Their status is unchanged. The bundled night wallpaper is a copy of `05-lac-nuit.jpg`. No blanket new license applies to the wallpapers or the repository.
 
-Les neuf logos personnalisés provenant des sites des marques ne sont pas
-redistribués : aucune autorisation de redistribution n'était documentée. Les tuiles
-conservent leur couleur, leur taille et leur nom, avec des libellés typographiques.
-Sur une télévision, les icônes natives des applications installées sont utilisées
-quand elles sont disponibles. Les marques restent celles de leurs propriétaires.
-Il ne s'agit donc pas d'une reproduction pixel pour pixel des logos privés.
+The nine custom app logos formerly sourced from brand websites are not redistributed because redistribution permission was not documented. Their tiles retain the relevant colors, sizes and names, using text fallbacks or native icons when available on the TV. Public code now draws generic console and HDMI marks inline; these do not embed third-party image files. The names, marks and service brands remain the property of their respective owners. The result is not a pixel-for-pixel reproduction of private logos.
 
-Le lanceur Photos emploie le [logo officiel Immich](https://github.com/immich-app/immich/blob/256eb55dbe92ac77e02794442f9487e88ffed2b1/design/immich-logo.svg),
-commit `256eb55dbe92ac77e02794442f9487e88ffed2b1`, SHA-256
-`dfa5ef704d07854914306c0c224173bda2710f8fc0dffeb7d78690f58f9811a6`.
-Le SVG inchangé constitue un asset distinct sous AGPL-3.0, accompagné de la licence
-complète et d'une notice dans `glasshouse/server/assets/third-party/immich/`.
-Ces trois fichiers sont aussi inclus dans la persistance et l'assemblage du paquet;
-la licence MIT du code Glasshouse ne s'applique pas à cette illustration.
-Immich et son logo sont des marques de FUTO; leur présence identifie seulement
-le lanceur facultatif et n'implique aucune affiliation ou approbation.
-Le logo officiel transparent reste prioritaire sur l'icône native du client
-configuré pour conserver la même tuile sur l'appareil. Aucun code de client
-Immich n'est redistribué. Les identifiants vérifiés et les conditions de
-marque sont documentés dans [Photos](PHOTOS.md). La référence visuelle de l'effet
-de verre est consultée localement et n'est pas incluse dans le dépôt.
+The Moonlight symbol used in the shortcut is a simple inline crescent drawn in this project; it is not a bundled Moonlight logo asset. Other app shortcuts use a generic text fallback unless a native icon is available. The package ID `com.limelight.webos` identifies the installed webOS app and does not imply an official relationship.
 
-La météo réelle optionnelle utilise [Open-Meteo](https://open-meteo.com/en/licence),
-données sous CC BY 4.0 et conditions du service applicables; le widget fournit le crédit.
-La démo utilise exclusivement des données synthétiques.
+The legacy Photos launcher uses the [official Immich logo](https://github.com/immich-app/immich/blob/256eb55dbe92ac77e02794442f9487e88ffed2b1/design/immich-logo.svg), commit `256eb55dbe92ac77e02794442f9487e88ffed2b1`, SHA-256 `dfa5ef704d07854914306c0c224173bda2710f8fc0dffeb7d78690f58f9811a6`. The unchanged SVG is a separate AGPL-3.0 asset accompanied by the complete license and a notice under `glasshouse/server/assets/third-party/immich/`. These three files are also included in persistence and package assembly; the Glasshouse MIT license does not apply to this illustration. Immich and its logo are FUTO trademarks; their presence identifies only the optional launcher and implies no affiliation or endorsement. The official transparent logo remains preferred over the configured client's native icon for consistency. No Immich client code is redistributed. Verified IDs and trademark terms are documented in [Photos](PHOTOS.md). The glass-effect visual reference was reviewed locally and is not included in the repository.
 
-Les captures de documentation upstream, ses workflows de publication et de mesure
-du trafic, et les scripts locaux hors source n'ont pas été importés. Les liens
-illustratifs concernés pointent vers les fichiers vérifiés du dépôt d'origine,
-épinglés au commit upstream indiqué plus haut. Les trois captures supplémentaires
-autorisées dans `docs/images/` montrent la page réelle servie par une C6, rendue
-dans un navigateur, sans compte, URL interne ni photo personnelle visible.
-Les logos et miniatures sont des éléments de ces captures documentaires, pas des
-assets réutilisables. Le [README](../README.md) présente la livraison et le
-[guide manuel](MANUAL_GUIDE.md) décrit son parcours autonome.
+Optional real weather uses [Open-Meteo](https://open-meteo.com/en/licence), with CC BY 4.0 data and applicable service terms; the widget provides attribution. The demo uses synthetic data only.
 
-Les cartes de Recommandations utilisent les images distantes des fournisseurs
-uniquement lorsque l’utilisateur les affiche; aucune donnée d’abonnement personnelle
-n’est redistribuée. Des miniatures publiques YouTube sont visibles dans les captures
-documentaires autorisées. Le code public reprend les
-comportements assainis, pas les réglages, sauvegardes, rapports de scans privés,
-journaux ou fichiers de logos propriétaires de l’installation personnelle.
+Upstream documentation screenshots, publishing and traffic-measurement workflows, and local-only scripts were not imported. Relevant illustrative links point to files verified at the upstream commit noted above. Three additional authorized screenshots in `docs/images/` show the actual page served by a C6 and rendered in a browser, without visible account details, internal URLs or personal photos. Logos and thumbnails in those images are documentation content, not reusable assets. The [README](../README.md) describes the release, and the [manual guide](MANUAL_GUIDE.md) describes its standalone procedure.
+
+Recommendation cards use remote provider images only when a user opens them; no personal subscription data is redistributed. Public YouTube thumbnails appear in authorized documentation screenshots. The public code contains sanitized behavior, not personal settings, backups, private scan reports, logs or private proprietary logo files.

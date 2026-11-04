@@ -74,6 +74,8 @@ assets/home-app/assets/icon80.png assets/home-app/assets/icon130.png \
 assets/fonts/Outfit.ttf assets/fonts/Manrope.ttf \
 assets/fonts/Outfit-Light.ttf assets/fonts/Outfit-Regular.ttf \
 assets/fonts/Manrope-Regular.ttf assets/fonts/Manrope-SemiBold.ttf \
+assets/fonts/Inter-Light.woff2 assets/fonts/Inter-Regular.woff2 assets/fonts/Inter-Medium.woff2 \
+assets/fonts/Inter-SemiBold.woff2 assets/fonts/Inter-Bold.woff2 assets/fonts/OFL-Inter.txt \
 assets/fonts/OFL-Outfit.txt assets/fonts/OFL-Manrope.txt \
 assets/screensavers/bokeh/bokeh.png assets/screensavers/bokeh/main.qml \
 assets/screensavers/bokeh/saver.json assets/screensavers/clock/main.qml \

@@ -1,65 +1,29 @@
-# Paramètres et Recommandations
+# Home settings and recommendations
 
-L’engrenage discret à droite de **Toutes les apps** ouvre les paramètres de Home.
-Il garde une cible de sélection suffisante pour le pointeur et un focus visible.
-Depuis Toutes les apps, Droite rejoint l’engrenage; OK ouvre le panneau. Les
-flèches et Tab parcourent ses contrôles. Retour/Echap ou **Fermer** referme le
-panneau et restitue le focus. Les tuiles derrière le panneau ne s’activent pas.
+The small gear to the right of **All apps** opens Home Settings. It has a visible focus and a pointer target sized for the remote. From All apps, press Right to reach the gear and OK to open the panel. Arrow keys and Tab move among its controls. Back/Escape or **Close** closes the panel and restores focus. Tiles behind the panel cannot be activated.
 
-## Recommandations
+## Recommendations
 
-Le toggle reprend `home.json.recommended`, sans écrire les favoris, l’ordre,
-Photos ou les autres préférences. Une sauvegarde non confirmée affiche une erreur
-et relit l’état du serveur; elle n’est pas répétée automatiquement. La page
-respecte le choix existant. L’exemple public et la démo démarrent désactivés.
+The toggle updates `home.json.recommended` without writing favorites, order, the shortcut app or other preferences. If the server does not confirm a save, Home reports the error and reloads the saved state; it does not retry automatically. The view respects the existing choice. The public example and offline demo start with recommendations disabled.
 
-La fonction native, ajoutée dans Glasshouse 0.129 et présente en 0.130, lit les
-cartes que les apps publient pour LG Home. Ce sont des **contenus proposés par les
-apps**, pas une liste garantie de reprises ou de contenus personnalisés. Aucun
-pourcentage d’avancement ni position de lecture n’est inventé. Les affiches sont
-chargées depuis les serveurs des apps lorsque les cartes sont ouvertes; elles ne
-sont pas redistribuées dans le dépôt. Aucun compte ou jeton supplémentaire n’est
-demandé par ce module.
+The native Glasshouse feature, added in 0.129 and present in 0.130, reads cards that apps publish for LG Home. These are **app-provided suggestions**, not a guaranteed Continue Watching list or personalized catalog. Home does not invent progress percentages or playback positions. When opened, poster images come from the apps' servers and are not redistributed in this repository. This module requires no additional account or token.
 
-Sous Applications, l’accordéon reste replié jusqu’à Bas ou un clic. Il affiche
-uniquement les cartes dont l’identifiant d’app correspond à la sélection actuelle,
-avec la source indiquée. Une app sans carte ne reçoit jamais les recommandations
-d’une autre, même après une réponse réseau tardive. Aucun message d’absence
-n’encombre Home; l’emplacement replié conserve sa hauteur pour éviter de déplacer
-le carrousel. Haut, Retour, la sortie de la rangée ou le retour à Home replient
-les cartes. Gauche/Droite parcourent la liste ouverte; OK utilise le lancement
-natif de l’app vers le titre publié. L’app décide de ce qu’elle ouvre réellement.
+In the Apps row, the accordion stays collapsed until Down or a click. It displays only cards whose app ID matches the currently selected app, with the source identified. An app with no cards never receives another app's recommendations, including after a delayed network response. The collapsed area keeps its height so the carousel does not shift. Up, Back, leaving the row or returning Home collapses the cards. Left/Right moves through an open list; OK uses the app's native launch mechanism for the published title. The app decides what it actually opens.
 
-Netflix, Prime Video, Disney+, HBO Max et YouTube sont documentés par l’amont sur
-webOS 10. La disponibilité varie selon la TV, la région, le profil et l’app.
-Plex, Bell, ICI TOU.TV ou Crave installés ne prouvent pas qu’ils publient des cartes.
-Le module garde au maximum douze cartes par app et relit le catalogue notamment
-au retour à Home et périodiquement; ce n’est pas un suivi de lecture en temps réel.
-Sur certaines versions webOS, aucune carte n’est fournie. La disponibilité est
-vérifiée à l’exécution : si la TV n’expose pas l’appel, le panneau Paramètres
-l’indique (« Cette version de webOS ne fournit pas de recommandations. »). Une
-liste vide renvoyée par une TV qui possède l’appel n’affiche pas cette note.
+Upstream documents Netflix, Prime Video, Disney+, HBO Max and YouTube on webOS 10. Availability varies by TV, region, profile and app. Having Plex, Bell, ICI TOU.TV or Crave installed does not prove that it publishes cards. The module keeps at most twelve cards per app and refreshes the catalog, including on return to Home and periodically; this is not real-time playback tracking. Some webOS versions provide no cards. Availability is checked at runtime: if the TV does not expose the API, Home Settings reports that recommendations are unavailable. An empty list from a TV that does expose the API does not show that warning.
 
-Sources : [release 0.129](https://github.com/rorygallagher2024/glasshouse/releases/tag/v0.129.0),
-[module 0.130](https://github.com/rorygallagher2024/glasshouse/blob/v0.130.0/server/lib/home-recommended.js),
-[documentation Home](https://github.com/rorygallagher2024/glasshouse/blob/v0.130.0/docs/dashboard/home.md).
+Sources: [0.129 release](https://github.com/rorygallagher2024/glasshouse/releases/tag/v0.129.0), [0.130 module](https://github.com/rorygallagher2024/glasshouse/blob/v0.130.0/server/lib/home-recommended.js), [Home documentation](https://github.com/rorygallagher2024/glasshouse/blob/v0.130.0/docs/dashboard/home.md).
 
-## Bouton G — ouvrir Glasshouse
+## All apps drawer
 
-Le G officiel, à droite de Fermer, lance l’application native de tableau de bord
-`com.tvweb.dashboard` via le mécanisme existant de lancement d’apps. Il n’ouvre
-pas une URL de navigateur et ne modifie aucun réglage. Son nom accessible est
-**Ouvrir Glasshouse**. Les répétitions sont bloquées tant que le lancement est
-en cours; un refus affiche une erreur utile.
+The drawer lists the installed apps exposed by Glasshouse, including apps not shown in the Home carousel. It shows the total app count and has a toggle between TV order and alphabetical A–Z order. Use the directional keys to move through the grid; Page Up and Page Down jump by several rows where the remote sends those keys. OK opens the selected app.
 
-Vérifiez cet identifiant dans le catalogue réel avant d’annoncer le raccourci
-fonctionnel. Une installation avec `deploy.sh --no-app` n’installe pas cette app;
-le bouton ne l’installe pas à sa place. Une installation explicitement choisie
-avec `deploy.sh --app` et sa vérification sont décrites dans le
-[guide manuel](MANUAL_GUIDE.md#6-installer-le-serveur-puis-activer-home-séparément).
-La démo simule son lancement. Retour ne peut pas annuler un lancement natif déjà
-envoyé.
+Close the drawer with its **Back to the carousel** button, the remote Back key or a click outside the panel. From the top app row, Up moves focus to the toolbar; use Left/Right to choose A–Z/TV order or Close, OK to activate it, and Down to return to the grid. Closing restores the prior carousel row and selected tile. The drawer does not uninstall apps or change favorites. Its catalog is limited to the launch points Glasshouse provides and is not a complete list of every system package.
 
-Le logo vient de `assets/favicon.svg` de Glasshouse, sous la licence MIT conservée
-dans le dépôt. Il est distinct du logo Immich sous AGPL-3.0. Aucun logo de service
-privé, PIN, compte photo ou configuration personnelle n’est ajouté par ces réglages.
+## G button — open Glasshouse
+
+The Glasshouse G icon next to Close launches the native dashboard app, `com.tvweb.dashboard`, through the existing app-launch mechanism. It does not open a browser URL or change settings. Its accessible name is **Open Glasshouse**. Repeat launches are blocked while a launch is pending; a refusal displays an error.
+
+Verify that this app ID appears in the TV's actual launch-point catalog before relying on the shortcut. An installation using `deploy.sh --no-app` does not install the dashboard app; the button cannot install it. Installing the app with `deploy.sh --app` is a separate choice and is described in the [manual guide](MANUAL_GUIDE.md). The demo simulates its launch. Back cannot cancel a native launch already sent.
+
+The icon reuses Glasshouse's `assets/favicon.svg`, under the upstream MIT license retained in the repository. It is separate from the Immich logo, which has its own AGPL-3.0 license. These settings add no private service logos, PIN, photo account or personal configuration.

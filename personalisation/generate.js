@@ -64,7 +64,10 @@ Object.keys(files).forEach(function (relative) {
 
 ['lib/home-weather.js', 'lib/tv-profile.js', 'assets/home-wallpaper-dark.jpg',
   'assets/third-party/immich/immich-logo.svg', 'assets/third-party/immich/LICENSE-AGPL-3.0.txt',
-  'assets/third-party/immich/NOTICE.txt'].forEach(function (relative) {
+  'assets/third-party/immich/NOTICE.txt',
+  // Inter is the Apple TV-style face the view asks for; SF Pro cannot be redistributed.
+  'assets/fonts/Inter-Light.woff2', 'assets/fonts/Inter-Regular.woff2', 'assets/fonts/Inter-Medium.woff2',
+  'assets/fonts/Inter-SemiBold.woff2', 'assets/fonts/Inter-Bold.woff2', 'assets/fonts/OFL-Inter.txt'].forEach(function (relative) {
   var data = read(path.join(server, relative));
   var source = 'files/' + relative;
   outputs[source] = data;

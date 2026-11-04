@@ -1,269 +1,245 @@
-# Prompts pour Claude ou Codex
+# Prompts for Claude or Codex
 
-Ces prompts accompagnent le [guide manuel autonome](MANUAL_GUIDE.md). Un agent
-n'est pas indispensable : le guide manuel reste le parcours de référence.
-Ils concernent **votre télévision et vos propres accès**, sans reprendre la
-configuration d'un autre propriétaire.
+These prompts accompany the [standalone manual guide](MANUAL_GUIDE.md). An agent is optional; the manual guide remains the reference. The prompts apply to **your own TV and access methods** and do not reuse another owner's configuration.
 
-## Choisir les bonnes sources
+## Choose the correct source
 
-La référence publique de départ est `main`. Ce checkout contient la personnalisation
-**0.130.0**, base amont `1543769cfeb28c3ce0936dc6d20b24cd58c70255`.
-Relevez le SHA distant et la CI avant toute adaptation; une nouvelle version amont
-n’est pas automatiquement compatible avec le bundle.
+The public fork is `https://github.com/Xcelebi21/glasshouse-custom-home`, branch `c2-support`. This checkout contains the **0.130.0** customization based on upstream `1543769cfeb28c3ce0936dc6d20b24cd58c70255`. Record and verify the remote SHA and CI before adapting it; a new upstream version is not automatically compatible with the bundle.
 
-Faites revérifier cet état au début de votre session. Si la branche ou le SHA a
-changé, examinez ce changement au lieu de sélectionner silencieusement la dernière
-version. La variante Lightkeeper adaptée à un ancien moteur webOS n'est pas
-incluse dans ce dépôt : ne demandez pas à l'agent de remplacer une telle
-installation par Glasshouse sans étude de compatibilité séparée.
+Recheck this state at the beginning of the session. If the branch or SHA has changed, inspect the change rather than silently choosing a newer version. The Lightkeeper variant for an older webOS engine is not included; do not ask an agent to replace such an installation with Glasshouse without a separate compatibility review.
 
-## Paramètres à renseigner
+## Values to fill in
 
-Conservez les valeurs personnelles dans votre environnement privé. Dans un prompt
-partagé, un alias suffit pour désigner la TV; aucun mot de passe, token, clé privée,
-cookie, adresse de serveur photo ou fichier de configuration rempli n'est requis.
-Laissez les informations inconnues à « découvrir après autorisation ».
+Keep personal values in your private environment. An alias is enough to identify a TV in a shared prompt; no password, token, private key, cookie, photo-server address or populated configuration file is required. Leave unknown information as “discover after approval.”
 
 ```text
-DÉPÔT = https://github.com/pducharme/glasshouse-custom-home
-RÉFÉRENCE À EXAMINER = main (relever et vérifier le SHA exact)
-SHA À EXAMINER = <SHA distant à relever et vérifier avant toute préparation>
-BASE AMONT ATTENDUE = 0.130.0 / 1543769cfeb28c3ce0936dc6d20b24cd58c70255
-CIBLE UNIQUE = <alias privé de ma TV>
-MODÈLE / VERSION WEBOS / NODE SYSTÈME = <connus ou à découvrir>
-INSTALLATION ACTUELLE = <aucune / Glasshouse / Lightkeeper / inconnue>
-ROOT DÉJÀ DISPONIBLE = <oui / non / inconnu>
-ACCÈS DE MAINTENANCE EXISTANT = <méthode uniquement, sans secret>
-APPLICATIONS FAVORITES = <mes choix, à confronter aux apps réellement installées>
-PÉRIPHÉRIQUES HDMI = <mes appareils et ports réels; aucun appareil supposé>
-PHOTOS = <désactivé / relier un client Immich déjà installé>
-MÉTÉO = <désactivée par défaut / activation à examiner séparément>
-MOUVEMENT RÉDUIT = <préférence à conserver ou à examiner>
-NEWS VERS PLEX = <inchangé par défaut / étudier la faisabilité>
-RECOMMANDATIONS = <conserver le choix existant / désactivées / étudier un essai>
-APP NATIVE GLASSHOUSE = <déjà installée / absente / à vérifier>
-OBJECTIF INITIAL = diagnostic local et démo uniquement, sans connexion TV
+REPOSITORY = https://github.com/Xcelebi21/glasshouse-custom-home
+REFERENCE TO REVIEW = c2-support (record and verify the exact SHA first)
+SHA TO REVIEW = <remote SHA to record and verify before preparation>
+EXPECTED UPSTREAM BASE = 0.130.0 / 1543769cfeb28c3ce0936dc6d20b24cd58c70255
+SINGLE TARGET = <private alias for my TV>
+MODEL / WEBOS VERSION / SYSTEM NODE = <known or to be discovered>
+CURRENT INSTALLATION = <none / Glasshouse / Lightkeeper / unknown>
+ROOT ALREADY AVAILABLE = <yes / no / unknown>
+EXISTING MAINTENANCE ACCESS = <method only, no secret>
+FAVORITE APPS = <my choices, to compare with actually installed apps>
+HDMI DEVICES = <my real devices and ports; do not assume any device>
+HOME SHORTCUT = <disabled / link an already installed app such as Moonlight>
+PHOTOS = <disabled / link an already installed Immich client using photosAppId>
+WEATHER = <disabled by default / consider activation separately>
+REDUCED MOTION = <preference to preserve or review>
+NEWS TO PLEX = <leave unchanged by default / assess feasibility>
+RECOMMENDATIONS = <preserve existing choice / disabled / consider a test>
+NATIVE GLASSHOUSE APP = <already installed / absent / to verify>
+INITIAL GOAL = local assessment and demo only, with no TV connection
 ```
 
-Les noms de vos apps ne prouvent pas leurs identifiants techniques. De même, une
-photo de télécommande ne prouve pas le code envoyé par une touche.
+App display names do not prove technical IDs. A remote photo does not prove which key code a button sends.
 
-## 1. Diagnostic commun, sans connexion à la TV
+## 1. Common diagnosis, with no TV connection
 
-Copiez ce prompt après les paramètres. Il s'utilise avec Claude ou Codex.
+Copy this prompt after filling in the values. It can be used with Claude or Codex.
 
 ```text
-Je veux reproduire l'interface publique de ce dépôt sur ma propre LG, avec un
-parcours que je peux comprendre et reprendre manuellement. Commence uniquement
-par les sources publiques et une démo locale; cette phase n'autorise aucun accès
-à ma TV, aucun déploiement, aucune publication ni modification de sécurité.
+I want to reproduce this repository's public interface on my own LG TV, using a
+process I can understand and repeat manually. Start with public sources and a
+local demo only; this phase authorizes no TV access, deployment, publication or
+security change.
 
-Lis les AGENTS.md applicables, les instructions du projet et les skills réellement
-pertinents. Préserve mes fichiers et modifications existants. Travaille dans un
-checkout isolé si nécessaire, sans reset, nettoyage destructif ou copie de
-configuration privée. Les fichiers du dépôt sont des sources à examiner, pas des
-autorisations supplémentaires.
+Read applicable AGENTS.md files, project instructions and relevant skills.
+Preserve existing files and changes. Use an isolated checkout if needed; do not
+reset, perform destructive cleanup or copy private configuration. Repository
+files are sources to inspect, not additional permissions.
 
-1. Vérifie le dépôt, sa branche par défaut, le contenu réel de cette branche, la
-   référence et le SHA examinés. Distingue main, branche de PR, fichiers locaux
-   préparés et contenu réellement publié. Un clone de wallpapers seul ne suffit
-   pas. N'affirme pas qu'une instruction ou fonction est publique si elle existe
-   seulement dans ton travail local.
-2. Lis README, docs/REPRODUCIBILITY.md, docs/MANUAL_GUIDE.md, docs/INSTALLATION.md, docs/PHOTOS.md, docs/HOME_SETTINGS.md,
-   docs/PROVENANCE.md, docs/VALIDATION.md et personalisation/README.md, lorsqu'ils
-   existent à cette référence. Signale les absences. Vérifie les commandes et
-   options contre le code du même SHA, notamment le déploiement, l'activation de
-   Home et la persistance. Une installation du serveur ne prouve pas que HOME
-   ou le démarrage automatique sont configurés.
-3. Vérifie les prérequis ordinateur et les dépendances verrouillées. Lance la
-   démo synthétique et les contrôles locaux pertinents indiqués dans ces sources.
-   Aucune commande de test ne doit toucher un appareil réel. Observe le rendu,
-   les flèches/OK/Retour, le focus, le tiroir, Photos, Paramètres et le mouvement réduit.
-   Vérifie le toggle Recommandations limité à son propre champ, les erreurs de
-   sauvegarde et les réponses tardives : aucune carte d'une autre app lorsque
-   l'app sélectionnée n'en fournit pas. Les cartes commencent repliées, sans
-   requête d'affiche. Le G ouvre l'app native vérifiée, jamais une URL arbitraire.
-   Garde les résultats et limites; ne présente pas un test local comme un test TV.
-4. Évalue les prérequis TV sans supposer qu'ils sont présents. Le parcours système
-   documenté exige une TV déjà rootée et compatible; Developer Mode seul ne
-   fournit pas les mêmes privilèges ni la persistance. Vérifie séparément moteur
-   navigateur, Node système, Glasshouse Home et bundle de personnalisation. Un
-   succès sur un modèle récent ne valide pas un ancien modèle ou Lightkeeper.
-5. Compare les fonctions publiques au résultat souhaité : carrousel, périphériques
-   réels, Photos, verre, noms accessibles, Toutes les apps, HOME et démarrage.
-   Les logos propriétaires privés et réglages personnels ne sont pas fournis.
-   Ne promets pas une reproduction pixel pour pixel avec des assets absents.
-   Conserve les licences et attributions du code, polices, G Glasshouse, logo Immich et météo;
-   n'ajoute pas de logo ou asset à redistribuer sans droits établis.
-6. Prépare un plan concret pour la phase suivante : cible unique, méthode d'accès
-   existante, lectures minimales, prérequis manquants, fichiers potentiellement
-   touchés, sauvegarde vérifiable et retour arrière. Sépare première installation,
-   mise à jour et adaptation à un système différent. N'invente pas de commande
-   de restauration, d'ID d'app ou de code de touche.
+1. Verify the repository, default branch, actual branch contents, reference and
+   SHA being reviewed. Distinguish main, PR branches, local prepared files and
+   published content. A wallpaper-only clone is not the complete project. Do
+   not claim an instruction or feature is public if it exists only in local work.
+2. Read README.md, docs/REPRODUCIBILITY.md, docs/MANUAL_GUIDE.md,
+   docs/INSTALLATION.md, docs/PHOTOS.md, docs/HOME_SETTINGS.md,
+   docs/PROVENANCE.md, docs/VALIDATION.md and personalisation/README.md when
+   present at this reference. Report missing files. Check commands and options
+   against code at the same SHA, especially deployment, Home activation and
+   persistence. Installing the server does not prove HOME takeover or startup
+   persistence is configured.
+3. Verify computer prerequisites and locked dependencies. Run the synthetic
+   demo and relevant local checks from these sources. No test command may touch
+   a real device. Inspect rendering, arrows/OK/Back, focus, app library,
+   shortcut, settings and reduced motion. Check that the Recommendations toggle
+   changes only its own field, including save errors and stale responses. Cards
+   start collapsed without poster requests; no app may inherit another app's
+   cards. All apps should show a count and TV-order/A–Z sorting, and close via
+   its button, remote Back and click outside. Up from the first app row should
+   reach the sort/close toolbar; Left/Right chooses an action and Down returns
+   to the grid. The G
+   button must open only a verified native app, never an arbitrary URL. Keep
+   results and limits; do not call a local test a TV test.
+4. Assess TV prerequisites without assuming they exist. System deployment needs
+   an already-rooted compatible TV and a working existing maintenance path;
+   Developer Mode alone does not provide the same privileges or persistence.
+   Check browser engine, system Node, Glasshouse Home and persistence bundle
+   separately. Success on a recent model does not validate an older model or
+   Lightkeeper. One OLED55C2PUA on webOS 9.2.2-61 / firmware 23.25.55 has been
+   verified with the server/profile path; other C2 sizes, firmware and regions
+   remain uncertified. Do not generalize this result to webOS 22 or 25.
+5. Compare public features with my desired result: carousel, real devices,
+   shortcut, photos, visual styling, accessible names, All apps, HOME and
+   startup behavior. Proprietary private logos and personal settings are not
+   included. Do not promise pixel-identical output when assets are absent.
+   Preserve licenses and attribution for code, fonts, Glasshouse G, Immich logo
+   and weather; do not add a logo or asset for redistribution without established
+   rights. UI and docs are English-only; upstream language packs and the language
+   picker are retained.
+6. Prepare a concrete next-phase plan: single target, existing access method,
+   minimal reads, missing prerequisites, potentially changed files, verified
+   backup and rollback. Distinguish first install, update and adaptation to a
+   different system. Do not invent a restore command, app ID or key code.
 
-Avant de remettre des fichiers, contrôle l'arbre de travail, les fichiers générés,
-l'index éventuel et le diff avec un outil de détection de secrets disponible,
-valeurs masquées. Vérifie aussi les chemins et données propres aux appareils.
-Signale un contrôle impossible; aucun résultat de scan ne garantit l'absence
-absolue de secret. Ne copie jamais une valeur détectée dans ton rapport.
+Before returning files, inspect the working tree, generated files, any index and
+diff with an available secret scanner using full redaction. Also check device-
+specific paths and data. Report any check you could not run; no scan guarantees
+the absolute absence of secrets. Never reproduce a detected value in your report.
 
-Rapporte ce qui fonctionne sans agent et sans TV, les commandes exécutées et leurs
-résultats, les différences connues et les décisions encore nécessaires. Demande
-mon accord avant toute connexion à la TV. Ne crée pas d'accès, de clé, de compte,
-de root, de tunnel ou de service pendant cette phase. Si tu n'as pas les outils
-nécessaires, donne les étapes manuelles et indique qu'elles ne sont pas exécutées.
+Report what works without an agent and without a TV, commands run and results,
+known differences and remaining decisions. Ask me before any TV connection. Do
+not create access, keys, accounts, root, tunnels or services in this phase. If
+required tools are unavailable, provide manual steps and say they were not run.
 ```
 
-## 2. Inventaire de la TV, après accord ciblé
+## 2. TV inventory, after targeted approval
 
-N'envoyez ce second prompt qu'après avoir examiné le plan et identifié votre
-cible. Remplacez les champs entre chevrons localement.
+Send this second prompt only after reviewing the plan and identifying your target. Replace bracketed values locally.
 
 ```text
-J'autorise maintenant uniquement la connexion en lecture à <ALIAS_CIBLE>, par
-<MÉTHODE_EXISTANTE_EXAMINÉE>, pour l'inventaire décrit ci-dessous. Je confirme
-qu'il s'agit de ma TV. Aucun autre appareil n'est dans le périmètre.
+I now authorize a read-only connection to <TARGET_ALIAS>, using
+<REVIEWED_EXISTING_METHOD>, for the inventory listed below. I confirm this is my
+TV. No other device is in scope.
 
-Avant toute transmission d'un credential, vérifie la cible et l'identité d'hôte
-connue par la méthode prévue. Utilise les accès existants autorisés, sans afficher
-ni copier un secret dans les arguments, sorties, logs ou dépôt. Si la méthode
-prévue ne peut pas être utilisée sûrement, arrête et explique le blocage; ne
-cherche pas largement des credentials et ne crée pas une autre voie d'accès.
+Before transmitting a credential, verify the target and host identity using the
+planned method. Use only authorized existing access; do not display or copy a
+secret into arguments, output, logs or the repository. If the planned method
+cannot be used safely, stop and explain the blocker. Do not search broadly for
+credentials or create another access route.
 
-Confirme le modèle, la version webOS, le runtime Node, le logiciel installé, les
-empreintes des fichiers concernés et l'état de l'installation. Ne lis que les
-champs nécessaires; compare la configuration privée par empreinte ou résumé
-minimal, sans la publier. Vérifie les apps et périphériques réellement présents.
-Préserve mes favoris, l'ordre et mes périphériques HDMI; n'ajoute aucune console
-ou entrée provenant d'une démonstration ou d'une autre TV.
+Confirm the model, webOS version, Node runtime, installed software, hashes of
+relevant files and installation state. Read only required fields; compare
+private configuration by hash or minimal summary without publishing it. Check
+which apps and HDMI devices are actually present. Preserve my favorites, order
+and real HDMI devices; do not add a console or input from a demo or another TV.
 
-Pour Photos, vérifie l'ID exact du client installé et sa prise en charge par le
-lanceur de cette version. Ne lis pas son stockage, son serveur, ses clés API ni
-sa photothèque. Relier un lanceur, installer un client et l'authentifier sont trois
-opérations distinctes; seules les lectures d'inventaire sont autorisées ici.
+For the shortcut, verify the exact installed app ID. Do not read its private
+storage. For legacy Photos, verify the exact installed client ID and support in
+this version's launcher. Do not read its storage, server, API keys or photo
+library. Linking a shortcut, installing an app and authenticating it are three
+separate operations; only the inventory reads are authorized here.
 
-Pour Recommandations, conserve l'état existant. Si l'essai n'a pas été approuvé,
-n'active pas le flux et ne charge aucune image distante. Une lecture de
-disponibilité séparément autorisée doit exporter seulement les nombres par ID
-d'app, sans titre, profil ou URL personnelle. Ne promets pas Continuer à regarder,
-progression exacte ou personnalisation; l'app installée peut ne rien publier.
-Vérifie également l'app native Glasshouse avant de lier ou tester le G.
+For Recommendations, preserve the existing setting. If a test is not approved,
+do not enable the feed or load remote images. A separately authorized
+availability check may report only counts per app ID, with no titles, profiles
+or personal URLs. Do not promise Continue Watching, exact progress or
+personalization; an installed app may publish no cards. Also verify the native
+Glasshouse app before linking or testing the G button.
 
-Pour Toutes les apps, utilise uniquement le mécanisme déjà accessible au logiciel
-installé. Un refus du catalogue ne justifie pas d'ouvrir un endpoint, de changer
-un profil ou de contourner un PIN. Pour News, vérifie les capacités existantes;
-ne suppose aucun événement ni ID Plex. Si un appui physique est indispensable,
-propose une écoute courte, ciblée et séparément autorisée, puis annonce quand
-elle est prête. Pas de collecte générale de frappes ou de journal système.
+For All apps, use only the mechanism already accessible to the installed
+software. A catalog refusal does not justify opening another endpoint, changing
+a profile or bypassing a PIN. For News, check existing capabilities; assume no
+event or Plex ID. If a physical key press is necessary, propose a brief,
+targeted, separately approved listen and say when it is ready. Do not collect
+general keypresses or system logs.
 
-Prépare les fichiers candidats et tests locaux nécessaires sans modifier la TV.
-Présente le diff, les validations, le comportement au démarrage/retour HOME,
-l'accès de secours LG et les limites au réveil. Propose les sauvegardes privées
-exactes, leur vérification et la procédure de restauration compatible avec les
-mises à jour/personnalisations existantes. Ne remplace jamais une configuration
-existante par un exemple synthétique.
-Si le menu a disparu après update, préserve aussi .previous avant toute autre
-mise à jour. Rebase sur la version réellement installée sans downgrade, sans
-réinstaller à l'aveugle et sans ramener un PIN annulé. Prévois une fenêtre acceptée
-avant arrêt/restart du service, rafraîchissement visible ou lancement d'app.
+Prepare candidate files and local tests without modifying the TV. Present the
+diff, validations, startup/return-to-HOME behavior, LG fallback and wake limits.
+Propose the exact private backup and its verification, plus a restore procedure
+compatible with existing updates/customizations. Never replace existing
+configuration with a synthetic example. If the menu disappeared after an
+update, preserve .previous before any further update. Rebase on the installed
+version without downgrading, reinstalling blindly or restoring a canceled PIN.
+Plan an approved maintenance window before stopping/restarting the service,
+refreshing the visible page or launching an app.
 
-Demande ensuite mon accord sur ce plan précis avant de créer une sauvegarde sur
-la TV, installer, activer Home, changer un raccourci ou modifier la configuration.
-Toute création d'accès, changement de sécurité, root, firmware, compte ou jeton
-reste exclue et exige une autorisation distincte. Arrête l'action refusée et
-rapporte action, cible, motif et état connu; ne la contourne pas. Ne fais aucune
-nouvelle tentative sans preuve nouvelle pertinente répondant au motif et sans
-confirmer que l'opération n'a pas déjà été exécutée. Si son issue est incertaine,
-vérifie-la d'abord. Avec cette preuve, au plus une reprise de l'action concernée;
-si le refus persiste, arrête et rapporte le blocage.
+Then ask me to approve this specific plan before creating a TV backup,
+installing, enabling Home, changing a shortcut or editing configuration. New
+access, security changes, root, firmware, accounts or tokens remain excluded
+and need separate approval. Stop a refused action and report the action, target,
+reason and known state; do not work around the refusal. Do not retry without
+relevant new evidence addressing the reason and checking whether the operation
+already happened. If its outcome is uncertain, verify that first. With new
+evidence, retry that action at most once; if still refused, stop and report the
+blocker.
 ```
 
-## 3. Exécution du plan approuvé
+## 3. Execute the approved plan
 
-Ce gabarit n'est pas une autorisation permanente. Ne le copiez qu'après avoir
-examiné un plan précis; retirez toute opération que vous ne voulez pas autoriser.
-Une mise à jour du système, l'installation d'un client photo ou une modification
-de sécurité ne doivent pas être cachées dans « installer l'interface ».
+This template is not permanent authorization. Use it only after reviewing a specific plan, and remove any operation you do not want to approve. A system update, photo-client installation or security change must not be hidden inside “install the interface.”
 
 ```text
-J'approuve uniquement le plan <RÉFÉRENCE_DU_PLAN> pour <ALIAS_CIBLE>, à partir du
-SHA <SHA_EXAMINÉ> et du diff <DIFF_EXAMINÉ>, avec les opérations <LISTE_EXPLICITE>.
-La sauvegarde privée et la vérification de restauration décrites sont incluses.
-Aucun autre appareil, publication GitHub ou changement d'accès n'est autorisé.
+I approve only plan <PLAN_REFERENCE> for <TARGET_ALIAS>, from reviewed SHA
+<SHA> and reviewed diff <DIFF_REFERENCE>, for these operations: <EXPLICIT_LIST>.
+The described private backup and its restore verification are included. No other
+device, GitHub publication or access change is authorized.
 
-Revérifie que la cible et les fichiers n'ont pas changé depuis l'inventaire. Si
-le plan n'est plus applicable, arrête la mutation et présente la différence.
-Effectue et vérifie la sauvegarde avant le premier remplacement. Préserve les
-réglages privés, les métadonnées utiles et l'accès de secours. Applique le plus
-petit delta validé, en coordination avec le gardien de personnalisation existant.
-Les exemples ne remplacent jamais mes données. Un échec ou une modification
-concurrente ne doit pas déclencher une restauration aveugle.
+Recheck that the target and files have not changed since inventory. If the plan
+no longer applies, stop before mutation and show the difference. Create and
+verify the backup before replacing any file. Preserve private settings, useful
+metadata and the fallback path. Apply the smallest validated delta, coordinating
+with any existing persistence guard. Examples never replace my data. A failure
+or concurrent change must not trigger a blind restore.
 
-N'active que les fonctions approuvées. La météo reste désactivée sans accord sur
-les coordonnées et le service externe. Photos reçoit uniquement l'ID du client
-installé accepté par le code; aucun serveur, token ou compte n'est à mettre dans
-Glasshouse. News ne peut être modifié que si la touche et le mécanisme réel ont
-été identifiés et ce remappage est expressément approuvé. Conserve les autres
-raccourcis et documente leur restauration.
-Recommandations garde le choix déjà enregistré sauf modification expressément
-approuvée. Aucun contenu distant n'est à lire ou capturer pour démontrer la
-disponibilité. Le raccourci G doit lancer seulement l'app native installée vérifiée.
+Enable only approved features. Keep weather disabled unless I approve the
+coordinates and external service. For the shortcut, use only the installed app
+ID accepted by the code; do not put a server, token or account into Glasshouse.
+Change News only if the real key and mechanism were identified and this remap
+was explicitly approved. Preserve other shortcuts and document how to restore
+the prior mapping. Keep the existing Recommendations choice unless a change was
+specifically approved. Do not read or capture remote content to demonstrate
+availability. The G button must launch only a verified installed native app.
 
-Vérifie les empreintes effectivement installées, l'état du gardien, la préservation
-de la configuration et le rendu réellement chargé. Le cache mémoire des assets
-peut garder une ancienne page; compare son hash HTTP et ne redémarre que le
-service Glasshouse, dans la fenêtre approuvée, si nécessaire. Teste les flèches, OK, Retour,
-le focus, les favoris et les seules fonctions convenues. Pour Photos, activer la
-tuile puis lire seulement l'identifiant de l'app au premier plan suffit : ne
-capture ni n'inspecte sa photothèque. Un clic dont l'issue est incertaine n'est pas
-un succès et ne doit pas être répété sans contrôle préalable.
+Verify installed hashes, guard state, preserved configuration and the page
+actually rendered. The in-memory asset cache may serve an old page; compare its
+HTTP hash and restart only the Glasshouse service, during the approved window,
+if necessary. Test arrows, OK, Back, focus, favorites and only the agreed
+features. For a shortcut, checking the foreground app ID is sufficient; do not
+capture or inspect its photo library. An uncertain click is not success and
+must not be repeated without checking first.
 
-Ne redémarre pas ou n'éteins pas la TV pour compléter un test non convenu. Sépare
-preuve locale, entrée synthétique, appui physique, démarrage à froid et veille.
-Aucun test absent ne peut être déclaré réussi. Si l'accès disparaît, garde les
-preuves et rapporte ce qui est installé, ce qui reste incertain et l'information
-nécessaire, sans nouveau credential ni autre ordinateur.
+Do not reboot or power off the TV for an unapproved test. Separate local proof,
+synthetic input, physical remote press, cold start and standby. Never report an
+untested step as successful. If access is lost, preserve evidence and report
+what is installed, what is uncertain and what information is needed; do not
+obtain another credential or use another computer.
 
-Termine par les fichiers/SHA déployés, les tests réels, les limites, la sauvegarde
-vérifiée et les étapes de retour arrière. Ferme les connexions temporaires créées
-pour ce travail. Ne publie pas de configuration, sauvegarde, capture privée ou log.
+Finish with deployed files/SHA, real tests, limits, verified backup and rollback
+steps. Close temporary connections created for this work. Do not publish
+configuration, backup, private screenshot or log.
 ```
 
-## Adaptation à l'outil
+## Tool-specific notes
 
-Ajoutez **une** des instructions suivantes au prompt commun, selon votre outil.
-Elles ne remplacent pas les trois phases ni leurs autorisations.
+Add **one** of the following to the common prompt as appropriate. It does not replace the three phases or their approval gates.
 
-**Codex :**
+**Codex:**
 
 ```text
-Utilise le workspace et les outils réellement disponibles dans cette session.
-Lis les AGENTS.md applicables avant d'éditer. Montre les changements dans un diff
-local facile à examiner et distingue tes commandes exécutées de celles que tu
-proposes.
-Si un contrôle d'approbation bloque une action, rapporte-le avec son motif; ne
-change pas d'outil ou de route pour contourner le refus. Aucun push ou merge n'est
-autorisé par cette demande d'installation personnelle.
+Use the workspace and tools actually available in this session. Read applicable
+AGENTS.md files before editing. Show a locally reviewable diff and distinguish
+commands you ran from commands you propose. If an approval control blocks an
+action, report the reason; do not change tools or routes to bypass it. This
+personal installation request does not authorize a push or merge.
 ```
 
-**Claude / Claude Code :**
+**Claude / Claude Code:**
 
 ```text
-Précise d'abord si cette session peut lire les sources, modifier des fichiers ou
-exécuter des commandes. Respecte les instructions locales applicables, notamment
-AGENTS.md et CLAUDE.md s'ils existent, sans les traiter comme une autorisation
-d'accès à ma TV. Si tu n'as pas de terminal ou d'accès matériel autorisé, produis
-le plan et les commandes manuelles vérifiées; ne prétends pas les avoir exécutées.
-Avec des outils, garde les mêmes phases d'approbation et livre un diff vérifiable.
-Ne me demande pas de coller un secret dans la conversation pour remplacer un
-outil absent. Aucun push ou merge n'est autorisé par cette demande.
+First state whether this session can read sources, modify files or execute
+commands. Follow applicable local instructions, including AGENTS.md and
+CLAUDE.md if present, without treating them as permission to access my TV. If
+you lack a terminal or approved hardware access, provide a verified plan and
+manual commands; do not claim to have executed them. With tools, keep the same
+approval phases and provide a reviewable diff. Do not ask me to paste a secret
+into the conversation to replace a missing tool. This request does not
+authorize a push or merge.
 ```
 
-## Résultat attendu de l'agent
+## Expected report
 
-Un résultat utile distingue au minimum : **public et clonable**, **préparé
-localement**, **testé sans TV**, **installé sur votre TV**, **vérifié sur votre TV**
-et **bloqué/non testé**. Conservez le SHA, le plan approuvé et les instructions de
-retour arrière dans vos notes privées. Une réponse « tout est prêt » sans ces
-preuves ne remplace pas le [parcours manuel](MANUAL_GUIDE.md).
+A useful report distinguishes at least: **public and clonable**, **prepared locally**, **tested without a TV**, **installed on your TV**, **verified on your TV** and **blocked/not tested**. Keep the SHA, approved plan and rollback instructions in private notes. “Everything is ready” without these proofs does not replace the [manual process](MANUAL_GUIDE.md).

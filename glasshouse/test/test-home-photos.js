@@ -8,9 +8,9 @@ var dir = fs.mkdtempSync(path.join(os.tmpdir(), 'glasshouse-photos-'));
 var calls, installed, refused;
 var clients = ['com.immich.webos', 'com.seeky91.immichtv'];
 function copy(value) { return JSON.parse(JSON.stringify(value)); }
-function setup(id, apps) {
+function setup(id, apps, shortcut) {
   calls = []; installed = apps || []; refused = false;
-  fs.writeFileSync(path.join(dir, 'home.json'), JSON.stringify({ photosAppId: id }));
+  fs.writeFileSync(path.join(dir, 'home.json'), JSON.stringify({ photosAppId: id, shortcutAppId: shortcut || '' }));
   home.init({ stateDir: dir, luna: function (uri, payload, cb) {
     if (uri === 'com.webos.service.sdx/getHttpHeaderForServiceRequest') return cb({ returnValue: false });
     calls.push({ uri: uri, payload: copy(payload) });
@@ -32,14 +32,45 @@ function call(method, body) {
 function launches() { return calls.filter(function (c) { return c.uri === 'com.webos.applicationManager/launch'; }); }
 try {
   assert.strictEqual(home.normalise(null).photosAppId, '');
+  assert.strictEqual(home.normalise(null).shortcutAppId, '');
   ['', 'https://example.invalid', 'com.webos.app.browser', '../config', {}, [], null, 1].forEach(function (id) {
     assert.strictEqual(home.normalise({ photosAppId: id }).photosAppId, '', 'unsupported IDs normalize to nonconfigured');
   });
+  ['https://example.invalid', '../config', 'a', {}, [], null, 1, 12].forEach(function (id) {
+    assert.strictEqual(home.normalise({ shortcutAppId: id }).shortcutAppId, '', 'unsafe shortcut IDs normalize to nonconfigured');
+  });
+  assert.strictEqual(home.normalise({ shortcutAppId: 'com.limelight.webos' }).shortcutAppId, 'com.limelight.webos');
   clients.forEach(function (id) { assert.strictEqual(home.normalise({ photosAppId: id }).photosAppId, id); });
   setup('', [{ id: clients[0], title: 'Immich' }]);
   assert.strictEqual(call('open', { kind: 'photos', id: clients[0], url: 'https://example.invalid' }).ok, false);
   assert.strictEqual(calls.length, 0, 'nonconfigured Photos does not even query installed apps');
   assert.deepStrictEqual(call('catalogue').photos, { appId: '', installed: false, icon: null }, 'installation alone never opts in');
+  assert.deepStrictEqual(call('catalogue').shortcut, { appId: '', title: '', installed: false, icon: null }, 'shortcut is empty unless explicitly configured');
+
+  var moonlight = 'com.limelight.webos';
+  setup('', [{ id: moonlight, title: 'Moonlight', icon: '/synthetic/moonlight.png' }, { id: 'netflix', title: 'Netflix' }], moonlight);
+  assert.strictEqual(home.layout().shortcutAppId, moonlight);
+  assert.deepStrictEqual(call('catalogue').shortcut,
+    { appId: moonlight, title: 'Moonlight', installed: true, icon: '/api/home/icon?id=' + encodeURIComponent(moonlight) });
+  assert.strictEqual(call('open', { kind: 'shortcut', id: 'netflix', url: 'https://example.invalid', params: { id: 'netflix' } }).ok, true);
+  assert.deepStrictEqual(launches(), [{ uri: 'com.webos.applicationManager/launch', payload: { id: moonlight } }],
+    'shortcut request cannot override its saved app or inject URL/launch parameters');
+  assert.strictEqual(call('setLayout', { hintSeen: true }).layout.shortcutAppId, moonlight, 'ordinary edits retain shortcut');
+  assert.strictEqual(call('setLayout', { reset: true }).layout.shortcutAppId, moonlight, 'row reset retains shortcut');
+  var shortcutBefore = fs.readFileSync(path.join(dir, 'home.json'), 'utf8');
+  ['https://example.invalid', '../config', null, {}, [], 'a', 12].forEach(function (invalid) {
+    assert.strictEqual(call('setLayout', { shortcutAppId: invalid }).ok, false);
+    assert.strictEqual(fs.readFileSync(path.join(dir, 'home.json'), 'utf8'), shortcutBefore, 'invalid shortcut IDs are not written');
+  });
+  assert.strictEqual(call('setLayout', { shortcutAppId: '' }).layout.shortcutAppId, '', 'explicit empty ID disconnects shortcut');
+  var callsBeforeUnconfigured = calls.length;
+  assert.strictEqual(call('open', { kind: 'shortcut' }).ok, false);
+  assert.strictEqual(calls.length, callsBeforeUnconfigured, 'unconfigured shortcut makes no platform calls');
+
+  setup(moonlight, [{ id: 'netflix', title: 'Netflix' }], moonlight);
+  assert.deepStrictEqual(call('catalogue').shortcut, { appId: moonlight, title: moonlight, installed: false, icon: null });
+  assert.strictEqual(call('open', { kind: 'shortcut' }).ok, false);
+  assert.strictEqual(launches().length, 0, 'missing shortcut app is never installed or substituted');
 
   clients.forEach(function (id) {
     setup(id, [{ id: id, title: 'Immich', icon: '/synthetic/immich.png' }, { id: 'netflix', title: 'Netflix' }]);

@@ -1,4 +1,4 @@
-/* Local home layout: daily offline wallpaper, preview compatibility, French labels and console routing. */
+/* Local home layout: daily offline wallpaper, preview compatibility, English labels and console routing. */
 var assert = require('assert');
 var fs = require('fs');
 var path = require('path');
@@ -14,7 +14,7 @@ var elements = { wall: { querySelectorAll: function () { return layers; } } };
 var context = {
   Date: Clock, location: { search: '' }, window: { PalmSystem: {} },
   Image: function () { images.push(this); },
-  document: { documentElement: { lang: 'fr-CA' }, getElementById: function (id) { return elements[id] || (elements[id] = { textContent: '' }); } },
+  document: { documentElement: { lang: 'en' }, getElementById: function (id) { return elements[id] || (elements[id] = { textContent: '' }); } },
   t: function (key, text, vars) {
     return text.replace(/\{(\w+)\}/g, function (whole, name) { return vars && vars[name] !== undefined ? vars[name] : whole; });
   }
@@ -109,13 +109,13 @@ assert.ok(layers.some(function (layer) { return layer.style.backgroundImage === 
 assert.ok(!/\bnight\b/.test(elements.stage.className));
 
 clock = new Date(2026, 9, 22, 12);
-assert.strictEqual(view.dateText(clock), 'Jeudi 22 octobre');
+assert.strictEqual(view.dateText(clock), 'Thursday 22 October');
 view.renderNow();
-assert.strictEqual(elements.greeting.textContent, 'Bonjour');
+assert.strictEqual(elements.greeting.textContent, 'Good morning');
 clock = new Date(2026, 9, 22, 19);
 view.renderNow();
-assert.strictEqual(elements.greeting.textContent, 'Bonsoir');
-assert.strictEqual(view.titles.app, 'Applications');
+assert.strictEqual(elements.greeting.textContent, 'Good evening');
+assert.strictEqual(view.titles.app, 'Apps');
 assert.strictEqual(view.titles.dev, 'Consoles');
 
 var devices = [
@@ -141,8 +141,8 @@ view.arrange(true, true);
 assert.strictEqual(view.items('app').length, 2, 'quick reordering keeps unrelated apps hidden');
 assert.strictEqual(view.items('dev').length, 2, 'quick reordering preserves the console section');
 view.arrange(false);
-assert.ok(/brand-name/.test(view.tiles.dev(devices[0], 0)), 'Switch has a redistributable text fallback');
-assert.ok(/brand-name/.test(view.tiles.dev(devices[2], 1)), 'Xbox has a redistributable text fallback');
+assert.ok(/class="console-logo"/.test(view.tiles.dev(devices[0], 0)), 'Switch draws its own console mark');
+assert.ok(/class="console-logo"/.test(view.tiles.dev(devices[2], 1)), 'Xbox draws its own console mark');
 assert.ok(/HDMI 3/.test(view.tiles.dev({ port: 3, id: 'hdmi3', unused: true }, 1)), 'console port remains visible while off');
 // No port list is the shipped default: a C2 with four inputs shows all of
 // them, rather than the two this fork's owner uses.
@@ -151,6 +151,12 @@ assert.strictEqual(view.items('dev').map(function (d) { return d.id; }).join(','
   'hdmi1:switch-cec,hdmi2:sonos,hdmi3,hdmi4:fibe', 'every input is kept until the owner chooses ports');
 assert.ok(!/Nintendo Switch 2/.test(view.tiles.dev(devices[0], 0)), 'no console label without a chosen port list');
 assert.ok(/CEC Switch/.test(view.tiles.dev(devices[0], 0)), 'the input keeps the name its device reports');
+[devices[1], devices[2], devices[3]].forEach(function (device) {
+  var inputTile = view.tiles.dev(device, 0);
+  assert.ok(/class="face hdmi"/.test(inputTile), 'unnamed/non-console HDMI ' + device.port + ' uses its input face');
+  assert.ok(/<svg class="console-logo"/.test(inputTile), 'HDMI ' + device.port + ' uses a drawn connector image');
+  assert.ok(new RegExp('HDMI ' + device.port).test(inputTile), 'HDMI ' + device.port + ' remains identified');
+});
 var appIds = ['youtube.leanback.v4', 'cdp-30', 'ca.bellmedia.crave', 'netflix', 'amazon', 'tv.tou.ici.webos', 'com.webos.app.hdmi4'];
 appIds.forEach(function (id) {
   var tile = view.tiles.app({ id: id, title: 'Name <safe>' }, 0);
@@ -161,10 +167,10 @@ appIds.forEach(function (id) {
 assert.ok(/native-icon/.test(view.tiles.app({ id: 'other', title: 'Other', icon: '/api/home/icon?id=other' }, 0)), 'other installed apps retain native icons');
 assert.ok(/face lg/.test(view.tiles.app({ id: 'lg-home', title: 'Accueil LG', lg: true }, 0)), 'LG recovery tile stays available');
 assert.notStrictEqual(view.weatherSymbol(0, true).svg, view.weatherSymbol(0, false).svg, 'clear sky changes between day and night');
-assert.strictEqual(view.weatherSymbol(3, true).name, 'Couvert');
-assert.strictEqual(view.weatherSymbol(48, true).name, 'Brouillard');
-assert.strictEqual(view.weatherSymbol(67, true).name, 'Pluie verglaçante');
-assert.strictEqual(view.weatherSymbol(86, true).name, 'Neige');
-assert.strictEqual(view.weatherSymbol(99, true).name, 'Orage et grêle');
-assert.strictEqual(view.weatherSymbol(-1, true).name, 'Conditions indisponibles');
+assert.strictEqual(view.weatherSymbol(3, true).name, 'Overcast');
+assert.strictEqual(view.weatherSymbol(48, true).name, 'Fog');
+assert.strictEqual(view.weatherSymbol(67, true).name, 'Freezing rain');
+assert.strictEqual(view.weatherSymbol(86, true).name, 'Snow');
+assert.strictEqual(view.weatherSymbol(99, true).name, 'Thunderstorm with hail');
+assert.strictEqual(view.weatherSymbol(-1, true).name, 'Conditions unavailable');
 console.log('All home personalisation tests passed.');

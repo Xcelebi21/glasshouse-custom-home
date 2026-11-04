@@ -16,9 +16,9 @@ script = script.slice(0, script.indexOf("  window.addEventListener('resize'")) +
   '}; })();';
 function copy(value) { return JSON.parse(JSON.stringify(value)); }
 function fixture() {
-  var apps = [{id:'org.example.video',title:'Vidéos démo'}, {id:'org.example.empty',title:'App sans cartes'},
+  var apps = [{id:'org.example.video',title:'Demo videos'}, {id:'org.example.empty',title:'App with no cards'},
     {id:'com.tvweb.dashboard',title:'Glasshouse'}];
-  var cards = [{id:'demo-card',app:'org.example.video',title:'Titre <inventé>',category:'Démonstration',image:'/demo/poster.svg'}];
+  var cards = [{id:'demo-card',app:'org.example.video',title:'Title <invented>',category:'Demo',image:'/demo/poster.svg'}];
   var layout = {rows:['app','rec','dev'],recommended:true,order:{app:apps.map(function(a){return a.id;}),rec:['demo-card'],dev:[],ch:[]},
     sort:{app:'custom',rec:'custom',dev:'custom',ch:'custom'},hidden:{app:[],rec:[],dev:[],ch:[]},folder:[],channels:[],
     photosAppId:'org.example.photo',hintSeen:true,searchHintSeen:true,search:false};
@@ -75,7 +75,7 @@ assert.deepStrictEqual(copy(h.view.layout()),after,'accept server reply without 
 var fresh=fixture();fresh.layout=after;fresh.recommended=[];h.reads.shift().cb(fresh);
 h.tap(13);h.posts[1].cb({ok:false});
 assert.strictEqual(h.element('recommendedToggle').attrs['aria-checked'],'false','failure does not optimistically flip preference');
-assert.ok(/non confirmé/.test(h.element('homeSettingsStatus').textContent));
+assert.ok(/not confirmed/.test(h.element('homeSettingsStatus').textContent));
 
 h=harness();h.view.open();h.tap(40);h.tap(39);h.down(13);h.down(13);h.up(13);
 assert.strictEqual(h.posts.length,1,'held OK sends one native launch');
@@ -83,7 +83,7 @@ assert.deepStrictEqual(h.posts[0].body,{kind:'app',id:'com.tvweb.dashboard'});
 h.click('homeSettingsLaunch');h.click('recommendedToggle');
 assert.strictEqual(h.posts.length,1,'pending launch blocks duplicates and preference edits');
 h.posts[0].cb({ok:false});
-assert.strictEqual(h.view.settings.open,true);assert.ok(/pas confirmé/.test(h.element('homeSettingsStatus').textContent));
+assert.strictEqual(h.view.settings.open,true);assert.ok(/did not confirm/.test(h.element('homeSettingsStatus').textContent));
 h.down(32);h.down(32);h.up(32);assert.strictEqual(h.posts.length,2,'Space shares the repeat guard');
 h.posts[1].cb({ok:true});assert.strictEqual(h.view.settings.open,false);
 assert.strictEqual(h.document.activeElement.id,'homeSettingsTrigger');
@@ -105,7 +105,7 @@ h=harness();assert.strictEqual(h.view.cards().length,1);
 assert.strictEqual(h.view.expanded(),false);
 var folded=h.view.markup(1,h.view.cards());assert.ok(/aria-expanded="false"/.test(folded));assert.ok(!/demo\/poster/.test(folded),'folded row contains no remote image request');
 h.view.openCards();assert.strictEqual(h.view.expanded(),true);
-var expanded=h.view.markup(1,h.view.cards());assert.ok(/Titre &lt;inventé&gt;/.test(expanded));assert.ok(/Vidéos démo/.test(expanded));
+var expanded=h.view.markup(1,h.view.cards());assert.ok(/Title &lt;invented&gt;/.test(expanded));assert.ok(/Demo videos/.test(expanded));
 h.view.closeCards();assert.strictEqual(h.view.expanded(),false);
 h.view.load();var pending=h.reads.shift();h.view.select(1);
 assert.strictEqual(h.view.cards().length,0,'empty app never inherits another source');
@@ -114,7 +114,7 @@ var absent=h.view.markup(1,h.view.cards());assert.ok(/data-empty="1"/.test(absen
 h.view.select(0);assert.strictEqual(h.view.cards().length,1);
 var off=copy(h.data.layout);off.recommended=false;h.view.setup(copy(h.data),off);assert.strictEqual(h.view.cards().length,0,'off suppresses even previously loaded cards');
 assert.ok(/#stage:not\(\.arranging\) #rows \.recommendation-row\.empty\{display:block;visibility:hidden\}/.test(html),'empty folded row reserves its space without visible content');
-assert.ok(/id="homeSettingsLaunch"[^>]*aria-label="Ouvrir Glasshouse"/.test(html));
+assert.ok(/id="homeSettingsLaunch"[^>]*aria-label="Open Glasshouse"/.test(html));
 assert.ok(/src="\/assets\/favicon.svg"/.test(html),'native dashboard shortcut uses the bundled official icon');
 assert.ok(!/home-logos|data:image\/svg\+xml;base64/.test(html),'public Home does not embed private app logos');
 

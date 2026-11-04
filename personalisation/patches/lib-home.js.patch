@@ -8,16 +8,19 @@
  
  // The separate app earlier builds installed: removed, and its settings undone.
  var HOME_APP = 'com.tvweb.home';
-@@ -59,6 +60,8 @@
+@@ -59,6 +60,11 @@
    'com.webos.app.lifeonscreen', 'amazon.alexa.view', 'com.webos.app.camera'];
  // The view's own way back to LG's Home: last in the Apps row, and never hidden.
  var LG_HOME_TILE = 'lg-home';
 +// Optional third-party photo clients. No server address or credentials belong here.
 +var PHOTOS_APPS = ['com.immich.webos', 'com.seeky91.immichtv'];
++// An app id a layout may name for the shortcut tile beside the Consoles. A
++// plain package id only: no URL, launch parameters or credentials.
++var SHORTCUT_ID = /^[A-Za-z0-9][A-Za-z0-9._-]{1,127}$/;
  /*
   * LG's notifications and search, reached from its Home's sidebar and from no
   * other screen. Neither has a launch point, so the Apps row lists them from
-@@ -145,6 +148,11 @@
+@@ -145,6 +151,11 @@
  var historyModule = null;
  var stateDir = '/var/lib/tvweb';
  var webosVersion = null;
@@ -29,7 +32,7 @@
  var installFn = null;
  var procDir = '/proc';
  var execFn = execFile;
-@@ -243,6 +251,17 @@
+@@ -243,6 +254,17 @@
    return out;
  }
  
@@ -47,7 +50,7 @@
  function defaults() {
    return {
      enabled: false,
-@@ -283,8 +302,13 @@
+@@ -283,8 +305,15 @@
      // Inputs with nothing plugged in left out of the Inputs row, rather than
      // shown greyed out.
      hideUnused: false,
@@ -58,30 +61,37 @@
      // { text, accent } as #rrggbb, or null for the view's own colours.
      colours: null,
 +    photosAppId: '',
++    // The app the shortcut tile beside the Consoles launches, empty for none.
++    shortcutAppId: '',
      // null until chosen: the first start keeps an empty layout an earlier build left.
      hideLgHomeAtStart: null,
      // LG's Home auto launch as it was before Glasshouse Home switched it off,
-@@ -346,7 +370,9 @@
+@@ -346,7 +375,10 @@
    d.hidden.rec = [];
    d.fade = raw.fade === true;
    d.hideUnused = raw.hideUnused === true;
 +  d.devPorts = portList(raw.devPorts);
    d.colours = validColours(raw.colours);
 +  d.photosAppId = PHOTOS_APPS.indexOf(raw.photosAppId) !== -1 ? raw.photosAppId : '';
++  d.shortcutAppId = typeof raw.shortcutAppId === 'string' && SHORTCUT_ID.test(raw.shortcutAppId) ? raw.shortcutAppId : '';
    if (typeof raw.hideLgHomeAtStart === 'boolean') d.hideLgHomeAtStart = raw.hideLgHomeAtStart;
    if (typeof raw.lgAutoLaunch === 'string' && raw.lgAutoLaunch) d.lgAutoLaunch = raw.lgAutoLaunch;
    if (typeof raw.lgAutoLaunchCheck === 'string' && raw.lgAutoLaunchCheck) d.lgAutoLaunchCheck = raw.lgAutoLaunchCheck;
-@@ -445,6 +471,9 @@
+@@ -445,6 +477,13 @@
  function setLayout(body, cb) {
    var c = readConfig();
    if (!body || typeof body !== 'object') return cb({ ok: false, error: 'layout expected' });
 +  if (body.photosAppId !== undefined && body.photosAppId !== '' && PHOTOS_APPS.indexOf(body.photosAppId) === -1) {
 +    return cb({ ok: false, error: 'unsupported photos app' });
 +  }
++  if (body.shortcutAppId !== undefined && body.shortcutAppId !== '' &&
++      (typeof body.shortcutAppId !== 'string' || !SHORTCUT_ID.test(body.shortcutAppId))) {
++    return cb({ ok: false, error: 'unsupported shortcut app' });
++  }
    var next = normalise({
      enabled: c.enabled,
      restorePending: c.restorePending,
-@@ -473,8 +502,10 @@
+@@ -473,8 +512,11 @@
      recommended: typeof body.recommended === 'boolean' ? body.recommended : c.recommended,
      fade: typeof body.fade === 'boolean' ? body.fade : c.fade,
      hideUnused: typeof body.hideUnused === 'boolean' ? body.hideUnused : c.hideUnused,
@@ -89,22 +99,23 @@
      // null puts the view's own colours back.
 -    colours: body.colours !== undefined ? body.colours : c.colours
 +    colours: body.colours !== undefined ? body.colours : c.colours,
-+    photosAppId: body.photosAppId !== undefined ? body.photosAppId : c.photosAppId
++    photosAppId: body.photosAppId !== undefined ? body.photosAppId : c.photosAppId,
++    shortcutAppId: body.shortcutAppId !== undefined ? body.shortcutAppId : c.shortcutAppId
    });
    if (body.reset === true) {
      var d = defaults();
-@@ -498,8 +529,8 @@
+@@ -498,8 +540,8 @@
  function layoutOf(c) {
    return { rows: c.rows, order: c.order, sort: c.sort, hidden: c.hidden, folder: c.folder, channels: c.channels, hintSeen: c.hintSeen,
      searchHintSeen: c.searchHintSeen, picture: c.picture, search: c.search, recommended: c.recommended,
 -    fade: c.fade, hideUnused: c.hideUnused, showClock: c.showClock, rowsBottom: c.rowsBottom, view: c.view,
 -    showLastOn: c.showLastOn, showAppCount: c.showAppCount, showCec: c.showCec, colours: c.colours,
 +    fade: c.fade, hideUnused: c.hideUnused, devPorts: c.devPorts, showClock: c.showClock, rowsBottom: c.rowsBottom, view: c.view,
-+    showLastOn: c.showLastOn, showAppCount: c.showAppCount, showCec: c.showCec, colours: c.colours, photosAppId: c.photosAppId,
++    showLastOn: c.showLastOn, showAppCount: c.showAppCount, showCec: c.showCec, colours: c.colours, photosAppId: c.photosAppId, shortcutAppId: c.shortcutAppId,
      // Not saved: { host, by } while the ad blocker blocks LG's search (lib/home-search).
      searchBlocked: search.blocked() };
  }
-@@ -684,7 +715,14 @@
+@@ -684,7 +726,26 @@
      return order.app.indexOf(a.app) - order.app.indexOf(b.app) || all.indexOf(a) - all.indexOf(b);
    });
    order.rec = cards.map(function (r) { return r.id; });
@@ -114,12 +125,24 @@
 +    photos.installed = true;
 +    photos.icon = a.icon ? '/api/home/icon?id=' + encodeURIComponent(a.id) : null;
 +  });
++  // The shortcut tile's app, named only by id; the TV's own list supplies its title.
++  var shortcut = { appId: c.shortcutAppId, title: '', installed: false, icon: null };
++  if (c.shortcutAppId) {
++    appList.forEach(function (a) {
++      if (a.id !== c.shortcutAppId) return;
++      shortcut.title = a.title || a.id;
++      shortcut.installed = true;
++      shortcut.icon = a.icon ? '/api/home/icon?id=' + encodeURIComponent(a.id) : null;
++    });
++    if (!shortcut.title) shortcut.title = c.shortcutAppId;
++  }
    return {
 +    photos: photos,
++    shortcut: shortcut,
      apps: appList.map(function (a) {
        var app = { id: a.id, title: a.title, icon: a.icon ? '/api/home/icon?id=' + encodeURIComponent(a.id) : null };
        if (a.overlay) app.overlay = true;
-@@ -696,7 +734,10 @@
+@@ -696,7 +757,10 @@
      order: order,
      // recommended: false while the row is off, null when the TV gave no list.
      sources: { apps: !!apps, devices: !!devs, channels: chans ? chans.length : null,
@@ -131,12 +154,12 @@
    };
  }
  
-@@ -873,13 +914,24 @@
+@@ -873,13 +937,35 @@
  }
  
  /*
 - * Opens a tile: { kind: 'app'|'dev'|'ch'|'lg', id }. Only what the catalogue
-+ * Opens a tile: { kind: 'app'|'dev'|'ch'|'rec'|'lg'|'photos', id }. Only what the catalogue
++ * Opens a tile: { kind: 'app'|'dev'|'ch'|'rec'|'lg'|'photos'|'shortcut', id }. Only what the catalogue
   * lists can be opened, so this is not a way to launch anything at all. A
   * device opens its HDMI input with LG's CEC selection parameters where known.
   */
@@ -154,19 +177,30 @@
 +      launch(photosAppId, null, opened('app', photosAppId, cb));
 +    });
 +  }
++  if (kind === 'shortcut') {
++    // Same rule: the id comes from the saved layout, never from the request.
++    var shortcutAppId = readConfig().shortcutAppId;
++    if (!shortcutAppId) return cb({ ok: false, error: msg('srv.home.shortcutUnconfigured', 'No app is set for the shortcut tile') });
++    return launchPoints(function (apps) {
++      if (!(apps || []).some(function (a) { return a.id === shortcutAppId; })) {
++        return cb({ ok: false, error: msg('srv.home.shortcutMissing', 'The shortcut app is not installed') });
++      }
++      launch(shortcutAppId, null, opened('app', shortcutAppId, cb));
++    });
++  }
    console.log('home: open ' + kind + ' ' + id);
    // Only the view opens tiles: asked to, it is up, whether or not it beat first.
    beats++;
-@@ -935,7 +987,7 @@
+@@ -935,7 +1021,7 @@
        cb({ ok: r.ok, error: r.error });
      });
    }
 -  cb({ ok: false, error: 'kind must be app, dev, ch, rec or lg' });
-+  cb({ ok: false, error: 'kind must be app, dev, ch, rec, lg or photos' });
++  cb({ ok: false, error: 'kind must be app, dev, ch, rec, lg, photos or shortcut' });
  }
  
  // A tile's callback that first records it as opened, if it opened.
-@@ -1042,18 +1094,26 @@
+@@ -1042,18 +1128,26 @@
  
  function copy(o) { return JSON.parse(JSON.stringify(o)); }
  
@@ -203,7 +237,7 @@
    };
  }
  
-@@ -1684,6 +1744,7 @@
+@@ -1684,6 +1778,7 @@
  
  function status(cb) {
    var sup = supported();
@@ -211,7 +245,7 @@
    takeover.samType(function (type) {
      readSettings(['homeAutoLaunch'], function (s) {
        var hal = s && typeof s.homeAutoLaunch === 'string' ? s.homeAutoLaunch : '';
-@@ -1693,6 +1754,14 @@
+@@ -1693,6 +1788,14 @@
          // Both dashboards leave Home out where it is false, as for other features a TV lacks.
          available: sup.ok || c.enabled || c.restorePending,
          supported: sup,
@@ -226,7 +260,7 @@
          enabled: c.enabled,
          restorePending: c.restorePending,
          // In LG's Home's place now; false while one of the ways back has LG's Home open.
-@@ -1715,7 +1784,7 @@
+@@ -1715,7 +1818,7 @@
  
  // LG's Home reads its layout from /mnt/lg/cmn_data/manifest on webOS 9 only;
  // webOS 10 and 11 have no writable layout path (TV-RESEARCH).
@@ -235,7 +269,7 @@
  
  function init(opts) {
    opts = opts || {};
-@@ -1744,9 +1813,11 @@
+@@ -1744,9 +1847,11 @@
      exec: opts.exec,
      kill: opts.kill,
      blankAtStart: function () { return startLayoutAvailable() && readConfig().hideLgHomeAtStart === true; },
@@ -248,7 +282,7 @@
    installFn = opts.installApp || null;
    procDir = opts.procDir || '/proc';
    slowOpenMs = typeof opts.slowOpenMs === 'number' ? opts.slowOpenMs : FIRST_BEAT_GRACE_MS;
-@@ -1916,6 +1987,7 @@
+@@ -1916,6 +2021,7 @@
    // What was opened, written now rather than after its short delay, as the server stops.
    flush: recent.flush,
    status: status,

@@ -62,6 +62,9 @@ var PROMO_APPS = ['com.webos.app.lgchannels', 'com.webos.app.sportsteamsettings'
 var LG_HOME_TILE = 'lg-home';
 // Optional third-party photo clients. No server address or credentials belong here.
 var PHOTOS_APPS = ['com.immich.webos', 'com.seeky91.immichtv'];
+// An app id a layout may name for the shortcut tile beside the Consoles. A
+// plain package id only: no URL, launch parameters or credentials.
+var SHORTCUT_ID = /^[A-Za-z0-9][A-Za-z0-9._-]{1,127}$/;
 /*
  * LG's notifications and search, reached from its Home's sidebar and from no
  * other screen. Neither has a launch point, so the Apps row lists them from
@@ -309,6 +312,8 @@ function defaults() {
     // { text, accent } as #rrggbb, or null for the view's own colours.
     colours: null,
     photosAppId: '',
+    // The app the shortcut tile beside the Consoles launches, empty for none.
+    shortcutAppId: '',
     // null until chosen: the first start keeps an empty layout an earlier build left.
     hideLgHomeAtStart: null,
     // LG's Home auto launch as it was before Glasshouse Home switched it off,
@@ -373,6 +378,7 @@ function normalise(raw) {
   d.devPorts = portList(raw.devPorts);
   d.colours = validColours(raw.colours);
   d.photosAppId = PHOTOS_APPS.indexOf(raw.photosAppId) !== -1 ? raw.photosAppId : '';
+  d.shortcutAppId = typeof raw.shortcutAppId === 'string' && SHORTCUT_ID.test(raw.shortcutAppId) ? raw.shortcutAppId : '';
   if (typeof raw.hideLgHomeAtStart === 'boolean') d.hideLgHomeAtStart = raw.hideLgHomeAtStart;
   if (typeof raw.lgAutoLaunch === 'string' && raw.lgAutoLaunch) d.lgAutoLaunch = raw.lgAutoLaunch;
   if (typeof raw.lgAutoLaunchCheck === 'string' && raw.lgAutoLaunchCheck) d.lgAutoLaunchCheck = raw.lgAutoLaunchCheck;
@@ -474,6 +480,10 @@ function setLayout(body, cb) {
   if (body.photosAppId !== undefined && body.photosAppId !== '' && PHOTOS_APPS.indexOf(body.photosAppId) === -1) {
     return cb({ ok: false, error: 'unsupported photos app' });
   }
+  if (body.shortcutAppId !== undefined && body.shortcutAppId !== '' &&
+      (typeof body.shortcutAppId !== 'string' || !SHORTCUT_ID.test(body.shortcutAppId))) {
+    return cb({ ok: false, error: 'unsupported shortcut app' });
+  }
   var next = normalise({
     enabled: c.enabled,
     restorePending: c.restorePending,
@@ -505,7 +515,8 @@ function setLayout(body, cb) {
     devPorts: body.devPorts !== undefined ? body.devPorts : c.devPorts,
     // null puts the view's own colours back.
     colours: body.colours !== undefined ? body.colours : c.colours,
-    photosAppId: body.photosAppId !== undefined ? body.photosAppId : c.photosAppId
+    photosAppId: body.photosAppId !== undefined ? body.photosAppId : c.photosAppId,
+    shortcutAppId: body.shortcutAppId !== undefined ? body.shortcutAppId : c.shortcutAppId
   });
   if (body.reset === true) {
     var d = defaults();
@@ -530,7 +541,7 @@ function layoutOf(c) {
   return { rows: c.rows, order: c.order, sort: c.sort, hidden: c.hidden, folder: c.folder, channels: c.channels, hintSeen: c.hintSeen,
     searchHintSeen: c.searchHintSeen, picture: c.picture, search: c.search, recommended: c.recommended,
     fade: c.fade, hideUnused: c.hideUnused, devPorts: c.devPorts, showClock: c.showClock, rowsBottom: c.rowsBottom, view: c.view,
-    showLastOn: c.showLastOn, showAppCount: c.showAppCount, showCec: c.showCec, colours: c.colours, photosAppId: c.photosAppId,
+    showLastOn: c.showLastOn, showAppCount: c.showAppCount, showCec: c.showCec, colours: c.colours, photosAppId: c.photosAppId, shortcutAppId: c.shortcutAppId,
     // Not saved: { host, by } while the ad blocker blocks LG's search (lib/home-search).
     searchBlocked: search.blocked() };
 }
@@ -721,8 +732,20 @@ function build(c, apps, devs, chans, recs) {
     photos.installed = true;
     photos.icon = a.icon ? '/api/home/icon?id=' + encodeURIComponent(a.id) : null;
   });
+  // The shortcut tile's app, named only by id; the TV's own list supplies its title.
+  var shortcut = { appId: c.shortcutAppId, title: '', installed: false, icon: null };
+  if (c.shortcutAppId) {
+    appList.forEach(function (a) {
+      if (a.id !== c.shortcutAppId) return;
+      shortcut.title = a.title || a.id;
+      shortcut.installed = true;
+      shortcut.icon = a.icon ? '/api/home/icon?id=' + encodeURIComponent(a.id) : null;
+    });
+    if (!shortcut.title) shortcut.title = c.shortcutAppId;
+  }
   return {
     photos: photos,
+    shortcut: shortcut,
     apps: appList.map(function (a) {
       var app = { id: a.id, title: a.title, icon: a.icon ? '/api/home/icon?id=' + encodeURIComponent(a.id) : null };
       if (a.overlay) app.overlay = true;
@@ -914,7 +937,7 @@ function launch(id, params, cb) {
 }
 
 /*
- * Opens a tile: { kind: 'app'|'dev'|'ch'|'rec'|'lg'|'photos', id }. Only what the catalogue
+ * Opens a tile: { kind: 'app'|'dev'|'ch'|'rec'|'lg'|'photos'|'shortcut', id }. Only what the catalogue
  * lists can be opened, so this is not a way to launch anything at all. A
  * device opens its HDMI input with LG's CEC selection parameters where known.
  */
@@ -930,6 +953,17 @@ function open(body, cb) {
         return cb({ ok: false, error: msg('srv.home.photosMissing', 'The configured photo app is not installed') });
       }
       launch(photosAppId, null, opened('app', photosAppId, cb));
+    });
+  }
+  if (kind === 'shortcut') {
+    // Same rule: the id comes from the saved layout, never from the request.
+    var shortcutAppId = readConfig().shortcutAppId;
+    if (!shortcutAppId) return cb({ ok: false, error: msg('srv.home.shortcutUnconfigured', 'No app is set for the shortcut tile') });
+    return launchPoints(function (apps) {
+      if (!(apps || []).some(function (a) { return a.id === shortcutAppId; })) {
+        return cb({ ok: false, error: msg('srv.home.shortcutMissing', 'The shortcut app is not installed') });
+      }
+      launch(shortcutAppId, null, opened('app', shortcutAppId, cb));
     });
   }
   console.log('home: open ' + kind + ' ' + id);
@@ -987,7 +1021,7 @@ function open(body, cb) {
       cb({ ok: r.ok, error: r.error });
     });
   }
-  cb({ ok: false, error: 'kind must be app, dev, ch, rec, lg or photos' });
+  cb({ ok: false, error: 'kind must be app, dev, ch, rec, lg, photos or shortcut' });
 }
 
 // A tile's callback that first records it as opened, if it opened.

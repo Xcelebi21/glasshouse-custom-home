@@ -63,11 +63,11 @@
     "client": ""
   },
   "homeWeather": {
-    "enabled": false,
-    "latitude": null,
-    "longitude": null,
-    "timezone": "Etc/UTC",
-    "label": "YOUR_CITY"
+    "enabled": true,
+    "latitude": 33.1959,
+    "longitude": -117.3795,
+    "timezone": "America/Los_Angeles",
+    "label": "Oceanside"
   },
   "allowExperimentalHome": false
 }

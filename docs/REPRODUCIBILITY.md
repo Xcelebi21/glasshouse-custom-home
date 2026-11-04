@@ -1,136 +1,71 @@
-# Ce qui est réellement reproductible
+# What is actually reproducible
 
-Cette livraison contient le Home personnalisé basé sur **Glasshouse 0.130.0**, commit
-amont `1543769cfeb28c3ce0936dc6d20b24cd58c70255`. Le README principal et les guides
-visent `main`; relevez toujours son SHA et sa CI. Les tableaux historiques ci-dessous
-décrivent les contrôles antérieurs, pas l’état courant de la branche.
+This release contains a customized Home based on **Glasshouse 0.130.0**, upstream commit `1543769cfeb28c3ce0936dc6d20b24cd58c70255`. The main README and guides describe the public project; record the exact SHA and CI result for the checkout you use. Historical tables below describe earlier checks, not the current state of a remote branch.
 
-## État public lors de l’audit initial
+## Public state at the initial audit
 
-| Source lors de l’audit | Révision vérifiée | Contenu à cette révision |
+| Source at audit time | Revision checked | Contents at that revision |
 | --- | --- | --- |
-| [Ancien `main`](https://github.com/pducharme/glasshouse-custom-home/tree/9366c6bb9a1dcdbf8421d3f9de4dc178076e7491) | `9366c6bb9a1dcdbf8421d3f9de4dc178076e7491` | Cinq JPEG et un README de fonds. Aucun serveur, démo, installateur ou guide complet d’interface. |
-| [Code de l’interface audité](https://github.com/pducharme/glasshouse-custom-home/tree/d2e3ebc843c827a7040aa08e69abc9b7c31a8abe) | `d2e3ebc843c827a7040aa08e69abc9b7c31a8abe` | Sources Glasshouse 0.118.0 adaptées, démo synthétique, configuration d’exemple, dépendances verrouillées, tests et bundle de personnalisation. |
-| [PR nº1](https://github.com/pducharme/glasshouse-custom-home/pull/1) | Même commit de code | Ouverte, en brouillon, **non fusionnée lors de ce contrôle initial**. Son contenu était public mais différent du clone ordinaire de `main`. |
+| [Earlier `main`](https://github.com/pducharme/glasshouse-custom-home/tree/9366c6bb9a1dcdbf8421d3f9de4dc178076e7491) | `9366c6bb9a1dcdbf8421d3f9de4dc178076e7491` | Five JPEGs and a wallpaper README. No server, demo, installer or complete UI guide. |
+| [Audited UI code](https://github.com/pducharme/glasshouse-custom-home/tree/d2e3ebc843c827a7040aa08e69abc9b7c31a8abe) | `d2e3ebc843c827a7040aa08e69abc9b7c31a8abe` | Adapted Glasshouse 0.118.0 sources, synthetic demo, example configuration, locked dependencies, tests and customization bundle. |
+| [PR #1](https://github.com/pducharme/glasshouse-custom-home/pull/1) | Same code commit | Open, draft and **not merged during that initial audit**. Its public contents differed from an ordinary clone of `main`. |
 
-Les deux branches ont été clonées séparément pour ce contrôle. Le clone par défaut
-contenait six fichiers suivis; celui de la PR en contenait 384 au commit ci-dessus.
-Les guides autonomes ont été ajoutés après le commit `d2e3ebc` puis fusionnés par
-la PR nº1 : revenir à ce SHA les retire du checkout. Pour connaître la livraison
-actuelle, vérifiez le SHA distant de `main`, la version incluse et la présence de
-`glasshouse/package.json`, `docs/MANUAL_GUIDE.md` et `docs/AI_PROMPTS.md` dans cette
-référence. Une publication ou une fusion doit être confirmée par GitHub, pas déduite
-de ce tableau historique.
+The two branches were cloned separately for that check. The default clone contained six tracked files; the PR clone contained 384 at the listed commit. Standalone guides were added after commit `d2e3ebc` and later merged by PR #1; checking out that earlier SHA removes them. To assess the current release, inspect the remote SHA of `main`, the included version and whether `glasshouse/package.json`, `docs/MANUAL_GUIDE.md` and `docs/AI_PROMPTS.md` exist at that exact reference. Confirm publication or merge status on GitHub rather than inferring it from this historical table.
 
-Le code de la PR a une [CI réussie sur cette révision](https://github.com/pducharme/glasshouse-custom-home/actions/runs/40212645485).
-Cela vérifie le code et ses fixtures, pas une nouvelle télévision. Consulter la
-branche, le SHA et la CI présents aujourd’hui avant de suivre un lien mobile `main`
-ou un nom de branche.
+The PR code had [successful CI on that revision](https://github.com/pducharme/glasshouse-custom-home/actions/runs/40212645485). That checks code and fixtures, not another television. Check today's branch, SHA and CI before following a mobile `main` link or branch name.
 
-## Sans Codex : oui pour la démo, sous conditions pour une TV
+## Without Codex: yes for the demo, conditional for a TV
 
-La démo ne dépend d’aucun agent : Git et Node.js 22+ suffisent. Les commandes du
-[README](../README.md#démo-locale--local-demo) utilisent `main`.
-Elles n’accèdent à aucun appareil. Les développeurs peuvent
-reconstruire et tester le paquet avec npm, Python 3, `diff` et `patch`.
+The demo requires no agent; Git and Node.js 22+ are sufficient. The commands in the [README demo](../README.md#local-demo) do not access a device. Developers can rebuild and test the package with npm, Python 3, `diff` and `patch`.
 
-L’installation TV demande davantage : cible compatible déjà rootée, accès de
-maintenance personnel fonctionnel, sauvegardes privées et vérification de la
-configuration. Le [guide manuel](MANUAL_GUIDE.md) fournit ce parcours. Il ne crée
-pas un root ni un nouvel accès. Le profil HDMI du code doit aussi correspondre à
-vos appareils; ce n’est pas un installateur universel qui découvre vos consoles.
+TV installation has additional requirements: a compatible TV that is already rooted, a working private maintenance connection, private backups and verified configuration. The [manual guide](MANUAL_GUIDE.md) describes this path. It does not create root access or a new access method. The HDMI layout must also match your actual devices; it is not a universal installer that discovers consoles.
 
-Un assistant muni des [prompts fournis](AI_PROMPTS.md) peut aider à vérifier et
-adapter les sources. Il ne donne pas des permissions supplémentaires, ne résout
-pas une incompatibilité de plateforme par une simple confirmation et ne doit pas
-annoncer une installation qu’il n’a pas vérifiée.
+An assistant using the [provided prompts](AI_PROMPTS.md) can help inspect and adapt sources. It does not grant permissions, solve a platform incompatibility by confirmation, or justify claiming an installation it did not verify.
 
-## Compatibilité : serveur, Home et personnalisation sont distincts
+## Compatibility: server, Home and persistence are separate
 
-| Environnement | Ce que permet cette livraison |
+| Environment | What this release provides |
 | --- | --- |
-| Ordinateur avec Node.js 22+ | Démo hors ligne et tests. Aucun accès root, compte LG ou TV nécessaire. |
-| LG avec Developer Mode uniquement | Ce mode permet le développement/déploiement d’apps dans son environnement; il n’accorde pas les droits root requis par ce serveur, ses hooks et le remplacement de HOME. Ce guide s’arrête avant le déploiement système. |
-| TV déjà rootée, webOS 9 | Home accepté par le code. Le moteur, les entrées et les commandes doivent encore être vérifiés sur le modèle réel. |
-| TV déjà rootée, C2 (2022) | Selon la version réellement rapportée : webOS 22 (7.x) et 25 (10.x) expérimentales, webOS 24 (9.x) acceptée. Voir [la note C2](C2.md). Aucun essai matériel de ce fork sur C2 n’est revendiqué. |
-| TV déjà rootée, webOS 7 ou 10 | Home proposé avec statut expérimental dans la base 0.130. |
-| TV déjà rootée, webOS 11 | Home proposé seulement avec `allowExperimentalHome: true`. Le profil adapté a été utilisé sur une C6; cela ne certifie pas tous les modèles webOS 11. |
-| webOS 5 / Node système 8, notamment UN7300 | Le serveur upstream peut avoir des compatibilités distinctes, mais **Home public est refusé par cette version**. Le bundle de personnalisation exige `fs.rmSync` (Node 14.14+). La variante Lightkeeper observée sur ce matériel n’est pas livrée ici. |
+| Computer with Node.js 22+ | Offline demo and tests. No root access, LG account or TV is needed. |
+| LG TV with Developer Mode only | Developer Mode supports app development/deployment in its own environment; it does not grant the root privileges required by this server, its hooks or replacing HOME. This guide stops before system deployment. |
+| Already-rooted TV, webOS 9 | Home is supported by the code. Browser engine, inputs and commands still need checking on the actual model. |
+| Already-rooted C2 (2022) | Depends on the version reported by the TV: webOS 22 (7.x) and 25 (10.x) are experimental; webOS 24 (9.x) is supported by the code and has been verified on one OLED55C2PUA. Other sizes, firmware and regions remain uncertified. See [C2 compatibility](C2.md). |
+| Already-rooted TV, webOS 7 or 10 | Home is offered with experimental status in the 0.130 base. |
+| Already-rooted TV, webOS 11 | Home is offered only with `allowExperimentalHome: true`. The adapted profile was used on a C6; that does not certify every webOS 11 model. |
+| webOS 5 / system Node 8, including UN7300 | The upstream server may have separate compatibility, but **this public Home is refused** by this version. The persistence bundle requires `fs.rmSync` (Node 14.14+). The Lightkeeper variant observed on this hardware is not delivered here. |
 
-Les règles effectives de Home sont dans [`supported()`](../glasshouse/server/lib/home.js)
-et le profil de modèle dans [`lib/tv-profile.js`](../glasshouse/server/lib/tv-profile.js),
-et les prérequis de persistance dans [son guide](../personalisation/README.md).
-Ne déduire la version webOS ni du nom commercial ni de la version du firmware.
-Ne pas modifier le contrôle de compatibilité pour faire apparaître un bouton.
-Le port 8080 reste celui des exemples et du tunnel documenté; la base 0.130 ne
-porte plus l’ancien refus Home fondé uniquement sur un autre port. Vérifier la
-configuration effective avant d’adapter les commandes.
+Home's effective rules are in [`supported()`](../glasshouse/server/lib/home.js), the model profile is in [`lib/tv-profile.js`](../glasshouse/server/lib/tv-profile.js), and persistence prerequisites are in [its guide](../personalisation/README.md). Do not infer the webOS version from the retail model name or firmware number. Do not change the compatibility check merely to make a button appear. Port 8080 is used by examples and the documented tunnel; the 0.130 base no longer refuses Home solely because another port is configured. Check the effective configuration before adapting commands.
 
-## Comparaison du rendu et des fonctions
+## Feature and rendering comparison
 
-| Élément | Branche publique Glasshouse | Expérience sur les deux familles de TV |
+| Element | Public Glasshouse branch | Hardware evidence and limits |
 | --- | --- | --- |
-| Carrousel, verre au pointeur, focus clavier, mouvement réduit | Inclus. Démo à données fictives, canevas 1920×1080 redimensionné. | Adaptation C6 observée; effet aussi porté séparément à Lightkeeper. Performance prolongée et pointeur physique doivent être validés sur chaque cible. |
-| Tuiles et légendes | Apps 280×157,5; consoles/Photos 224×126. Noms sous les tuiles masqués, noms accessibles conservés, titre Photos visible. | Apparence commune recherchée; les sources Lightkeeper ne sont pas dans ce dépôt. |
-| Logos d’apps | Icônes natives disponibles sur la TV, sinon noms typographiques dans la face. Neuf logos privés ne sont pas redistribués. | Les écrans privés peuvent donc différer visuellement. Une fidélité pixel pour pixel n’est pas promise. |
-| HDMI | Liste de ports réglable (`layout.devPorts`); liste vide par défaut, donc toutes les entrées restent visibles. Aucune tuile d'app injectée pour un port précis. | Ne représente pas automatiquement votre câblage. La TV avec Firestick seul utilise un port Lightkeeper séparé et ne doit recevoir aucune console inventée. Voir l’adaptation HDMI dans le guide. |
-| Photos / Immich | Fleur officielle transparente. `photosAppId` vide par défaut, puis identifiant d’une app réellement installée. Glasshouse ne fournit pas le client, le compte ou le serveur photo. | Lancement confirmé dans les adaptations privées C6 et UN7300, avec mécanismes distincts; cela ne rend pas Lightkeeper disponible dans ce paquet. |
-| Toutes les apps | Catalogue de points de lancement Glasshouse, hors favoris/masquage du carrousel; ce n’est pas une liste exhaustive de tous les services système. | Fonctionnel dans le parcours Glasshouse testé. Sur le port Lightkeeper webOS 5, le catalogue de son contexte app était inaccessible; aucun contournement n’est fourni ici. |
-| Paramètres et G | Engrenage discret, toggle natif Recommandations, fermeture et lancement de `com.tvweb.dashboard` si cette app est installée. | Lancement natif et résultat visuel confirmés sur C6; aucun réglage privé copié dans le dépôt. |
-| Recommandations | Accordéon par identifiant d’app exact, replié par défaut, sans repli vers un autre fournisseur. Espace réservé pour stabiliser le dock; aucune carte visible si l’app n’en fournit pas. L’absence de l’appel TV est détectée à l’exécution et signalée dans les paramètres. | Catalogue disponible sur la C6 testée. Ce ne sont ni des reprises ni des résultats personnalisés garantis; la présence de Plex ou d’une autre app ne prouve pas qu’elle publie des cartes. Sur une C2 restée en webOS 22/24, l’appel peut manquer. |
-| News → Plex | Support natif `haystack` si la TV webOS 11 expose cette entrée et si Plex est installé. Aucun mapping préconfiguré. | Appui physique vérifié sur C6. Aucun équivalent News établi sur l’UN7300; ne pas copier un code de touche entre modèles. |
-| Fonds et météo | Cinq paysages synthétiques; rotation quotidienne et nuit 17 h–6 h. Météo fictive en démo, réelle désactivée par défaut. | Heure, fuseau, ville et coordonnées appartiennent à chaque utilisateur; les réglages privés ne sont pas fournis. |
-| Démarrage / HOME | Le serveur et le gardien ont leurs hooks. Home doit ensuite être activé explicitement; retour vers LG et restauration séparés. | Un réveil, un démarrage à froid et une mise à jour sont des essais distincts. L’appui News qui allume la TV peut encore suivre LG avant la réapplication du mapping. |
+| Carousel, pointer glass, keyboard focus, reduced motion | Included. The synthetic demo uses a scaled 1920×1080 canvas. | C6 adaptation was observed; performance over time and physical pointer behavior still require checking on each target. C2 server/profile checks do not establish every visual or remote behavior. |
+| Tiles and captions | App faces 280×157.5; inputs and shortcut 224×126. Captions are hidden while accessible names remain. | The shared styling is intended across targets; Lightkeeper sources are not in this repository. |
+| App and console art | Use a native TV app icon when available, otherwise text. Xbox/PlayStation/Switch marks and unnamed-input HDMI connector marks are drawn inline. Private proprietary app logos are not redistributed. | A private screen may look different. Pixel-for-pixel reproduction of private logos is not promised. |
+| HDMI | Ports are configurable through `layout.devPorts`; the default empty list keeps every input. No app tile is injected for a specific port. | The list does not discover wiring. The TV with only a Firestick uses a separate Lightkeeper port and must not receive an invented console. See the manual guide's HDMI adaptation notes. |
+| Photos / app shortcut | `layout.shortcutAppId` can name an installed app such as Moonlight (`com.limelight.webos`); the server checks its launch point. Existing `photosAppId` remains supported for Immich clients. Glasshouse supplies no photo client, account or server. | A package ID or demo launch does not prove an app is installed on another TV. The C2 Moonlight package was present in the verified TV's app inventory; installing or authenticating third-party apps is separate. |
+| All apps | Glasshouse launch-point catalog, including apps hidden from the carousel. Shows a count, TV-order/A–Z toggle accessible from the remote toolbar, and closes by button, Back or click outside. Up from the top grid row focuses the toolbar. It is not a complete list of system packages. | The feature is covered by offline tests. Test the physical remote and pointer on each target before claiming hardware verification. |
+| Home Settings and G | Compact gear, native Recommendations toggle, close and launch of `com.tvweb.dashboard` if installed. | Native launch and visual result were confirmed on C6. No private settings were copied into the repository. |
+| Recommendations | Per-app accordion, collapsed by default, with no fallback to another provider. Its placeholder stabilizes the dock; no cards are fabricated. Missing TV API is detected at runtime and reported in settings. | Catalog was available on the tested C6. These are not guaranteed resume results or personalized picks; an installed app may publish no cards. API availability can vary by webOS version, including on C2 systems remaining on webOS 22/24. |
+| News → Plex | Native `haystack` support only if the TV's webOS 11 exposes that entry and Plex is installed. No mapping is preconfigured. | A physical press was verified on C6. No equivalent News entry is established for UN7300; do not copy a key code between models. |
+| Wallpapers and weather | Five synthetic/public landscapes; daily rotation and dark mode 17:00–06:00. Demo weather is synthetic; live weather is off by default. | Clock, time zone, city and coordinates belong to each user; private settings are not included. |
+| Startup / HOME | The server and watchdog have startup hooks. Home takeover is a separate explicit action; return to LG and restoration are separate as well. | Wake, cold start and update are different tests. After waking, a News key may still follow LG behavior until the mapping is reapplied. The verified C2 deployment did not enable Home takeover or a startup hook. |
 
-Les différences de profil sont visibles dans [`items()` / `TILE.dev`](../glasshouse/server/assets/home.html),
-[`launchPoints()`](../glasshouse/server/lib/home.js) et le profil de modèle
-[`lib/tv-profile.js`](../glasshouse/server/lib/tv-profile.js). Modifier seulement un
-exemple JSON ne change pas ces choix de présentation. Le guide indique les points à
-adapter et les tests à relancer avant tout déploiement.
-La personnalisation ne cible plus une app ou une boîte Bell précise : aucune tuile
-HDMI n’est injectée dans la rangée Applications. Aucun mapping News/Plex ni client
-Photos n’est configuré pour une autre TV par l’exemple. Aucun PIN personnalisé
-n’est inclus.
+Profile behavior is visible in [`items()` / `TILE.dev`](../glasshouse/server/assets/home.html), [`launchPoints()`](../glasshouse/server/lib/home.js) and [`lib/tv-profile.js`](../glasshouse/server/lib/tv-profile.js). Changing only an example JSON file does not change these presentation choices. The manual guide lists adaptation points and tests to run before deployment. The public customization no longer targets a particular Bell app or set-top box: no HDMI tile is injected into the Apps row. The examples do not preconfigure News/Plex or an Immich client for another TV. No custom PIN is included.
 
-## Installation, accès de secours et restauration
+## Installation, fallback and recovery
 
-`server/deploy.sh --no-app` n’est pas une prévisualisation : il transfère les
-fichiers, installe par défaut le hook serveur et relance Glasshouse. L’option évite
-seulement d’ajouter la tuile du tableau de bord. L’activation de Glasshouse Home
-se fait séparément. Une configuration existante est conservée, mais cela ne vaut
-pas sauvegarde de toute l’installation.
+`server/deploy.sh --no-app` is not a preview: it transfers files and restarts Glasshouse. By default, deployment also adds the server startup hook; `--no-persist` skips that hook. `--no-app` only prevents adding the dashboard tile. Glasshouse Home takeover is separate. An existing configuration is preserved, but that is not a full installation backup.
 
-Le retour à LG Home, la restauration d’un mapping, l’arrêt du gardien et le retour
-aux fichiers d’avant déploiement sont quatre opérations distinctes. Le
-[guide manuel](MANUAL_GUIDE.md) fournit les étapes et les points de vérification.
-En particulier, ne présumer ni qu’un export JSON du dashboard contient tous les
-secrets et fichiers, ni que `tvwebctl rollback` dispose d’une version précédente
-après un premier déploiement SSH. Garder les sauvegardes complètes hors Git.
-En récupération après update, préserver `.previous` avant une nouvelle update
-et adapter les personnalisations à la version réelle. Le cache mémoire des assets
-impose de comparer aussi la page servie; une relance du seul service peut être
-nécessaire pendant une fenêtre approuvée. Ne pas restaurer toute une ancienne
-configuration pour réparer le menu.
+Returning to LG Home, restoring a key mapping, stopping the watchdog and restoring pre-deployment files are four distinct operations. The [manual guide](MANUAL_GUIDE.md) provides the steps and checks. Do not assume that a dashboard JSON export contains all secrets and files, or that `tvwebctl rollback` has a prior version after a first SSH deployment. Keep full backups outside Git. During update recovery, preserve `.previous` before another update and adapt the customization to the installed version. The in-memory asset cache also means you must check the served page; restarting only the service may be necessary during an approved maintenance window. Do not restore a whole old configuration just to repair the menu.
 
-## Licences et attributions
+## Licenses and attribution
 
-Le code Glasshouse est sous MIT; les polices Outfit/Manrope sous SIL OFL.
-TypeScript est sous Apache-2.0, `@types/node` et `undici-types` sous MIT. Le SVG
-Immich est un asset distinct sous AGPL-3.0 avec source intacte, licence et notice;
-les marques ne sont pas transférées par ces licences. Les clients photo restent
-des projets tiers installés séparément.
+Glasshouse code is MIT; Outfit, Manrope and Inter use SIL OFL. TypeScript is Apache-2.0; `@types/node` and `undici-types` are MIT. The Immich SVG is a separate AGPL-3.0 asset with the original source, license and notice. These licenses do not transfer ownership of trademarks. Photo clients remain separate third-party apps.
 
-Aucune licence globale nouvelle n’a été attribuée aux cinq paysages générés ni
-au dépôt entier. Ne pas déduire des notices MIT du serveur une permission globale
-sur chaque image ou marque. L’attribution Open-Meteo est conservée lorsque la météo
-réelle est activée; ses conditions s’appliquent séparément. Voir la
-[provenance détaillée](PROVENANCE.md) et les [droits du lanceur Photos](PHOTOS.md#droits).
+No new blanket license applies to the five generated wallpapers or the repository as a whole. The server's MIT notice does not grant blanket rights to every image or mark. Preserve Open-Meteo attribution if real weather is enabled; its service terms apply separately. See [detailed provenance](PROVENANCE.md) and [Photos licensing](PHOTOS.md#licensing-and-trademarks).
 
-## Portée des preuves
+## Scope of evidence
 
-Les tests de démo, types, ES5, configuration, navigation et persistance peuvent
-être exécutés sans télévision. La validation depuis des clones propres est
-séparée des preuves privées d’usage réel; les captures, adresses, identifiants
-matériels, réglages, sauvegardes et journaux personnels ne sont pas redistribués.
-Aucun test logiciel ne garantit l’absence absolue de secret, la compatibilité de
-toutes les TV ou la survie à toute mise à jour. [Validation et limites](VALIDATION.md).
+Demo, types, ES5, configuration, navigation and persistence tests can run without a TV. Clean-clone validation is separate from private real-world use; screenshots, addresses, device identities, settings, backups and personal logs are not redistributed. No software test guarantees that all secrets are absent, every TV is compatible, or every update will work. See [validation and limitations](VALIDATION.md).

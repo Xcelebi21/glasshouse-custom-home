@@ -1,127 +1,69 @@
-# Installation et configuration
+# Installation and configuration
 
-Pour un premier parcours sans assistant, suivre le [guide manuel autonome](MANUAL_GUIDE.md).
-Ce document est la référence des réglages du profil public. Vérifier d’abord
-[l’audit initial et la compatibilité](REPRODUCIBILITY.md), puis la présence du code
-dans la référence téléchargée. Les anciens commits de `main`, antérieurs à la
-fusion de la PR nº1, ne contiennent que les fonds.
+For a first-time walkthrough without an assistant, use the [standalone manual guide](MANUAL_GUIDE.md). This document is the reference for the public profile's settings. First review the [initial audit and compatibility](REPRODUCIBILITY.md), then verify that the code is present in the exact reference you downloaded. Older `main` commits before PR #1 was merged contained only wallpapers.
 
-La démo du README est le parcours recommandé pour examiner le rendu sans matériel.
-Cette procédure facultative concerne une télé déjà rootée avec Homebrew Channel et
-un accès SSH personnel, jamais une installation de root ou de firmware.
+The README demo is the recommended way to inspect the UI without hardware. The optional TV procedure is only for a TV that is already rooted, has Homebrew Channel, and has an existing maintenance connection. It is not a root or firmware installation guide.
 
-## Source complète
+## Full source deployment
 
-La version de cette branche est Glasshouse **0.130.0**, base
-`1543769cfeb28c3ce0936dc6d20b24cd58c70255`, avec l'accueil C6 personnalisé. Le serveur
-reste ES5, mais le mécanisme de persistance requiert un Node système moderne; voir
-son guide. Cette version publique modifiée doit être validée sur chaque télévision.
-L'expérience historique C6 ne prouve pas la compatibilité de tous les modèles.
+This branch is based on Glasshouse **0.130.0**, upstream commit `1543769cfeb28c3ce0936dc6d20b24cd58c70255`, with a customized Home view. The server remains ES5 JavaScript, but the persistence mechanism requires a modern system Node version; see its guide. Validate this modified public build on each target TV. Historical C6 experience does not certify every model.
 
-Avant un déploiement, conserver hors du dépôt une sauvegarde privée de l'installation
-et des réglages, puis vérifier les modifications. Le script ci-dessous installe et
-redémarre Glasshouse et ajoute par défaut le hook `50-tvweb`; `--no-app` évite
-seulement la tuile du tableau de bord. Il n’active pas automatiquement Glasshouse
-Home. Il ne réalise pas une sauvegarde complète ni une restauration de version
-prête à l’emploi; préparer celles du guide manuel avant de le lancer. Il ne fait
-pas partie des commandes de démonstration ou de CI.
+Before deployment, perform a read-only preflight and make a private, verified backup of the current installation and settings. Inspect the exact changes before writing to the TV. `deploy.sh` installs and restarts Glasshouse; by default it also installs the `50-tvweb` startup hook. `--no-persist` skips that hook, and `--no-app` avoids adding the dashboard tile. Neither option enables Glasshouse Home. They do not create a complete backup or a ready-to-use version restore; prepare those using the manual guide first. These commands are not part of the demo or CI.
 
-Pour une première installation, préparer d'abord un fichier privé minimal. Cette
-commande refuse d'écraser un fichier existant et génère le token sans l'afficher :
+For an SSH first install, prepare a private minimal config file locally. This command refuses to overwrite an existing file and generates the token without printing it:
 
 ```sh
 cd glasshouse
 node -e 'const fs=require("fs"),crypto=require("crypto"); const c=JSON.parse(fs.readFileSync("config.example.json")); c.token=crypto.randomBytes(32).toString("hex"); fs.writeFileSync("server/config.json",JSON.stringify(c,null,2)+"\n",{flag:"wx",mode:0o600});'
 ```
 
-Pour une mise à jour avec une configuration existante sur la télé, aucun nouveau
-fichier local n'est nécessaire. La première installation sans configuration est
-refusée avant le remplacement des fichiers. Le transport SSH ne retombe jamais
-silencieusement sur Telnet.
+For an update where the TV already has a configuration, no new local file is needed. A first install without a configuration is refused before replacing files. SSH deployment never silently falls back to Telnet. Telnet must be explicitly requested, is unencrypted, and cannot send a configuration seed; the TV must already have `/var/lib/tvweb/config.json`.
 
-Depuis `glasshouse/` :
+From `glasshouse/`, after reviewing the target and backup:
 
 ```sh
 TV_HOST=tv.example.invalid
-bash server/deploy.sh "$TV_HOST" --no-app
+bash server/deploy.sh "$TV_HOST" --no-persist --no-app
 ```
 
-Le nom factice doit être remplacé localement. Le script préserve le `config.json`
-existant et le stockage des fonds; une configuration locale d'amorçage ne sert que
-sur une installation qui n'en a pas encore. Conserver les paramètres privés dans
-`glasshouse/server/config.json` (ignoré), jamais dans un fichier versionné.
-Le `config.example.json` doit être adapté : un token aléatoire local, le binding
-réseau souhaité et uniquement les commandes nécessaires. Ne pas exposer le serveur
-rooté à Internet. La documentation upstream est dans `glasshouse/docs/SECURITY.md`.
+Replace the example host locally. The script preserves the existing `config.json` and wallpaper storage; a local bootstrap config is used only when the TV has none. Keep private settings in the ignored `glasshouse/server/config.json`, never in a tracked file. Adapt `config.example.json` with a locally generated token, the desired network binding and only the necessary commands. Do not expose the rooted server to the Internet. See upstream [security documentation](../glasshouse/docs/SECURITY.md).
 
-Le binding local de l'exemple nécessite un tunnel pour accéder au tableau de bord :
+The example binds locally, so use a tunnel to access its dashboard:
 
 ```sh
 ssh -N -L 8767:127.0.0.1:8080 "root@$TV_HOST"
 ```
 
-Ouvrir `http://127.0.0.1:8767/` et saisir le token depuis le fichier privé dans le
-champ d'authentification; ne pas mettre de token dans une URL publique ou un rapport.
-Activer explicitement `allowControl` dans la configuration privée quand les commandes
-sont souhaitées. `allowPower` reste facultatif. Sur une installation existante,
-modifier le `/var/lib/tvweb/config.json` de la télévision via les réglages ou SSH :
-la copie locale d’amorçage ne remplace jamais ce fichier.
+Open `http://127.0.0.1:8767/` and enter the token from the private file in the authentication field. Do not put a token in a public URL or report. Explicitly enable `allowControl` in the private configuration if control commands are required; `allowPower` is optional. On an existing TV, edit its `/var/lib/tvweb/config.json` through the dashboard or SSH: the local bootstrap file never replaces that file.
 
-Le guide utilise le port serveur **8080**, valeur de l’exemple. Home est accepté
-sur **webOS 9**, proposé sur **webOS 7 et 10** avec statut expérimental, puis sur
-**webOS 11** seulement avec
-`allowExperimentalHome: true`. Ce drapeau n’active pas Home sur webOS 5 ou sur
-toute autre version non reconnue. Le Developer Mode ne remplace pas le root
-requis. L’option reste désactivée dans l’exemple; vérifier la cible avant de
-l’activer. La variante Lightkeeper des anciens modèles n’est pas incluse.
+The guide uses server port **8080**, which is the example value. Home is supported by the code on **webOS 9**, offered experimentally on **webOS 7 and 10**, and offered on **webOS 11** only with `allowExperimentalHome: true`. That flag does not enable Home on webOS 5 or another unrecognized version. Developer Mode does not replace the required root access. Home remains disabled in the example; verify the target before enabling it. The Lightkeeper variant for older models is not included.
 
-## Reproduire les rangées
+## Home layout and inputs
 
-Dans les réglages Glasshouse Home, activer l'accueil et conserver Applications puis
-Consoles. L'exemple `examples/home.example.json` décrit les valeurs
-synthétiques de départ; il ne faut pas le copier sur un `home.json` existant.
+In Glasshouse Home settings, enable Home only after the separate preview and approval steps; the safe deployment above does not enable takeover. The synthetic starting values are in `examples/home.example.json`; do not copy that file over an existing `home.json`.
 
-L'ordre de démonstration est YouTube, Netflix, Plex, Crave, Prime Video, ICI TOU.TV,
-Bell Fibe et Accueil LG. Les applications doivent être installées séparément. Leurs
-abonnements, sessions et données ne sont pas inclus. L'accueil LG reste accessible.
-Pour lancer Bell comme une app, choisissez son identifiant réellement installé
-(le profil accepte `com.bell.fibetv.production`), pas l’entrée HDMI de la boîte.
-L’existence de cet ID sur une autre TV ne prouve pas sa présence sur la vôtre.
-La rangée Consoles suit `layout.devPorts` dans `home.json` : une liste vide, valeur
-par défaut, garde toutes les entrées; `[1, 3]` ne garde que ces ports. Aucune tuile
-HDMI n’est injectée dans la rangée Applications. Les libellés Switch 2 et Xbox
-restent des choix visuels du profil pour les ports 1 et 3, et seulement quand une
-liste de ports est définie; sans liste, chaque entrée garde le nom que son appareil
-HDMI-CEC rapporte. Pour un autre matériel, adaptez `TILE.dev` dans
-`glasshouse/server/assets/home.html`, puis régénérez le bundle et exécutez les
-tests. La configuration HDMI n’est pas une détection universelle du matériel.
+The demo Apps row includes YouTube, Netflix, Plex, Crave, Prime Video, ICI TOU.TV, Bell Fibe and LG Home. These apps must be installed separately; subscriptions, sessions and personal app data are not included. LG Home remains available as a return path. To launch Bell as an app, use its actual installed app ID (`com.bell.fibetv.production` is accepted by the profile), not the HDMI input for a set-top box. Its presence on another TV does not prove it is installed on yours.
 
-Les quatre fonds diurnes sont téléversés dans les emplacements de Glasshouse Home :
+The inputs row follows `layout.devPorts` in `home.json`. The default empty list keeps all inputs; `[1, 3]` keeps only those ports. No HDMI tile is injected into the Apps row. Console art is selected from an HDMI-CEC name where available (Xbox, PlayStation or Switch); an unnamed input shows an HDMI connector and its port. The configured console layout can use Switch 2 and Xbox as visual labels on ports 1 and 3; this is not universal device detection. For other hardware, adapt `TILE.dev` in `glasshouse/server/assets/home.html`, regenerate the persistence bundle and run the tests. The port list does not discover the physical wiring.
 
-| Emplacement | Fichier |
+The former Photos tile is a general app shortcut configured by `layout.shortcutAppId`, a plain package ID. The server checks that the selected ID is installed before launch; no URL or launch parameters are accepted. For Moonlight, set it to `com.limelight.webos` only if that app is installed. Existing `photosAppId` configurations remain supported. See [Photos and app shortcut](PHOTOS.md) for the ID validation, privacy boundaries and Immich compatibility details. The demo uses synthetic apps and makes no photo-service connection.
+
+The All apps drawer lists apps from Glasshouse's launch-point catalog, shows an app count, and toggles between TV order and A–Z sorting. Close it with the close button, remote Back/Escape or a click outside. From the top app row, Up reaches the sort/close toolbar; Left/Right selects an action, OK activates it and Down returns to the grid. The [Home settings guide](HOME_SETTINGS.md) describes recommendations and the Glasshouse shortcut. These controls do not provide a custom PIN lock.
+
+The four daytime wallpapers are uploaded to Glasshouse Home's wallpaper slots:
+
+| Slot | File |
 | --- | --- |
 | morning | 01-lac-alpin-bleu.jpg |
 | afternoon | 02-rockies-turquoise.jpg |
 | evening | 03-lac-soleil-doux.jpg |
 | night | 04-foret-brume-bleue.jpg |
 
-L'accueil fait tourner ces quatre emplacements **par jour**, malgré leurs noms
-historiques. Le cinquième fond, `05-lac-nuit.jpg`, est embarqué comme
-`assets/home-wallpaper-dark.jpg` pour la plage sombre 17 h–6 h. L'heure de la télé
-commande cette plage. L'appui long OK réorganise les tuiles sans révéler les apps
-masquées.
+Home cycles these four slots **by day**, despite their historical filenames. The fifth wallpaper, `05-lac-nuit.jpg`, is bundled as `assets/home-wallpaper-dark.jpg` for the 17:00–06:00 dark period. The TV's clock controls that period. Holding OK reorders tiles without revealing hidden apps.
 
-Pour le lanceur photo optionnel, lire [Photos](PHOTOS.md). Il est non configuré par
-défaut et n'exige aucun serveur, compte ou jeton pour examiner la démo.
-Les [paramètres discrets](HOME_SETTINGS.md) donnent accès au toggle Recommandations
-et à l’app native Glasshouse. Ils ne fournissent aucun verrou PIN personnalisé.
+## Optional private weather
 
-## Météo privée optionnelle
-
-Le module n'effectue aucune requête quand `homeWeather.enabled` est faux ou lorsque
-les paramètres sont invalides. La configuration privée accepte une latitude et une
-longitude numériques, un fuseau IANA et un libellé de ville. Exemple de forme,
-à remplir localement dans le `config.json` existant :
+The module makes no request when `homeWeather.enabled` is false or its settings are invalid. Private configuration accepts numeric latitude and longitude, an IANA time zone and a city label. This is the shape to fill locally in the existing `config.json`:
 
 ```json
 {
@@ -135,29 +77,12 @@ longitude numériques, un fuseau IANA et un libellé de ville. Exemple de forme,
 }
 ```
 
-Après renseignement, `enabled: true` autorise les requêtes Open-Meteo avec ces
-coordonnées. Le libellé est affiché dans le widget. Respecter les conditions du
-service et conserver l'attribution. Ne jamais publier le fichier rempli.
+After entering local values, `enabled: true` allows Open-Meteo requests using those coordinates. The label appears in the widget. Follow the service terms and retain its attribution. Never publish the completed file.
 
-## Mises à jour
+## Updates
 
-La mise à jour upstream peut remplacer les fichiers personnalisés. Le bundle
-[personalisation](../personalisation/README.md) les réapplique si les contextes sont
-compatibles, sans restaurer d'anciens réglages. Une mise à jour incompatible bloque
-l'application du patch et exige une adaptation. Vérifier le statut et le rendu après
-chaque mise à jour. Le dépôt ne change ni les protections de confidentialité ni les
-accès de la télévision.
+An upstream update may replace customized files. The [persistence bundle](../personalisation/README.md) reapplies them when patch context is compatible; it does not restore old settings. An incompatible update blocks patch application and requires an adaptation. Check status and rendering after each update. This repository does not change the TV's privacy protections or access settings.
 
-Si le menu personnalisé disparaît, sauvegarder d’abord l’état actuel et, lorsqu’il
-existe, `/var/lib/tvweb/.previous` : l’updater en place remplace cette copie à la
-mise à jour suivante. Une installation IPK ne garantit pas cette sauvegarde.
-Comparer version, configuration, assets et état du gardien avant de restaurer.
-Rebaser les seuls changements compatibles sur la version installée; ne pas
-rétrograder ni recopier aveuglément l’ancienne page ou l’ancien `home.json`.
+If the customized menu disappears, first back up the current state and `/var/lib/tvweb/.previous` if it exists. The updater may replace that copy on its next update. An IPK install does not guarantee that this backup exists. Compare the version, configuration, assets and watchdog state before restoring anything. Rebase only compatible changes onto the installed version; do not downgrade or blindly copy back an old page or `home.json`.
 
-Les assets sont aussi mis en cache en mémoire par le serveur. Après un remplacement
-validé, un simple rafraîchissement peut encore servir l’ancienne page. Pendant une
-fenêtre d’interruption acceptée, redémarrer **uniquement le service Glasshouse**,
-puis vérifier l’empreinte de la réponse HTTP réellement servie et le rendu. Un
-redémarrage de la TV n’est pas une étape par défaut. La procédure de sauvegarde
-et de récupération est détaillée dans le [guide manuel](MANUAL_GUIDE.md).
+The server also caches assets in memory. After a validated replacement, a refresh may still return the old page. During an approved maintenance window, restart **only the Glasshouse service**, then verify the hash of the actual HTTP response and inspect the rendered page. A TV reboot is not a default step. Backup and recovery are detailed in the [manual guide](MANUAL_GUIDE.md).
