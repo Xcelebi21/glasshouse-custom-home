@@ -2004,7 +2004,7 @@
    document.addEventListener('keydown', onKeyDown, true);
    document.addEventListener('keyup', onKeyUp, true);
    document.addEventListener('mousemove', onPointer);
-@@ -2438,25 +3540,32 @@
+@@ -2438,25 +3540,34 @@
    document.addEventListener('onwheel' in document ? 'wheel' : 'mousewheel', onWheel);
    // webOS says when the pointer hides, after a few still seconds or a key.
    document.addEventListener('cursorStateChange', function (e) {
@@ -2023,6 +2023,8 @@
    // Home pressed with the view already open reaches it as a relaunch.
    document.addEventListener('webOSRelaunch', returned);
 -  document.addEventListener('visibilitychange', function () { if (document.hidden) darken(); else returned(); });
++  // A page restored from the WebView's back-forward cache is the old build too.
++  window.addEventListener('pageshow', function (e) { if (e.persisted) returned(); });
 +  document.addEventListener('visibilitychange', function () { resetPointerGlass(); if (document.hidden) darken(); else returned(); });
  
    // Started dark where fading is chosen; in at the first catalogue, or before

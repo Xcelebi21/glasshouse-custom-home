@@ -3552,6 +3552,8 @@ html.faded #stage{opacity:0}
   }
   // Home pressed with the view already open reaches it as a relaunch.
   document.addEventListener('webOSRelaunch', returned);
+  // A page restored from the WebView's back-forward cache is the old build too.
+  window.addEventListener('pageshow', function (e) { if (e.persisted) returned(); });
   document.addEventListener('visibilitychange', function () { resetPointerGlass(); if (document.hidden) darken(); else returned(); });
 
   // Started dark where fading is chosen; in at the first catalogue, or before
