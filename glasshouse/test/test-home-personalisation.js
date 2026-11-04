@@ -157,10 +157,17 @@ assert.ok(/CEC Switch/.test(view.tiles.dev(devices[0], 0)), 'the input keeps the
 var appIds = ['youtube.leanback.v4', 'cdp-30', 'ca.bellmedia.crave', 'netflix', 'amazon', 'tv.tou.ici.webos', 'com.webos.app.hdmi4'];
 appIds.forEach(function (id) {
   var tile = view.tiles.app({ id: id, title: 'Name <safe>' }, 0);
-  assert.ok(/brand-name/.test(tile), 'text fallback for ' + id);
+  if (id === 'youtube.leanback.v4') {
+    assert.ok(/class="app-logo youtube-logo"/.test(tile), 'YouTube uses its play mark');
+    assert.ok(/#ff0000/.test(tile), 'the YouTube mark is red');
+  } else {
+    assert.ok(/brand-name/.test(tile), 'text fallback for ' + id);
+  }
   assert.ok(!/home-logos/.test(tile), 'no redistributed proprietary logo');
   assert.ok(/Name &lt;safe&gt;/.test(tile), 'labels remain escaped');
 });
+assert.ok(!/native-icon/.test(view.tiles.app({ id: 'youtube.leanback.v4', title: 'YouTube', icon: '/api/home/icon?id=youtube.leanback.v4' }, 0)),
+  'YouTube keeps its play mark even when the TV offers an icon');
 assert.ok(/native-icon/.test(view.tiles.app({ id: 'other', title: 'Other', icon: '/api/home/icon?id=other' }, 0)), 'other installed apps retain native icons');
 assert.ok(/face lg/.test(view.tiles.app({ id: 'lg-home', title: 'Accueil LG', lg: true }, 0)), 'LG recovery tile stays available');
 assert.notStrictEqual(view.weatherSymbol(0, true).svg, view.weatherSymbol(0, false).svg, 'clear sky changes between day and night');

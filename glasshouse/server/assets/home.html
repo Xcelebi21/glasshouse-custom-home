@@ -175,7 +175,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'SF Pro Text','SF Pro 
   transition:transform .26s cubic-bezier(.2,.9,.25,1),box-shadow .26s}
 .face:after{content:"";position:absolute;left:0;right:0;top:0;bottom:0;border-radius:inherit;pointer-events:none;
   background:linear-gradient(135deg,rgba(255,255,255,.17),rgba(255,255,255,0) 52%);opacity:.35;transition:opacity .22s}
-#rows .tile.focus .face{-webkit-transform:translateY(-8px) scale(1.12);transform:translateY(-8px) scale(1.12);
+#rows .tile.focus .face{-webkit-transform:translateY(-8px) scale(1.08);transform:translateY(-8px) scale(1.08);
   box-shadow:0 24px 40px rgba(0,0,0,.5),0 0 0 3px rgba(255,255,255,.95),inset 0 1px 0 rgba(255,255,255,.4);
   z-index:10}
 #rows .tile.focus .face:after{opacity:1}
@@ -186,7 +186,9 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'SF Pro Text','SF Pro 
 .brand-name{font-family:Arial,sans-serif;font-size:40px;font-weight:600;padding:18px;text-align:center}
 .face .mono{font-family:'Inter',sans-serif;font-size:56px;font-weight:400}
 .face .native-icon{width:100%;height:100%;border-radius:0}
-.face.youtube{background:#202124}
+.face.youtube{background:#fff}
+.face .app-logo{display:block;width:300px;height:300px}
+.alternative .face .app-logo{width:100px;height:100px}
 .face.plex{background:#17191d}
 .face.crave{background:#101020}
 .face.netflix{background:#0b0b0d}
@@ -430,10 +432,17 @@ html.faded #stage{opacity:0}
 #rows .wrap:before{background:linear-gradient(135deg,rgba(226,237,255,.17),rgba(135,156,184,.07));
   border-color:rgba(255,255,255,.22);box-shadow:inset 0 1px 1px rgba(255,255,255,.28),0 8px 24px rgba(0,0,0,.12)}
 #rows .tile.focus .face,#photosTile.focus .photos-face,#allApps .tile.focus .face{
-  -webkit-transform:translateY(-10px) scale(1.12);transform:translateY(-10px) scale(1.12);
+  -webkit-transform:translateY(-8px) scale(1.08);transform:translateY(-8px) scale(1.08);
   box-shadow:0 18px 30px rgba(0,0,0,.42),0 0 0 3px rgba(255,255,255,.94),0 0 0 8px rgba(218,233,255,.14),
     inset 0 2px 2px rgba(255,255,255,.48),inset 0 -2px 1px rgba(156,188,229,.2)}
 #rows .tile.focus .face:after{background:linear-gradient(135deg,rgba(255,255,255,.28),rgba(255,255,255,0) 42%,rgba(196,220,255,.08));opacity:1}
+/* A lifted face belongs to the pointer while it is on the rows. Once the
+   pointer moves away, the tile drops back instead of staying enlarged. */
+.pointer-away #rows .tile.focus .face,.pointer-away #photosTile.focus .photos-face,
+.pointer-away #allApps .tile.focus .face{-webkit-transform:none;transform:none;
+  box-shadow:0 6px 16px rgba(0,0,0,.24),inset 0 1px 0 rgba(255,255,255,.14)}
+.pointer-away #rows .tile.focus .face .cap,.pointer-away #allApps .tile.focus .face .cap{
+  opacity:0;-webkit-transform:translateY(12px);transform:translateY(12px)}
 /* The name rises out of the artwork on focus, as Apple TV's tile labels do. */
 .face .cap{position:absolute;left:0;right:0;bottom:0;z-index:2;padding:34px 18px 13px;font-size:20px;line-height:24px;font-weight:600;
   text-align:left;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-shadow:0 1px 6px rgba(0,0,0,.7);
@@ -475,7 +484,7 @@ html.faded #stage{opacity:0}
 #allAppsSort{font:inherit;font-size:19px;color:#ece7df;border:1px solid rgba(255,255,255,.25);border-radius:20px;background:rgba(255,255,255,.05);padding:9px 16px;margin-right:14px;cursor:pointer;outline:none}
 #allAppsSort[aria-pressed="true"]{color:#fff;border-color:rgba(255,255,255,.8);background:rgba(140,166,200,.3)}
 #allAppsHint{margin-top:12px;font-size:18px;color:#93a1b5}
-#allAppsScroll{-webkit-flex:1 1 auto;flex:1 1 auto;min-height:0;overflow-y:auto;overflow-x:hidden;padding:14px 20px 30px;margin:0 -20px;
+#allAppsScroll{-webkit-flex:1 1 auto;flex:1 1 auto;min-height:0;overflow-y:auto;overflow-x:hidden;padding:24px 20px 30px;margin:0 -20px;
   -webkit-overflow-scrolling:touch;scrollbar-width:none}
 #allAppsScroll::-webkit-scrollbar{width:0;height:0}
 /* Apple TV-style context sheet */
@@ -1010,7 +1019,14 @@ html.faded #stage{opacity:0}
   }
 
   var APP_ART = {
-    'youtube.leanback.v4': { brand: 'youtube' },
+    'youtube.leanback.v4': {
+      brand: 'youtube',
+      // YouTube's play mark (Simple Icons, CC0), red on the icon's white field.
+      // The wordmark in the TV's own icon is too small to read on a wide tile.
+      svg: '<svg class="app-logo youtube-logo" viewBox="0 0 24 24" aria-hidden="true">' +
+        '<path fill="#ff0000" d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>' +
+        '</svg>'
+    },
     'cdp-30': { brand: 'plex' },
     'ca.bellmedia.crave': { brand: 'crave' },
     netflix: { brand: 'netflix' },
@@ -1102,7 +1118,7 @@ html.faded #stage{opacity:0}
       }
       var cls = 'tile app' + (hidden('app', a.id) ? ' hidden' : inFolder('app', a.id) ? ' folded' : '');
       var art = APP_ART[a.id];
-      var icon = a.icon ?
+      var icon = art && art.svg ? art.svg : a.icon ?
         '<img class="native-icon" src="' + esc(a.icon) + '" alt="">' :
         '<span class="brand-name">' + esc(a.lg ? 'LG' : a.title) + '</span>';
       return '<div class="' + cls + '" data-c="' + i + '" role="button" aria-label="' + esc((a.title || a.id) + (hidden('app', a.id) ? ' ' + t('home.hidden', 'Hidden') : '')) + '"><div class="face ' + (art ? art.brand : a.lg ? 'lg' : '') + '">' +
@@ -1224,6 +1240,7 @@ html.faded #stage{opacity:0}
   var SPRING = 20;         // per second: a key or wheel step is 90% there in about 195 ms
   var stageScale = 1;
   var pointing = false;    // the pointer is showing and was used last
+  var pointerAway = false; // the pointer is off the rows, so no face stays lifted
   var pointerX = 0, pointerY = 0;
   var hoverKey = null;     // the row the pointer is over
   var glide = null;        // { key, dir, depth } while it rests on an end
@@ -1440,11 +1457,21 @@ html.faded #stage{opacity:0}
   // The keys, or the pointer going away, end the pointer's scrolling; a
   // gliding row slows to a stop.
   function stopPointing() {
+    setPointerAway(false);
     if (!pointing && !glide) return;
     pointing = false;
     glide = null;
     hoverKey = null;
     edges();
+  }
+
+  // Whether the pointer is on a tile; off the rows, the focused face drops back
+  // so a pointer that has moved on leaves no tile lifted under it.
+  function setPointerAway(on) {
+    on = !!on;
+    if (on === pointerAway) return;
+    pointerAway = on;
+    stageClass();
   }
 
   /*
@@ -1783,7 +1810,8 @@ html.faded #stage{opacity:0}
     $('stage').className = (state.arranging ? 'arranging' : '') + (state.quickArrange ? ' quick-arranging' : '') + (nightMode ? ' night' : '') + (drawer.open ? ' all-apps' : '') + (homeSettings.open ? ' settings-open' : '') + (recents.open ? ' recents' : '') +
       (finder.open ? ' finding' : '') + (finder.typing ? ' typing' : '') + (searchOn() ? '' : ' no-search') + (folder.open ? ' folder' : '') +
       (layout && layout.showClock === false ? ' no-clock' : '') + (layout && layout.rowsBottom === true ? ' rows-bottom' : '') +
-      (layout && layout.view === 'alternative' ? ' alternative' : '') + (contextSheet.open ? ' all-context' : '');
+      (layout && layout.view === 'alternative' ? ' alternative' : '') + (contextSheet.open ? ' all-context' : '') +
+      (pointerAway ? ' pointer-away' : '');
   }
 
   // ---------------------------------------------------------------- simple Home settings
@@ -3061,10 +3089,12 @@ html.faded #stage{opacity:0}
       else if (ancestorId(e.target, 'homeSettingsLaunch')) focusHomeSettings(2);
       return;
     }
-    if (finder.open || folder.open) { resetPointerGlass(); hoverTile(e.target); return; }
+    if (finder.open || folder.open) { resetPointerGlass(); hoverTile(e.target); setPointerAway(!tileAt(e.target)); return; }
     var tile = tileAt(e.target);
     if (drawer.open) {
-      if (tile && /\bdrawer-app\b/.test(tile.className)) {
+      var overApp = !!(tile && /\bdrawer-app\b/.test(tile.className));
+      setPointerAway(!overApp);
+      if (overApp) {
         drawer.tools = false;
         drawer.index = +tile.getAttribute('data-c'); focusDrawer();
         queuePointerGlass(tile, e);
@@ -3089,6 +3119,7 @@ html.faded #stage{opacity:0}
     pointing = true;
     hoverTile(e.target);
     aim();
+    setPointerAway(!tile);
   }
   // Focuses the tile under the pointer, without moving its row.
   function hoverTile(target) {
@@ -3427,7 +3458,30 @@ html.faded #stage{opacity:0}
     });
   }
 
+  /*
+   * Returning Home after a deploy can find the previous page still loaded. Ask
+   * the server for its build before resuming: when it changed, reload at once,
+   * so the old layout is not shown for the seconds the heartbeat would take.
+   */
+  var returnedSeq = 0;
   function returned() {
+    var seq = ++returnedSeq;
+    if (!build) return resumeView();
+    var done = false;
+    var timer = setTimeout(function () {
+      if (done || seq !== returnedSeq) return;
+      done = true;
+      resumeView();
+    }, 400);
+    postJson('/api/home/beat', {}, function (r) {
+      if (done || seq !== returnedSeq) return;
+      done = true;
+      clearTimeout(timer);
+      if (r && r.ok && r.build && r.build !== build) return location.reload();
+      resumeView();
+    });
+  }
+  function resumeView() {
     var dark = faded;
     if (!dark) fadeIn();
     resetPointerGlass();
@@ -3488,7 +3542,7 @@ html.faded #stage{opacity:0}
   document.addEventListener('cursorStateChange', function (e) {
     if (!(e.detail && e.detail.visibility)) { stopPointing(); resetPointerGlass(); }
   });
-  document.addEventListener('mouseout', function (e) { if (!e.relatedTarget) stopPointing(); });
+  document.addEventListener('mouseout', function (e) { if (!e.relatedTarget) { stopPointing(); setPointerAway(true); } });
   document.addEventListener('mouseout', onPointerOut);
   document.addEventListener('click', onClick);
   window.addEventListener('blur', resetPointerGlass);

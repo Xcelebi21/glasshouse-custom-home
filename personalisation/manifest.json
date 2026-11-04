@@ -7,7 +7,7 @@
       "file": "assets/home.html",
       "patch": "patches/assets-home.html.patch",
       "baseSha256": "d06a2782462f6565cda0311c9e8bd667aa0fd7444b4f9f20eba793365b7a8573",
-      "customSha256": "ff7bf1c7203c3728863ff3914361660013dfb3eb755ab179d21460f7afb80f87"
+      "customSha256": "756c850f62fd2937aa7a42e89567522c39b8231c4463c59ca408e9d7ca61b856"
     },
     {
       "file": "assets/ui.html",
