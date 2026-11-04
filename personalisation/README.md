@@ -2,7 +2,7 @@
 
 This bundle reproduces the public C6 Home changes on Glasshouse **0.130.0**, based on commit `1543769cfeb28c3ce0936dc6d20b24cd58c70255`. It keeps customizations outside the directory replaced by updates. The Lightkeeper variant uses a separate mechanism and is not covered here.
 
-Four patches modify `assets/home.html`, `lib/home.js`, `lib/routes.js` and `lib/remotekeys.js` (News key support on webOS 11). Six assets are added: `lib/home-weather.js`, `lib/tv-profile.js` (C2/C6 profile and webOS rules), the night wallpaper, and the three official Immich-logo files (unchanged SVG, complete AGPL-3.0 license and notice). Proprietary custom app logos are not redistributed. The public UI uses its built-in alternatives; privately adding logos you have redistribution rights for is separate from this bundle.
+Five patches modify `assets/home.html`, `assets/ui.html`, `lib/home.js`, `lib/routes.js` and `lib/remotekeys.js` (News key support on webOS 11). The `assets/ui.html` patch adds the dashboard attribution line for weather data, and `assets/home.html` makes the tile artwork fill each tile edge-to-edge, reads the temperature in Fahrenheit, and drops the greeting, condition text and on-page credit. Twelve assets are added: `lib/home-weather.js`, `lib/tv-profile.js` (C2/C6 profile and webOS rules), the night wallpaper, the five Inter files (Apple TV-style type; SF Pro cannot be redistributed), and the three official Immich-logo files (unchanged SVG, complete AGPL-3.0 license and notice). Proprietary custom app logos are not redistributed. The public UI uses its built-in alternatives; privately adding logos you have redistribution rights for is separate from this bundle.
 
 ## Generate and test on a computer
 

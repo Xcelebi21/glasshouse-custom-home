@@ -137,7 +137,7 @@ assert.strictEqual(h.view.drawer.apps.length, 9, 'drawer lists installed apps, i
 assert.strictEqual(h.element('allAppsCount').textContent, '9 apps', 'drawer shows the installed-app count');
 assert.ok(h.view.drawer.apps.some(function (a) { return a.id === 'app1'; }), 'nonfavorite app is available');
 h.tap('right'); h.tap('down');
-assert.strictEqual(h.view.drawer.index, 6, 'down advances one grid row');
+assert.strictEqual(h.view.drawer.index, 5, 'down advances one grid row');
 assert.ok(h.element('allAppsScroll').scrollTop > 0, 'focused second row scrolls into view');
 h.tap('up');
 assert.strictEqual(h.view.drawer.index, 1);

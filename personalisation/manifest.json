@@ -7,7 +7,13 @@
       "file": "assets/home.html",
       "patch": "patches/assets-home.html.patch",
       "baseSha256": "d06a2782462f6565cda0311c9e8bd667aa0fd7444b4f9f20eba793365b7a8573",
-      "customSha256": "fd289e40ab24e948a2bf393049e6fa79a53d6738793945da8b358f4d05ef9778"
+      "customSha256": "ff7bf1c7203c3728863ff3914361660013dfb3eb755ab179d21460f7afb80f87"
+    },
+    {
+      "file": "assets/ui.html",
+      "patch": "patches/assets-ui.html.patch",
+      "baseSha256": "ba55df46a26bb31ed336577d904bff52472a5958232b6b1edf4e2320fcae682f",
+      "customSha256": "cc5ffe474e00d584d2157f95967959004fab4f1d23f1a35d86fbfc25456f7225"
     },
     {
       "file": "lib/home.js",

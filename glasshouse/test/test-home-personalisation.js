@@ -111,10 +111,7 @@ assert.ok(!/\bnight\b/.test(elements.stage.className));
 clock = new Date(2026, 9, 22, 12);
 assert.strictEqual(view.dateText(clock), 'Thursday 22 October');
 view.renderNow();
-assert.strictEqual(elements.greeting.textContent, 'Good morning');
-clock = new Date(2026, 9, 22, 19);
-view.renderNow();
-assert.strictEqual(elements.greeting.textContent, 'Good evening');
+assert.strictEqual(elements.greeting, undefined, 'no greeting line above the clock');
 assert.strictEqual(view.titles.app, 'Apps');
 assert.strictEqual(view.titles.dev, 'Consoles');
 

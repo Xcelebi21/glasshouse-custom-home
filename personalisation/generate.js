@@ -17,6 +17,7 @@ if (process.argv.length > 2 && !check) {
 var remoteSourceSha256 = '0406460e157a9de8ae2c23f5e2597427d273cbb82f3f8d0917121af3baa8113b';
 var files = {
   'assets/home.html': 'd06a2782462f6565cda0311c9e8bd667aa0fd7444b4f9f20eba793365b7a8573',
+  'assets/ui.html': 'ba55df46a26bb31ed336577d904bff52472a5958232b6b1edf4e2320fcae682f',
   'lib/home.js': '1c629931aed49bba02aa13efd60a0d7b832f5e1bf4674138790df7da58503890',
   'lib/routes.js': 'ba857a4bb6f19fac070967beb7eafdbca867c5a0d946338a56a0fa728ee79170',
   'lib/remotekeys.js': remoteSourceSha256

@@ -49,7 +49,6 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'SF Pro Text','SF Pro 
 
 #now{display:-webkit-flex;display:flex;-webkit-align-items:flex-end;align-items:flex-end;padding:0 112px;height:270px}
 #when{width:520px;-webkit-flex:0 0 auto;flex:0 0 auto}
-#greeting{font-size:23px;letter-spacing:4px;margin-bottom:18px;color:#d0d5dd}
 #clock{font-family:'Inter',sans-serif;font-size:144px;line-height:.8;font-weight:300;letter-spacing:-4px}
 #date{margin-top:18px;font-size:26px;color:#d0d5dd}
 #weather{position:absolute;right:112px;top:66px;text-align:right;color:#f4f6fb;text-shadow:0 2px 14px rgba(0,0,0,.5)}
@@ -58,9 +57,6 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'SF Pro Text','SF Pro 
 #weatherIcon svg{display:block;width:100%;height:100%}
 #weatherTemp{font-family:'Inter',sans-serif;font-weight:300;font-size:76px;line-height:1}
 #weatherCity{font-size:25px;font-weight:600;margin-top:12px}
-#weatherDetail{font-size:21px;color:#d0d8e4;margin-top:5px}
-#weatherCredit a{color:inherit}
-#weatherCredit{font-size:15px;color:#abb7c8;margin-top:8px}
 #weather.unavailable #weatherMain{display:none}
 .arranging #weather,.recents #weather{opacity:.25}
 #mer{font-size:.28em;letter-spacing:0;margin-left:.1em;opacity:.75;font-weight:400}
@@ -163,18 +159,18 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'SF Pro Text','SF Pro 
 
 /* Wide faces lift independently so remote navigation and arranging keep their native geometry. */
 #rows .wrap{position:relative;padding-top:22px;padding-bottom:22px}
-#rows .wrap:before{content:"";position:absolute;left:0;right:0;top:6px;height:212px;border-radius:36px;
+#rows .wrap:before{content:"";position:absolute;left:0;right:0;top:6px;height:256px;border-radius:40px;
   background:rgba(215,230,255,.09);border:1px solid rgba(255,255,255,.13);
   box-shadow:inset 0 1px 0 rgba(255,255,255,.1)}
 #rows .row[data-key="dev"] .wrap:before{display:none}
 #rows .row[data-key="ch"] .wrap:before{display:none}
-#rows .app,#rows .dev{width:320px;height:auto;padding:0;margin-right:26px;border-radius:24px;opacity:1;display:block}
-#rows .dev{width:300px;margin-right:26px;border-radius:22px}
+#rows .app,#rows .dev{width:404px;height:auto;padding:0;margin-right:26px;border-radius:28px;opacity:1;display:block}
+#rows .dev{width:380px;margin-right:26px;border-radius:26px}
 #rows .app:last-child,#rows .dev:last-child{margin-right:0}
 #rows .app.focus,#rows .dev.focus{background:none;outline-color:transparent;z-index:1}
-.face{position:relative;width:320px;height:180px;display:-webkit-flex;display:flex;
+.face{position:relative;width:404px;height:227.25px;display:-webkit-flex;display:flex;
   -webkit-align-items:center;align-items:center;-webkit-justify-content:center;justify-content:center;
-  border-radius:23px;background:#23272f;overflow:hidden;box-shadow:0 6px 16px rgba(0,0,0,.24),inset 0 1px 0 rgba(255,255,255,.14);
+  border-radius:28px;background:#23272f;overflow:hidden;box-shadow:0 6px 16px rgba(0,0,0,.24),inset 0 1px 0 rgba(255,255,255,.14);
   -webkit-transition:-webkit-transform .26s cubic-bezier(.2,.9,.25,1),box-shadow .26s;
   transition:transform .26s cubic-bezier(.2,.9,.25,1),box-shadow .26s}
 .face:after{content:"";position:absolute;left:0;right:0;top:0;bottom:0;border-radius:inherit;pointer-events:none;
@@ -183,31 +179,24 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'SF Pro Text','SF Pro 
   box-shadow:0 24px 40px rgba(0,0,0,.5),0 0 0 3px rgba(255,255,255,.95),inset 0 1px 0 rgba(255,255,255,.4);
   z-index:10}
 #rows .tile.focus .face:after{opacity:1}
-.dev .face,.photos-face{width:300px;height:168.75px;border-radius:22px}
+.dev .face,.photos-face{width:380px;height:213.75px;border-radius:26px}
 .face.immich{background:#0b0b0d}
 .glass-glint{position:absolute;left:0;right:0;top:0;bottom:0;border-radius:inherit;pointer-events:none;opacity:0}
-.face img{display:block;width:218px;height:104px;object-fit:contain}
-.brand-name{font-family:Arial,sans-serif;font-size:34px;font-weight:600;padding:18px;text-align:center}
-.face .mono{font-family:'Inter',sans-serif;font-size:48px;font-weight:400}
-.face .native-icon{width:100px;height:100px;border-radius:20px}
+.face img{display:block;width:100%;height:100%;object-fit:contain}
+.brand-name{font-family:Arial,sans-serif;font-size:40px;font-weight:600;padding:18px;text-align:center}
+.face .mono{font-family:'Inter',sans-serif;font-size:56px;font-weight:400}
+.face .native-icon{width:100%;height:100%;border-radius:0}
 .face.youtube{background:#202124}
-.face.youtube img{width:280px;height:126px}
 .face.plex{background:#17191d}
 .face.crave{background:#101020}
 .face.netflix{background:#0b0b0d}
 .face.prime{background:#10283f}
-.face.prime img{width:218px;height:100px}
 .face.bell{background:linear-gradient(145deg,#14273b,#0b1523)}
-.face.bell img{width:138px;height:100px;-webkit-filter:brightness(1.9);filter:brightness(1.9)}
-.face.crave img{width:206px;height:72px}
-.face.plex img{width:188px;height:96px}
+.face.bell img{-webkit-filter:brightness(1.9);filter:brightness(1.9)}
 .face.toutv{background:linear-gradient(145deg,#087f8b,#075964)}
-.face.toutv img{width:242px;height:63px}
 .face.lg{background:linear-gradient(145deg,#454e5c,#262c36)}
 .face.switch{background:#e60012}
-.face.switch img{width:119px;height:105px}
 .face.xbox{background:#107c10}
-.face.xbox img{width:179px;height:77px}
 /* Console and input faces: a mark where the device is known, an HDMI
    connector where it is not, so a tile is never only its name in text. */
 .face.hdmi{-webkit-flex-direction:column;flex-direction:column;background:linear-gradient(145deg,#2c3644,#161b23);color:#dfe8f5}
@@ -236,7 +225,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'SF Pro Text','SF Pro 
 .night .face.bell{background:#091726}
 .night .face.bell img{-webkit-filter:brightness(1.65);filter:brightness(1.65)}
 .night .face.toutv{background:linear-gradient(145deg,#073c45,#082b34)}
-.night #greeting,.night #date,.night #weatherDetail{color:#c2cbd9}
+.night #date{color:#c2cbd9}
 
 .ch{width:224px;height:176px}
 .ch .num{font-family:'Inter',sans-serif;font-size:48px;line-height:.9;font-weight:300}
@@ -452,11 +441,11 @@ html.faded #stage{opacity:0}
   -webkit-transition:opacity .22s ease,-webkit-transform .26s cubic-bezier(.2,.9,.25,1);transition:opacity .22s ease,transform .26s cubic-bezier(.2,.9,.25,1);pointer-events:none}
 #rows .tile:not(.focus) .face .cap,#allApps .tile:not(.focus) .face .cap{opacity:.0}
 #rows .tile.focus .face .cap,#allApps .tile.focus .face .cap{opacity:1;-webkit-transform:none;transform:none}
-#rows .row[data-key="dev"]{position:relative;min-height:220px}
-#rows .row[data-key="dev"]>.wrap{margin-right:496px}
-#photos{position:absolute;right:112px;top:0;width:300px;text-align:center}
+#rows .row[data-key="dev"]{position:relative;min-height:262px}
+#rows .row[data-key="dev"]>.wrap{margin-right:576px}
+#photos{position:absolute;right:112px;top:0;width:380px;text-align:center}
 #photos h2{padding:0;text-align:left;font-size:23px;line-height:30px}
-#photosTile{display:block;width:300px;padding:22px 0 0;border:0;background:none;color:#ece7df;font:inherit;cursor:pointer;outline:none}
+#photosTile{display:block;width:380px;padding:22px 0 0;border:0;background:none;color:#ece7df;font:inherit;cursor:pointer;outline:none}
 .photos-face img.immich-logo{width:112px;height:112px}
 #photosStatus{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 .arranging #photos,.arranging #allAppsTrigger{display:none}
@@ -501,9 +490,9 @@ html.faded #stage{opacity:0}
 .context-action.focus{background:rgba(140,166,200,.3);border-color:rgba(255,255,255,.9)}
 #contextClose{margin-top:18px;font:inherit;font-size:18px;color:#a9b6c8;border:0;background:none;cursor:pointer}
 #allAppsGrid{display:-webkit-flex;display:flex;-webkit-flex-wrap:wrap;flex-wrap:wrap}
-#allApps .tile{width:320px;padding:0;margin:0 12px 26px 0;opacity:1;outline:none;background:none;cursor:pointer}
-#allApps .tile:nth-child(5n){margin-right:0}
-#allApps .face{width:320px;height:180px}
+#allApps .tile{width:404px;padding:0;margin:0 12px 32px 0;opacity:1;outline:none;background:none;cursor:pointer}
+#allApps .tile:nth-child(4n){margin-right:0}
+#allApps .face{width:404px;height:227.25px}
 #allApps .nm{display:none}
 #allApps .empty{font-size:25px;color:#d0d9e7;padding:30px 0}
 #allApps .tile .hid{display:none}
@@ -571,7 +560,6 @@ html.faded #stage{opacity:0}
 
   <section id="now">
     <div id="when">
-      <div id="greeting"></div>
       <div id="clock"><span id="hm">&mdash;</span><span id="mer" hidden></span></div>
       <div id="date">&mdash;</div>
     </div>
@@ -590,8 +578,6 @@ html.faded #stage{opacity:0}
   <aside id="weather" class="unavailable" aria-label="Weather" data-t-aria-label="home.weather.title" aria-live="polite">
     <div id="weatherMain"><span id="weatherIcon" aria-hidden="true"></span><span id="weatherTemp"></span></div>
     <div id="weatherCity"></div>
-    <div id="weatherDetail" data-t="home.weather.loading">Loading weather</div>
-    <div id="weatherCredit"><a href="https://open-meteo.com/" rel="noreferrer" data-t="home.weather.provider">Open-Meteo</a> · <a href="https://creativecommons.org/licenses/by/4.0/" rel="noreferrer" data-t="home.weather.license">CC BY 4.0</a></div>
   </aside>
   <main id="rows"></main>
   <div id="rail"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg><span class="word" data-t="home.search.rail">Search</span></div>
@@ -978,6 +964,7 @@ html.faded #stage{opacity:0}
       $('rows').innerHTML = html;
       renderedRows = html;
     }
+    paintFaces($('rows'));
     // A programme's progress is set in place, so the minute's refresh does
     // not rebuild the rows.
     var bars = $('rows').querySelectorAll('.bar i');
@@ -1064,6 +1051,49 @@ html.faded #stage{opacity:0}
       '<path d="M30 61h68" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg>' +
       '<span class="port-name">' + esc(t('home.dev.port', 'HDMI {port}', { port: port })) + '</span>';
   }
+
+  /*
+   * Artwork fills its tile. The icons arrive as squares with a field of their
+   * own, so a face takes the colour along the icon's edge and lays the icon
+   * over it: no inset frame, and the rounded face clips the corners. The
+   * colour is read once per icon, from a 16x16 copy on a canvas.
+   */
+  var faceColours = {}, faceCanvas = null;
+  function paintFace(img) {
+    var face = img.parentNode, src = img.getAttribute('src');
+    if (!face || !src || !img.naturalWidth) return;
+    if (!Object.prototype.hasOwnProperty.call(faceColours, src)) {
+      faceColours[src] = '';
+      try {
+        if (!faceCanvas) {
+          faceCanvas = document.createElement('canvas');
+          faceCanvas.width = faceCanvas.height = 16;
+        }
+        var g = faceCanvas.getContext('2d');
+        g.clearRect(0, 0, 16, 16);
+        g.drawImage(img, 0, 0, 16, 16);
+        var d = g.getImageData(0, 0, 16, 16).data;
+        // The edge midpoints, which stay inside a rounded icon's corners.
+        var at = [8 * 4, (8 * 16 + 15) * 4, 8 * 16 * 4, (15 * 16 + 8) * 4];
+        var r = 0, gg = 0, b = 0, a = 0;
+        for (var i = 0; i < at.length; i++) {
+          r += d[at[i]]; gg += d[at[i] + 1]; b += d[at[i] + 2]; a += d[at[i] + 3];
+        }
+        // A mostly transparent edge keeps the tile's own colour.
+        if (a >= 4 * 200) faceColours[src] = 'rgb(' + Math.round(r / 4) + ',' + Math.round(gg / 4) + ',' + Math.round(b / 4) + ')';
+      } catch (e) { faceColours[src] = ''; }
+    }
+    if (faceColours[src]) face.style.backgroundColor = faceColours[src];
+  }
+  function paintFaces(root) {
+    var imgs = (root || document).querySelectorAll('.face img');
+    for (var i = 0; i < imgs.length; i++) paintFace(imgs[i]);
+  }
+  // Artwork that arrives after its tile was drawn is coloured when it loads.
+  if (document.addEventListener) document.addEventListener('load', function (e) {
+    var img = e.target;
+    if (img && img.tagName === 'IMG' && img.parentNode && String(img.parentNode.className).indexOf('face') !== -1) paintFace(img);
+  }, true);
 
   var TILE = {
     app: function (a, i) {
@@ -1484,16 +1514,14 @@ html.faded #stage{opacity:0}
       if (!r || !r.ok || typeof r.temperature !== 'number' || !isFinite(r.temperature) ||
           typeof r.observedAt !== 'number' || Date.now() - r.observedAt > 60 * 60000) {
         $('weather').className = 'unavailable';
-        $('weatherDetail').textContent = 'Weather unavailable';
         return;
       }
       var icon = weatherSymbol(r.code, r.isDay);
       $('weather').className = '';
       $('weatherCity').textContent = r.label || 'Weather';
-      $('weatherCredit').style.display = r.demo ? 'none' : '';
       $('weatherIcon').innerHTML = icon.svg;
-      $('weatherTemp').textContent = Math.round(r.temperature) + '°C';
-      $('weatherDetail').textContent = (r.demo ? 'Demo · ' : '') + icon.name + (r.stale ? ' · at ' + hm(new Date(r.observedAt)) : '');
+      // Open-Meteo reports Celsius; this house reads Fahrenheit.
+      $('weatherTemp').textContent = Math.round(r.temperature * 9 / 5 + 32) + '°F';
     });
   }
 
@@ -1501,7 +1529,6 @@ html.faded #stage{opacity:0}
 
   function renderNow() {
     var d = new Date();
-    $('greeting').textContent = d.getHours() >= 18 || d.getHours() < 6 ? 'Good evening' : 'Good morning';
     var p = hmParts(d);
     $('hm').textContent = p[0];
     $('mer').textContent = p[1];
@@ -1923,7 +1950,7 @@ html.faded #stage{opacity:0}
   var drawer = { open: false, apps: [], index: 0, busy: false, revision: 0, returnRow: 0, returnCol: {}, sorted: false, tools: false, tool: 0 };
   var contextSheet = { open: false, app: null, index: 0 };
   var photosBusy = false;
-  var DRAWER_COLUMNS = 5;
+  var DRAWER_COLUMNS = 4;
   function shortcut() {
     var s = data && data.shortcut;
     if (s && s.appId) {
@@ -2020,6 +2047,7 @@ html.faded #stage{opacity:0}
     $('allAppsGrid').innerHTML = drawer.apps.length ? drawer.apps.map(function (app, i) {
       return TILE.app(app, i).replace('tile app', 'tile drawer-app').replace(/ hidden\b/g, '');
     }).join('') : '<p class="empty">' + esc(t('home.allApps.empty', 'No apps available. Back returns to the carousel.')) + '</p>';
+    paintFaces($('allAppsGrid'));
     $('allAppsCount').textContent = drawer.apps.length === 1 ?
       t('home.allApps.countOne', '1 app') : t('home.allApps.count', '{n} apps', { n: drawer.apps.length });
     $('allAppsSort').setAttribute('aria-pressed', drawer.sorted ? 'true' : 'false');
